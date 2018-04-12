@@ -1,0 +1,23 @@
+{
+  "reminders":
+    {
+    "0":
+      {
+        "name": "Harini",
+        "frequency": "Weekly",
+        "nextReminder": "2018-05-07"
+      },
+    "1":
+      {
+        "name": "Azeem",
+        "frequency": "Monthly",
+        "nextReminder": "2018-05-07"
+      },
+    "2":
+      {
+        "name": "Prianka",
+        "frequency": "Annually",
+        "nextReminder": "2018-05-07"
+      }
+    }
+}

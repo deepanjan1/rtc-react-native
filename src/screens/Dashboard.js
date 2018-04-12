@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Header from '../components/Header';
-import Button from 'apsl-react-native-button';
+import NavButton from '../components/NavButton';
+import ReminderList from '../components/ReminderList';
 
 export default class Dashboard extends React.Component {
   render() {
@@ -9,36 +10,17 @@ export default class Dashboard extends React.Component {
     return (
       <View style={ styles.container }>
           <View style={ styles.row }>
-            <Button
-              style={ styles.button }
-              textStyle={{ color: '#fff' }}
-              onPress={() => console.log('Profile')}>
-              Profile
-            </Button>
-            <Button
-              style={ styles.button }
-              textStyle={{ color: '#fff' }}
-              onPress={() => console.log('Create Reminder')}>
-              Create Reminder
-            </Button>
+            <NavButton consoleLog='Settings' />
+            <NavButton consoleLog='Create Reminder' />
           </View>
           <View style={ styles.subHeading }>
             <Text style={ styles.subHeadingText }>
               Below are your existing reminders.
             </Text>
-            {/* <Button
-              style={ styles.button }
-              textStyle={{ color: '#fff' }}
-              onPress={() => console.log('Placeholder')}>
-              Placeholder
-            </Button> */}
           </View>
-        {/* <Button
-          title="Welcome"
-          onPress={ () =>
-            navigate('Welcome')
-          }
-        /> */}
+          <View style={ styles.reminderList }>
+            <ReminderList />
+          </View>
       </View>
     );
   }
@@ -50,11 +32,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
   },
-  button: {
-    backgroundColor: '#1a9bfc',
-    borderWidth: 0,
-    width: '33%',
-  },
   row: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -65,9 +42,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
   },
   subHeadingText: {
     fontSize: 15,
     fontWeight: '200',
+  },
+  reminderList: {
+    height: '100%',
   },
 });

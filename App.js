@@ -1,15 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-// import { routesConfig } from './src/config/routes';
 import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
 import { StackNavigator } from 'react-navigation';
-
-// const AppNavigator = TabNavigator(routesConfig, {
-//   navigationOptions: {
-//     tabBarVisible: false,
-//   },
-// });
+import { initApi } from './src/services/api';
 
 const Navigator = StackNavigator(
   {
@@ -23,7 +17,7 @@ const Navigator = StackNavigator(
       screen: Dashboard,
       navigationOptions: ({
         title: 'Your Dashboard',
-      })
+      }),
     },
   },
   {
@@ -32,12 +26,13 @@ const Navigator = StackNavigator(
 );
 
 export default class App extends React.Component {
+  componentWillMount() {
+    initApi();
+  }
+
   render() {
     return (
       <Navigator />
-      // <View style={styles.container}>
-      //   <Welcome />
-      // </View>
     );
   }
 }
