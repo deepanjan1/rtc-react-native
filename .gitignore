@@ -18,3 +18,7 @@ yarn-error.log*
 
 # api
 /src/config
+
+#app builds
+/android
+/ios

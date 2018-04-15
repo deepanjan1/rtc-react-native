@@ -13,15 +13,16 @@ export default class NavButton extends React.Component {
       <Button
         style={ styles.button }
         textStyle={ styles.textStyle }
-        onPress={() => console.log(this.props.consoleLog)}>
-        { this.props.consoleLog }
+        onPress={ this.props.onPress}>
+        { this.props.text }
       </Button>
     );
   }
 }
 
 NavButton.propTypes = {
-  consoleLog: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

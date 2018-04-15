@@ -1,5 +1,8 @@
 {
-  "expo": {
-    "sdkVersion": "26.0.0"
-  }
+  "name": "rtc-react-native",
+  "displayName": "rtc-react-native",
+  "expo":
+    {
+      "sdkVersion": "26.0.0"
+    }
 }
