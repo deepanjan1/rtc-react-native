@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const Header = (props) => {
   return (
-    <View>
+    <View style={ styles.container }>
       <Text style={ styles.headerText }>
         { props.title }
       </Text>
@@ -17,6 +17,11 @@ Header.propTypes = {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 75,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',

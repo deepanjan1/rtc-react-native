@@ -5,43 +5,64 @@ import {
   View,
   TouchableHighlight,
   TextInput,
+  FlatList,
 } from 'react-native';
-import Contacts from 'react-native-unified-contacts';
+import Header from './Header';
+import { Permissions, Contacts } from 'expo';
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 
 export default class CreateForm extends React.Component {
   state = {
     contacts: [],
+    text: '',
+  };
+
+  getContacts = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CONTACTS);
+    if (status !== 'granted') {
+      console.log('permission not granted');
+    } else {
+      let contacts = await Contacts.getContactsAsync({
+        fields: [
+          Contacts.PHONE_NUMBERS,
+          Contacts.EMAILS,
+        ],
+        pageSize: 10,
+        pageOffset: 0,
+      });
+      console.log({ status });
+      response = contacts.data;
+      this.setState({
+        contacts: { response },
+      });
+    };
   };
 
   componentDidMount() {
-    let contacts = Contacts.getContacts((err, contacts) => {
-        if (err) {
-          return console.log('denied contact book access');
-        } else {
-          return contacts;
-        }
-      });
-
-    this.setState({
-      contacts: contacts,
-    });
+    this.getContacts();
   };
-
-  // getAllContacts = () => {
-  //   console.log('we got here');
-  //   // Contacts.getAll((err, contacts) => {
-  //   //   if (err === 'denied') {
-  //   //     return console.log('denied contact book access');
-  //   //   } else {
-  //   //     return contacts;
-  //   //   }
-  //   // });
-  // };
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput style={styles.input}/>
+      <View>
+        <Header title='Create Reminder'/>
+        <View style={styles.container}>
+          <FormLabel>Name</FormLabel>
+          <FormInput onChangeText={ (e) =>
+            this.setState({
+              text: { e },
+            })
+            }
+          />
+          <FlatList
+            data={this.state.contacts.response}
+            renderItem={({ item }) =>
+              <View style={styles.contactSearch}>
+                <Text>{item.name}</Text>
+              </View>
+            }
+          />
+        </View>
       </View>
     );
   }
@@ -50,11 +71,11 @@ export default class CreateForm extends React.Component {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    height: 60,
-    width: 200,
+  },
+  contactSearch: {
+    marginTop: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   input: {
     fontSize: 20,

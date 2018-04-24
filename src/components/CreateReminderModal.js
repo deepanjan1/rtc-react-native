@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, Modal, TouchableHighlight } from 'react-native';
 import NavButton from '../components/NavButton';
 import PropTypes from 'prop-types';
-import Header from './Header';
 import CreateForm from './CreateForm';
 
 export default class CreateReminderModal extends React.Component {
@@ -18,27 +17,28 @@ export default class CreateReminderModal extends React.Component {
           animationType="slide"
           transparent={false}
           visible={this.props.modalVisible}
+          style={ styles.modal }
           onRequestClose={ () => {
             alert('Modal has been closed.');
           }}
 
           presentationStyle='formSheet'>
 
-          <View style={ styles.container }>
-            <Header title='Create Reminder'/>
-            <CreateForm />
-          </View>
+            <View>
+              <CreateForm />
+            </View>
 
-          <View style={ styles.center}>
-            <TouchableHighlight
-              onPress={() => {
-                this.props.setModalVisible(false);
-              }}>
-              <Text style={ styles.createButton }>
-                Cancel
-              </Text>
-            </TouchableHighlight>
-          </View>
+            <View style={ styles.center}>
+              <TouchableHighlight
+                onPress={() => {
+                  this.props.setModalVisible(false);
+                }}>
+
+                <Text style={ styles.createButton }>
+                  Cancel
+                </Text>
+              </TouchableHighlight>
+            </View>
         </Modal>
       </View>
     );
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     marginTop: 100,
     alignItems: 'center',
     justifyContent: 'center',
+
   },
   createButton: {
     backgroundColor: '#1a9bfc',
