@@ -42,20 +42,18 @@ export default class Dashboard extends React.Component {
             <ReminderList />
             <View style={ styles.center}>
               <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(true);
-                }}>
+                onPress={ navigate('SyncContacts') }>
                 <Text style={ styles.createButton }>
                   Create Reminder
                 </Text>
               </TouchableHighlight>
             </View>
           </View>
-          <View style={ styles.modal }>
+          {/* <View style={ styles.modal }>
             <CreateReminderModal
               modalVisible={ this.state.modalVisible }
               setModalVisible = { this.setModalVisible } />
-          </View>
+          </View> */}
       </View>
     );
   }
