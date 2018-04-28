@@ -13,7 +13,7 @@ export default class NavButton extends React.Component {
       <Button
         style={ styles.button }
         textStyle={ styles.textStyle }
-        onPress={ this.props.onPress}>
+        onPress={ this.props.onPress }>
         { this.props.text }
       </Button>
     );

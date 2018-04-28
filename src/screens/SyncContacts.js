@@ -2,40 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
+import ShowButton from '../components/ShowButton';
 import { Permissions, Contacts } from 'expo';
 import { syncContacts, removeContacts } from '../services/api';
 import { StackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
-
-class ShowButton extends React.Component {
-  constructor(props) {
-    super(props);
-  };
-
-  render() {
-    const button = this.props.buttonVisible;
-    if (button === true) {
-      return (
-        <View>
-          <NavButton
-            text='Create Reminder'
-            onPress={ this.props.navigate }
-          />
-        </View>
-      );
-    } else {
-      return (
-        <View>
-        </View>
-      );
-    }
-  }
-}
-
-ShowButton.propTypes = {
-  buttonVisible: PropTypes.bool.isRequired,
-  navigate: PropTypes.func.isRequired,
-};
 
 export default class SyncContacts extends React.Component {
   constructor(props) {
@@ -68,6 +39,11 @@ export default class SyncContacts extends React.Component {
         contacts: { response },
       });
       syncContacts(this.state.contacts.response);
+      if (this.state.contacts) {
+        this.setState({
+          buttonVisible: true,
+        });
+      }
     };
   };
 
@@ -85,7 +61,7 @@ export default class SyncContacts extends React.Component {
         </TouchableHighlight>
         <ShowButton
           buttonVisible={ this.state.buttonVisible }
-          navigate={ navigate('CreateReminder') } />
+          onTap={ navigate } />
       </View>
     );
   }

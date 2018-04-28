@@ -35,7 +35,7 @@ const Navigator = StackNavigator(
     },
   },
   {
-    initialRouteName: 'Dashboard',
+    initialRouteName: 'SyncContacts',
   },
 );
 

@@ -5,9 +5,9 @@ import Swiper from 'react-native-swiper';
 import { StackNavigator } from 'react-navigation';
 
 class IntroFlow extends React.Component {
-  constructor(props){
-    super(props)
-    this.handleOnTap = this.handleOnTap.bind(this)
+  constructor(props) {
+    super(props);
+    this.handleOnTap = this.handleOnTap.bind(this);
   }
 
   handleOnTap() {

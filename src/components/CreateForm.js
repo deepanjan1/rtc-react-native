@@ -17,35 +17,9 @@ export default class CreateForm extends React.Component {
     text: '',
   };
 
-  getContacts = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CONTACTS);
-    if (status !== 'granted') {
-      console.log('permission not granted');
-    } else {
-      let contacts = await Contacts.getContactsAsync({
-        fields: [
-          Contacts.PHONE_NUMBERS,
-          Contacts.EMAILS,
-        ],
-        pageSize: 10,
-        pageOffset: 0,
-      });
-      console.log({ status });
-      response = contacts.data;
-      this.setState({
-        contacts: { response },
-      });
-    };
-  };
-
-  componentDidMount() {
-    this.getContacts();
-  };
-
   render() {
     return (
       <View>
-        <Header title='Create Reminder'/>
         <View style={styles.container}>
           <FormLabel>Name</FormLabel>
           <FormInput onChangeText={ (e) =>
@@ -54,14 +28,14 @@ export default class CreateForm extends React.Component {
             })
             }
           />
-          <FlatList
+          {/* <FlatList
             data={this.state.contacts.response}
             renderItem={({ item }) =>
               <View style={styles.contactSearch}>
                 <Text>{item.name}</Text>
               </View>
             }
-          />
+          /> */}
         </View>
       </View>
     );
