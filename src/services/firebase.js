@@ -19,9 +19,17 @@ export const pushData = (endpoint, data) => {
   return firebase.database().ref(endpoint).push(data);
 };
 
+export const writeData = (endpoint, data) => {
+  return firebase.database().ref(endpoint).set(data);
+};
+
 export const removeData = (endpoint) => {
   return firebase.database().ref(endpoint).remove();
 };
+
+export const readData = (endpoint) => {
+  return firebase.database().ref(endpoint).child('Deep').once('value');
+}
 
 // other end points besides "push" are "set" to override and "update"
 // to update a specific entry

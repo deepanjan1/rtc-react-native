@@ -24,7 +24,7 @@ export default class SyncContacts extends React.Component {
     if (status !== 'granted') {
       console.log('permission not granted');
     } else {
-      removeContacts();
+      // removeContacts();
       let contacts = await Contacts.getContactsAsync({
         fields: [
           Contacts.PHONE_NUMBERS,
@@ -38,7 +38,8 @@ export default class SyncContacts extends React.Component {
       this.setState({
         contacts: { response },
       });
-      syncContacts(this.state.contacts.response);
+      const user = 'Deep';
+      syncContacts(user, this.state.contacts.response);
       if (this.state.contacts) {
         this.setState({
           buttonVisible: true,

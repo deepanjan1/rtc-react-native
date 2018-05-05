@@ -6,6 +6,8 @@ import SyncContacts from './src/screens/SyncContacts';
 import CreateReminder from './src/screens/CreateReminder';
 import { StackNavigator } from 'react-navigation';
 import { initApi } from './src/services/api';
+import { Font, AppLoading, Asset } from 'expo';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Navigator = StackNavigator(
   {
@@ -35,19 +37,52 @@ const Navigator = StackNavigator(
     },
   },
   {
-    initialRouteName: 'SyncContacts',
+    initialRouteName: 'CreateReminder',
   },
 );
 
+function cacheFonts(fonts) {
+  return fonts.map(font => Font.loadAsync(font));
+}
+
 export default class App extends React.Component {
+  state = {
+    appIsReady: false,
+  };
+
   componentWillMount() {
     initApi();
+    this._loadAssetsAsync();
   }
 
   render() {
-    return (
-      <Navigator />
-    );
+    if (!this.state.appIsReady) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <Navigator />
+      );
+    }
+  }
+
+  async _loadAssetsAsync() {
+    const fontAssets = cacheFonts([
+      MaterialIcons.font,
+    ]);
+
+    await Promise.all([
+      ...fontAssets,
+    ]);
+
+    this.setState({
+      appIsReady: true,
+    });
   }
 }
 
