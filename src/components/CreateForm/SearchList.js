@@ -8,6 +8,8 @@ import {
 import PropTypes from 'prop-types';
 import SearchEntry from './SearchEntry';
 
+import { Font, AppLoading, Asset } from 'expo';
+
 export default class SearchList extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +21,7 @@ export default class SearchList extends React.Component {
 
   showList = () => {
     if (this.props.visible === true) {
+      var filteredContacts = this.props.filteredContacts;
       return (
         <View>
           <FlatList

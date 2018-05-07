@@ -41,16 +41,16 @@ const Navigator = StackNavigator(
   },
 );
 
-function cacheFonts(fonts) {
-  return fonts.map(font => Font.loadAsync(font));
-}
+// function cacheFonts(fonts) {
+//   return fonts.map(font => Font.loadAsync(font));
+// }
 
 export default class App extends React.Component {
   state = {
     appIsReady: false,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     initApi();
     this._loadAssetsAsync();
   }
@@ -72,13 +72,9 @@ export default class App extends React.Component {
   }
 
   async _loadAssetsAsync() {
-    const fontAssets = cacheFonts([
-      MaterialIcons.font,
-    ]);
-
-    await Promise.all([
-      ...fontAssets,
-    ]);
+    await Font.loadAsync({
+      'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
+    });
 
     this.setState({
       appIsReady: true,

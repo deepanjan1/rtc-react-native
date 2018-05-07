@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableHighlight, Modal } from 'react-native'
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
-import CreateReminderModal from '../components/CreateReminderModal';
+// import CreateReminderModal from '../components/CreateReminderModal';
 import Button from 'apsl-react-native-button';
 
 export default class Dashboard extends React.Component {
