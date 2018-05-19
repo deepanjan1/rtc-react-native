@@ -1,9 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import logger from 'redux-logger';
+
+import showModal from './src/reducers/modalReducer';
+
 import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
 import SyncContacts from './src/screens/SyncContacts';
 import CreateReminder from './src/screens/CreateReminder';
+
 import { StackNavigator } from 'react-navigation';
 import { initApi } from './src/services/api';
 import { Font, AppLoading, Asset } from 'expo';
@@ -37,13 +44,13 @@ const Navigator = StackNavigator(
     },
   },
   {
-    initialRouteName: 'CreateReminder',
+    initialRouteName: 'SyncContacts',
   },
 );
 
-// function cacheFonts(fonts) {
-//   return fonts.map(font => Font.loadAsync(font));
-// }
+const store = createStore(showModal, applyMiddleware(logger));
+
+store.subscribe(SyncContacts);
 
 export default class App extends React.Component {
   state = {
@@ -66,7 +73,9 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <Navigator />
+        <Provider store={store}>
+          <Navigator />
+        </Provider>
       );
     }
   }

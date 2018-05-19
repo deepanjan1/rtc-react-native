@@ -18,6 +18,7 @@ import { getContacts } from '../../services/api';
 import Calendar from 'react-native-calendar-datepicker';
 import Moment from 'moment';
 import Modal from 'react-native-modal';
+import PropTypes from 'prop-types';
 
 export default class CreateForm extends React.Component {
   constructor(props) {
@@ -144,30 +145,46 @@ export default class CreateForm extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <FormLabel>Name</FormLabel>
-        <FormInput
-          onChangeText={ this.filterItems.bind(this) }
-          value={ this.state.person.name }
-          clearButtonMode='always'
-          inputStyle={ styles.input }
-          onFocus={this.onFocus}
-        />
-        <SearchList
-          filteredContacts={ this.state.filteredContacts }
-          visible={ this.state.visible }
-          onPress={ this.onPress }
-        />
-        <View style={ styles.row } />
-        { this.restOfForm() }
-      </View>
+      <Modal
+        isVisible={ this.props.showCreateForm }
+        onBackdropPress={() => this.setState({ datePickerModal: false })}
+        animationIn='fadeIn'
+        animationInTiming={200}
+        animationOut='fadeOut'
+        animationOutTiming={200}>
+        <View style={styles.container}>
+          <FormLabel>Name</FormLabel>
+          <FormInput
+            onChangeText={ this.filterItems.bind(this) }
+            value={ this.state.person.name }
+            clearButtonMode='always'
+            inputStyle={ styles.input }
+            onFocus={this.onFocus}
+          />
+          <SearchList
+            filteredContacts={ this.state.filteredContacts }
+            visible={ this.state.visible }
+            onPress={ this.onPress }
+          />
+          <View style={ styles.row } />
+          { this.restOfForm() }
+        </View>
+      </Modal>
     );
   }
 }
 
+CreateForm.propTypes = {
+  showCreateForm: PropTypes.bool.isRequired,
+};
+
 const styles = StyleSheet.create({
   container: {
+    marginTop: 100,
     padding: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    height: 600,
   },
   row: {
     marginTop: 20,

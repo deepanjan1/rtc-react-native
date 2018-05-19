@@ -1,14 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import Header from '../components/Header';
-import NavButton from '../components/NavButton';
-import ShowButton from '../components/ShowButton';
+import { Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { Permissions, Contacts } from 'expo';
 import { syncContacts, removeContacts } from '../services/api';
 import { StackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
+import CreateForm from '../components/CreateForm/CreateForm';
+import { openFormModal } from '../actions/actions';
 
-export default class SyncContacts extends React.Component {
+class SyncContacts extends React.Component {
   constructor(props) {
     super(props);
     this.getPermission = this.getPermission.bind(this);
@@ -16,7 +19,7 @@ export default class SyncContacts extends React.Component {
 
   state = {
     contacts: [],
-    buttonVisible: false,
+    buttonVisible: true,
   };
 
   getPermission = async () => {
@@ -24,7 +27,6 @@ export default class SyncContacts extends React.Component {
     if (status !== 'granted') {
       console.log('permission not granted');
     } else {
-      // removeContacts();
       let contacts = await Contacts.getContactsAsync({
         fields: [
           Contacts.PHONE_NUMBERS,
@@ -48,8 +50,21 @@ export default class SyncContacts extends React.Component {
     };
   };
 
+  showButton = () => {
+    if (this.state.buttonVisible) {
+      return (
+        <Button
+          title='Create Reminder'
+          onPress={() => this.props.openFormModal(this.props.showModal)}
+        />
+      );
+    }
+  };
+
   render() {
     const { navigate } = this.props.navigation;
+    const { showModal } = this.props;
+    console.log('showModal v2: ', showModal);
     return (
       <View style={ styles.container }>
         <TouchableHighlight
@@ -60,9 +75,12 @@ export default class SyncContacts extends React.Component {
             </Text>
           </View>
         </TouchableHighlight>
-        <ShowButton
-          buttonVisible={ this.state.buttonVisible }
-          onTap={ navigate } />
+        <View>
+          { this.showButton() }
+        </View>
+        <CreateForm
+          showCreateForm={ showModal }
+        />
       </View>
     );
   }
@@ -111,3 +129,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+mapStateToProps = (state) => {
+  return {
+    showModal: state.showModal,
+  };
+};
+
+mapDispatchToProps = (dispatch) => {
+  return {
+    openFormModal: (showModal) => {
+      dispatch(openFormModal(showModal));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SyncContacts);
