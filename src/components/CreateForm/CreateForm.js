@@ -13,6 +13,7 @@ import {
   FormValidationMessage,
   ButtonGroup,
   Icon,
+  Button,
 } from 'react-native-elements';
 import { getContacts } from '../../services/api';
 import Calendar from 'react-native-calendar-datepicker';
@@ -24,6 +25,7 @@ export default class CreateForm extends React.Component {
   constructor(props) {
     super(props);
     this.filterItems = this.filterItems.bind(this);
+    this.addReminder = this.props.addReminder.bind(this);
   }
 
   state = {
@@ -36,7 +38,7 @@ export default class CreateForm extends React.Component {
     person: {},
     personID: '',  // to firebase
     date: Moment().startOf('day'), // to firebase
-    selectedFrequency: 1, // to firebase
+    selectedFrequency: 0, // to firebase
   };
 
   updateFrequency = (selectedFrequency) => {
@@ -118,6 +120,28 @@ export default class CreateForm extends React.Component {
             <Text style={ styles.dateStyle }>
               { this.state.date.format('MM/DD/YYYY') }
             </Text>
+            <Icon
+              name='check-circle'
+              color='#1a9bfc'
+              containerStyle={{ marginTop: 0, flex: 1, }}
+              onPress={() => {
+                var reminder = {
+                  name: this.state.person.name,
+                  date: this.state.date.format('MM/DD/YYYY'),
+                  personID: this.state.personID,
+                  frequency: this.state.selectedFrequency,
+                };
+                this.addReminder(reminder);
+                this.setState({
+                  person: {},
+                  personID: '',  // to firebase
+                  date: Moment().startOf('day'), // to firebase
+                  selectedFrequency: 0, // to firebase
+                });
+                this.props.closeCreateForm();
+              }}
+
+            />
           </View>
           <Modal
             isVisible={ this.state.datePickerModal }
@@ -147,7 +171,7 @@ export default class CreateForm extends React.Component {
     return (
       <Modal
         isVisible={ this.props.showCreateForm }
-        onBackdropPress={() => this.setState({ datePickerModal: false })}
+        onBackdropPress={ this.props.closeCreateForm }
         animationIn='fadeIn'
         animationInTiming={200}
         animationOut='fadeOut'
@@ -176,6 +200,8 @@ export default class CreateForm extends React.Component {
 
 CreateForm.propTypes = {
   showCreateForm: PropTypes.bool.isRequired,
+  closeCreateForm: PropTypes.func.isRequired,
+  addReminder: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

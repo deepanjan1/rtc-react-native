@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import * as firebaseAPI from '../config/apiconfig';
+// import firebaseui from 'firebaseui';
 
 export const initialize = () => firebase.initializeApp({
   apiKey: firebaseAPI.apiKey,
@@ -16,7 +17,7 @@ export const setListener = (endpoint, updaterFn) => {
 };
 
 export const pushData = (endpoint, data) => {
-  return firebase.database().ref(endpoint).push(data);
+  return firebase.database().ref(endpoint).push().set(data);
 };
 
 export const writeData = (endpoint, data) => {
@@ -29,7 +30,7 @@ export const removeData = (endpoint) => {
 
 export const readData = (endpoint) => {
   return firebase.database().ref(endpoint).child('Deep').once('value');
-}
+};
 
 // other end points besides "push" are "set" to override and "update"
 // to update a specific entry

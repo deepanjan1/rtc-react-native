@@ -13,7 +13,7 @@ export const getReminders = (updaterFn) => setListener('reminders', updaterFn);
 
 export const createReminders = (reminder) => {
   if (Boolean(reminder)) {
-    pushData('reminders', { reminder });
+    pushData('reminders/', { reminder });
   }
 };
 

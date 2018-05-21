@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 
-import showModal from './src/reducers/modalReducer';
+import storeReminder from './src/reducers/reminderReducer';
 
 import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
@@ -15,6 +15,7 @@ import { StackNavigator } from 'react-navigation';
 import { initApi } from './src/services/api';
 import { Font, AppLoading, Asset } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
+import reduxThunk from 'redux-thunk';
 
 const Navigator = StackNavigator(
   {
@@ -22,35 +23,61 @@ const Navigator = StackNavigator(
       screen: Welcome,
       navigationOptions: ({
         header: 'null',
+        headerStyle: {
+          backgroundColor: 'white',
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+        },
       }),
     },
     Dashboard: {
       screen: Dashboard,
       navigationOptions: ({
-        title: 'Your Dashboard',
+        title: 'Dashboard',
+        headerStyle: {
+          backgroundColor: 'white',
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          fontSize: 25,
+        },
       }),
     },
     SyncContacts: {
       screen: SyncContacts,
       navigationOptions: ({
         title: 'Sync Your Contacts',
+        headerStyle: {
+          backgroundColor: 'white',
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+        },
       }),
     },
     CreateReminder: {
       screen: CreateReminder,
       navigationOptions: ({
         title: 'Create Your Reminder',
+        headerStyle: {
+          backgroundColor: 'white',
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+        },
       }),
     },
   },
   {
-    initialRouteName: 'SyncContacts',
+    initialRouteName: 'Dashboard',
   },
 );
 
-const store = createStore(showModal, applyMiddleware(logger));
-
-store.subscribe(SyncContacts);
+const store = createStore(storeReminder, applyMiddleware(logger, reduxThunk));
 
 export default class App extends React.Component {
   state = {

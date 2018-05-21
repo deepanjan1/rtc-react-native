@@ -23,6 +23,7 @@
     "apsl-react-native-button": "^3.1.0",
     "expo": "^26.0.0",
     "firebase": "^4.12.1",
+    "firebaseui": "^3.0.0",
     "moment": "^2.22.1",
     "prop-types": "^15.6.1",
     "react": "16.3.0-alpha.1",
@@ -41,6 +42,7 @@
     "react-navigation": "^1.5.11",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
   }
 }

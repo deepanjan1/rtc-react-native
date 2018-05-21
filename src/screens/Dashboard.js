@@ -3,27 +3,24 @@ import { StyleSheet, Text, View, TouchableHighlight, Modal } from 'react-native'
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
-// import CreateReminderModal from '../components/CreateReminderModal';
 import Button from 'apsl-react-native-button';
+import CreateForm from '../components/CreateForm/CreateForm';
+import * as Action from '../actions/actions';
+import { connect } from 'react-redux';
+import { createReminders } from '../services/api';
 
-export default class Dashboard extends React.Component {
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.setModalVisible = this.setModalVisible.bind(this);
   };
 
   state = {
-    modalVisible: false,
-  };
-
-  setModalVisible(visible) {
-    this.setState({
-      modalVisible: visible,
-    });
+    showModal: false,
   };
 
   render() {
     const { navigate } = this.props.navigation;
+    const { setReminder, setReminderToDB } = this.props;
     return (
       <View style={ styles.container }>
           <View style={ styles.row }>
@@ -42,18 +39,22 @@ export default class Dashboard extends React.Component {
             <ReminderList />
             <View style={ styles.center}>
               <TouchableHighlight
-                onPress={ navigate('SyncContacts') }>
+                onPress={ () => this.setState({ showModal: true, }) }>
                 <Text style={ styles.createButton }>
                   Create Reminder
                 </Text>
               </TouchableHighlight>
             </View>
           </View>
-          {/* <View style={ styles.modal }>
-            <CreateReminderModal
-              modalVisible={ this.state.modalVisible }
-              setModalVisible = { this.setModalVisible } />
-          </View> */}
+          <CreateForm
+            showCreateForm={ this.state.showModal }
+            closeCreateForm={ () => this.setState({ showModal: false, }) }
+            addReminder={ (reminder) => {
+              setReminder(reminder);
+              createReminders(reminder);
+            }
+          }
+          />
       </View>
     );
   }
@@ -102,3 +103,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+mapStateToProps = (state) => {
+  return {
+    reminder: state.reminder,
+  };
+};
+
+mapDispatchToProps = (dispatch) => {
+  return ({
+    setReminder: (reminder) => {
+      dispatch(Action.addReminder(reminder));
+    },
+
+    setReminderToDB: (reminder) => {
+      dispatch(Action.addReminderToDB(reminder));
+    },
+  });
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

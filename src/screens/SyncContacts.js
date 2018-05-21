@@ -2,14 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { Permissions, Contacts } from 'expo';
 import { syncContacts, removeContacts } from '../services/api';
 import { StackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
 import CreateForm from '../components/CreateForm/CreateForm';
-import { openFormModal } from '../actions/actions';
+import * as Actions from '../actions/actions';
 
 class SyncContacts extends React.Component {
   constructor(props) {
@@ -18,8 +17,8 @@ class SyncContacts extends React.Component {
   };
 
   state = {
-    contacts: [],
     buttonVisible: true,
+    showModal: false,
   };
 
   getPermission = async () => {
@@ -55,7 +54,8 @@ class SyncContacts extends React.Component {
       return (
         <Button
           title='Create Reminder'
-          onPress={() => this.props.openFormModal(this.props.showModal)}
+          // onPress={() => this.props.openFormModal(this.props.showModal)}
+          onPress={() => this.setState({ showModal: true, })}
         />
       );
     }
@@ -63,8 +63,7 @@ class SyncContacts extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { showModal } = this.props;
-    console.log('showModal v2: ', showModal);
+    const { currentContact } = this.props;
     return (
       <View style={ styles.container }>
         <TouchableHighlight
@@ -79,7 +78,9 @@ class SyncContacts extends React.Component {
           { this.showButton() }
         </View>
         <CreateForm
-          showCreateForm={ showModal }
+          showCreateForm={ this.state.showModal }
+          closeCreateForm={ () => this.setState({ showModal: false, }) }
+            // currentContact={ this.currentContact }
         />
       </View>
     );
@@ -132,16 +133,16 @@ const styles = StyleSheet.create({
 
 mapStateToProps = (state) => {
   return {
-    showModal: state.showModal,
+    currentContact: state.contact,
   };
 };
 
 mapDispatchToProps = (dispatch) => {
-  return {
-    openFormModal: (showModal) => {
-      dispatch(openFormModal(showModal));
+  return ({
+    setCurrentContact: (showModal) => {
+      dispatch(Action.currentContact(showModal));
     },
-  };
+  });
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SyncContacts);

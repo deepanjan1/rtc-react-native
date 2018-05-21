@@ -21,6 +21,21 @@ export default class ReminderList extends React.Component {
     this.unsubscribeGetReminders();
   }
 
+  storeContact = nextDate => {
+    switch (nextDate) {
+      case 0:
+        return ('Bi-Weekly');
+      case 1:
+        return ('Quarterly');
+      case 2:
+        return ('Bi-Annually');
+      case 3:
+        return ('Annually');
+      default:
+        return ('Error');
+    }
+  };
+
   render() {
     return (
       <FlatList
@@ -28,8 +43,14 @@ export default class ReminderList extends React.Component {
         renderItem={
           ({ item }) =>
           <View style={ styles.container }>
-            <Text style={ styles.name }>{ item.name } - { item.frequency }</Text>
-            <Text style={ styles.nextReminder }>Next Reminder: { item.nextReminder }</Text>
+            <Text style={ styles.name }>
+              { item.reminder.name } - {
+                this.storeContact(item.reminder.frequency)
+              }
+            </Text>
+            <Text style={ styles.nextReminder }>
+              Next Reminder: { item.reminder.date }
+            </Text>
           </View>
         }
         keyExtractor={(item, index) => (`reminders-${index}`)}
