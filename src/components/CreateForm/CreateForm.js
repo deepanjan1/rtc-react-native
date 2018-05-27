@@ -125,13 +125,12 @@ export default class CreateForm extends React.Component {
               color='#1a9bfc'
               containerStyle={{ marginTop: 0, flex: 1, }}
               onPress={() => {
-                var reminder = {
+                this.addReminder({
                   name: this.state.person.name,
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
                   frequency: this.state.selectedFrequency,
-                };
-                this.addReminder(reminder);
+                });
                 this.setState({
                   person: {},
                   personID: '',  // to firebase

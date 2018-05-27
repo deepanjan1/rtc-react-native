@@ -15,7 +15,7 @@ class Dashboard extends React.Component {
   };
 
   state = {
-    showModal: false,
+    showCreateModal: false,
   };
 
   render() {
@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
             <ReminderList />
             <View style={ styles.center}>
               <TouchableHighlight
-                onPress={ () => this.setState({ showModal: true, }) }>
+                onPress={ () => this.setState({ showCreateModal: true, }) }>
                 <Text style={ styles.createButton }>
                   Create Reminder
                 </Text>
@@ -47,8 +47,8 @@ class Dashboard extends React.Component {
             </View>
           </View>
           <CreateForm
-            showCreateForm={ this.state.showModal }
-            closeCreateForm={ () => this.setState({ showModal: false, }) }
+            showCreateForm={ this.state.showCreateModal }
+            closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
             addReminder={ (reminder) => {
               setReminder(reminder);
               createReminders(reminder);
@@ -116,9 +116,9 @@ mapDispatchToProps = (dispatch) => {
       dispatch(Action.addReminder(reminder));
     },
 
-    setReminderToDB: (reminder) => {
-      dispatch(Action.addReminderToDB(reminder));
-    },
+    // setReminderToDB: (reminder) => {
+    //   dispatch(Action.addReminderToDB(reminder));
+    // },
   });
 };
 

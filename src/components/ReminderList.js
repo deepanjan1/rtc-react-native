@@ -1,24 +1,52 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
-import { getReminders } from '../services/api';
+import { getReminders, removeReminder, shutOffGetReminders } from '../services/api';
+import Swipeout from 'react-native-swipeout';
 
 export default class ReminderList extends React.Component {
 
+  constructor(props) {
+    super(props);
+    // swipeout buttons
+    this.swipeoutButtons = [
+      {
+        text: 'Delete',
+        backgroundColor: '#fc0d1c',
+        type: 'delete',
+        onPress: () => removeReminder(this.state.activeKey),
+      },
+      {
+        text: 'Edit',
+        backgroundColor: '#4482ea',
+      },
+    ];
+  };
+
   state = {
     reminders: [],
+    activeKey: '',
   };
 
   componentDidMount() {
+
     this.unsubscribeGetReminders = getReminders((snapshot) => {
-      this.setState({
-        reminders: Object.values(snapshot.val()),
-      });
+      try {
+        this.setState({
+          reminders: Object.values(snapshot.val()),
+        });
+        console.log(this.state.reminders);
+      } catch (e) {
+        this.setState({
+          reminders: [],
+        });
+        console.log(e);
+      }
     });
   }
 
   componentWillUnmount() {
-    this.unsubscribeGetReminders();
+    this.shutOffGetReminders();
   }
 
   storeContact = nextDate => {
@@ -42,18 +70,26 @@ export default class ReminderList extends React.Component {
         data={this.state.reminders}
         renderItem={
           ({ item }) =>
-          <View style={ styles.container }>
-            <Text style={ styles.name }>
-              { item.reminder.name } - {
-                this.storeContact(item.reminder.frequency)
-              }
-            </Text>
-            <Text style={ styles.nextReminder }>
-              Next Reminder: { item.reminder.date }
-            </Text>
-          </View>
+          <Swipeout
+            right={this.swipeoutButtons}
+            backgroundColor='white'
+            onOpen={ () => this.setState({ activeKey: item.key }) }
+            onClose={() => this.setState({ activeKey: '', }) }
+            >
+            <View style={ styles.container }>
+              <Text style={ styles.name }>
+                { item.name } - {
+                  this.storeContact(item.frequency)
+                }
+              </Text>
+              <Text style={ styles.nextReminder }>
+                Next Reminder: { item.date }
+              </Text>
+            </View>
+          </Swipeout>
         }
         keyExtractor={(item, index) => (`reminders-${index}`)}
+        // scrollEnabled = { this.state.scrollEnabled }
       />
       );
   }
