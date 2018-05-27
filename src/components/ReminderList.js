@@ -8,6 +8,7 @@ export default class ReminderList extends React.Component {
 
   constructor(props) {
     super(props);
+
     // swipeout buttons
     this.swipeoutButtons = [
       {
@@ -15,10 +16,6 @@ export default class ReminderList extends React.Component {
         backgroundColor: '#fc0d1c',
         type: 'delete',
         onPress: () => removeReminder(this.state.activeKey),
-      },
-      {
-        text: 'Edit',
-        backgroundColor: '#4482ea',
       },
     ];
   };
@@ -78,9 +75,10 @@ export default class ReminderList extends React.Component {
             >
             <View style={ styles.container }>
               <Text style={ styles.name }>
-                { item.name } - {
-                  this.storeContact(item.frequency)
-                }
+                { item.name }
+              </Text>
+              <Text style={ styles.nextReminder }>
+                Frequency:  { this.storeContact(item.frequency) }
               </Text>
               <Text style={ styles.nextReminder }>
                 Next Reminder: { item.date }
@@ -89,7 +87,6 @@ export default class ReminderList extends React.Component {
           </Swipeout>
         }
         keyExtractor={(item, index) => (`reminders-${index}`)}
-        // scrollEnabled = { this.state.scrollEnabled }
       />
       );
   }
@@ -107,5 +104,6 @@ const styles = StyleSheet.create({
   nextReminder: {
     fontSize: 15,
     fontWeight: '200',
+    color: '#5d5d5d',
   },
 });
