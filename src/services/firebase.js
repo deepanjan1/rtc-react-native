@@ -22,12 +22,15 @@ export const setListenerOff = (endpoint) => {
 
 export const pushData = (endpoint, data) => {
   var updates = {};
-  const dataKey = firebase.database().ref(endpoint).push().key;
-  // console.log('dataKey: ' + dataKey);
-  data.key = dataKey;
-  updates[dataKey] = data;
-  // return firebase.database().ref(endpoint).push().set(data);
+  updates[data.key] = data;
   return firebase.database().ref(endpoint).update(updates);
+};
+
+export const createKey = (endpoint, data) => {
+  var updates = {};
+  const dataKey = firebase.database().ref(endpoint).push().key;
+  data.key = dataKey;
+  return data;
 };
 
 export const writeData = (endpoint, data) => {

@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Modal } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  Modal
+} from 'react-native';
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
@@ -7,7 +13,12 @@ import Button from 'apsl-react-native-button';
 import CreateForm from '../components/CreateForm/CreateForm';
 import * as Action from '../actions/actions';
 import { connect } from 'react-redux';
-import { createReminders } from '../services/api';
+import {
+  createReminder,
+  getReminders,
+  removeReminder,
+  shutOffGetReminders
+} from '../services/api';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -16,11 +27,26 @@ class Dashboard extends React.Component {
 
   state = {
     showCreateModal: false,
+    showEditModal: false,
   };
+
+  componentDidMount() {
+    this.unsubscribeGetReminders = getReminders((snapshot) => {
+      try {
+        this.props.watchReminderData();
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.shutOffGetReminders();
+  }
 
   render() {
     const { navigate } = this.props.navigation;
-    const { setReminder, setReminderToDB } = this.props;
+    const { reminders, deleteReminder } = this.props;
     return (
       <View style={ styles.container }>
           <View style={ styles.row }>
@@ -36,7 +62,9 @@ class Dashboard extends React.Component {
             </Text>
           </View>
           <View style={ styles.reminderList }>
-            <ReminderList />
+            <ReminderList
+              reminders = { reminders }
+              deleteReminder = { deleteReminder }/>
             <View style={ styles.center}>
               <TouchableHighlight
                 onPress={ () => this.setState({ showCreateModal: true, }) }>
@@ -49,12 +77,13 @@ class Dashboard extends React.Component {
           <CreateForm
             showCreateForm={ this.state.showCreateModal }
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
-            addReminder={ (reminder) => {
-              setReminder(reminder);
-              createReminders(reminder);
-            }
-          }
+            addReminder={ (reminder) => createReminder(reminder) }
           />
+          {/* <EditForm
+            showCreateForm={ this.state.showCreateModal }
+            closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
+            editReminder={  }
+          /> */}
       </View>
     );
   }
@@ -106,19 +135,23 @@ const styles = StyleSheet.create({
 
 mapStateToProps = (state) => {
   return {
-    reminder: state.reminder,
+    reminders: state.reminders,
   };
 };
 
 mapDispatchToProps = (dispatch) => {
   return ({
-    setReminder: (reminder) => {
-      dispatch(Action.addReminder(reminder));
+    // setReminder: (reminder) => {
+    //   dispatch(Action.addReminder(reminder));
+    // },
+
+    watchReminderData: () => {
+      dispatch(Action.watchReminderData());
     },
 
-    // setReminderToDB: (reminder) => {
-    //   dispatch(Action.addReminderToDB(reminder));
-    // },
+    deleteReminder: (reminder) => {
+      dispatch(Action.deleteReminder(reminder));
+    },
   });
 };
 

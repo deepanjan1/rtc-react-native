@@ -5,7 +5,8 @@ import {
   pushData,
   removeData,
   writeData,
-  readData
+  readData,
+  createKey,
 } from './firebase';
 
 export const initApi = () => initialize();
@@ -13,9 +14,12 @@ export const initApi = () => initialize();
 export const getReminders = (updaterFn) => setListener('reminders', updaterFn);
 export const shutOffGetReminders = () => setListenerOff('reminders');
 
-export const createReminders = (reminder) => {
+export const createReminder = (reminder) => {
+  // creating a reminder and key and returning full reminder object
+  // so I can save within redux store
   if (Boolean(reminder)) {
-    pushData('reminders/', reminder);
+    var reminderWithKey = createKey('reminders/', reminder);
+    pushData('reminders/', reminderWithKey);
   }
 };
 

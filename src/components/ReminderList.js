@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
-import { getReminders, removeReminder, shutOffGetReminders } from '../services/api';
+import { removeReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
 
 export default class ReminderList extends React.Component {
 
   constructor(props) {
     super(props);
+    this.removeReminder = removeReminder.bind(this);
 
     // swipeout buttons
     this.swipeoutButtons = [
@@ -15,36 +16,17 @@ export default class ReminderList extends React.Component {
         text: 'Delete',
         backgroundColor: '#fc0d1c',
         type: 'delete',
-        onPress: () => removeReminder(this.state.activeKey),
+        onPress: () => {
+          removeReminder(this.state.activeKey); // remove from database
+        },
       },
     ];
   };
 
   state = {
-    reminders: [],
     activeKey: '',
+    index: null,
   };
-
-  componentDidMount() {
-
-    this.unsubscribeGetReminders = getReminders((snapshot) => {
-      try {
-        this.setState({
-          reminders: Object.values(snapshot.val()),
-        });
-        console.log(this.state.reminders);
-      } catch (e) {
-        this.setState({
-          reminders: [],
-        });
-        console.log(e);
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.shutOffGetReminders();
-  }
 
   storeContact = nextDate => {
     switch (nextDate) {
@@ -64,14 +46,15 @@ export default class ReminderList extends React.Component {
   render() {
     return (
       <FlatList
-        data={this.state.reminders}
+        data={this.props.reminders}
         renderItem={
-          ({ item }) =>
+          ({ item, index }) =>
           <Swipeout
             right={this.swipeoutButtons}
             backgroundColor='white'
-            onOpen={ () => this.setState({ activeKey: item.key }) }
-            onClose={() => this.setState({ activeKey: '', }) }
+            onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
+            onClose={() => this.setState({ activeKey: '', index: null, }) }
+            autoClose
             >
             <View style={ styles.container }>
               <Text style={ styles.name }>
@@ -91,6 +74,10 @@ export default class ReminderList extends React.Component {
       );
   }
 }
+
+ReminderList.propTypes = {
+  reminders: PropTypes.array.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
