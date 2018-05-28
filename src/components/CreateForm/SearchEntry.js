@@ -22,11 +22,11 @@ export default class SearchEntry extends React.Component {
             onPress={ (e) => this.onPress(item) }>
             <View style={styles.contactSearch}>
                   <Text style={styles.name}>{item.name}</Text>
-                  {item.emails.map((data) => {
-                      return (
-                        <Text key={ data.key + data.email }>{ data.email }</Text>
-                      );
-                    })
+                  { item.emails.map((data) => (
+                        <Text
+                          key={ data.key + data.email }>{ data.email }
+                        </Text>
+                    ))
                   }
             </View>
           </TouchableHighlight>

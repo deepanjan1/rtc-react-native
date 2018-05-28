@@ -2,19 +2,17 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-const Header = (props) => {
-  return (
+const Header = (props) => (
     <View style={ styles.container }>
       <Text style={ styles.headerText }>
         { props.title }
       </Text>
     </View>
-  );
-}
+);
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
-}
+};
 
 const styles = StyleSheet.create({
   container: {

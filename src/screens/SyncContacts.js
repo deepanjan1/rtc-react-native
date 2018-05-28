@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import CreateForm from '../components/CreateForm/CreateForm';
 import * as Actions from '../actions/actions';
 
-class SyncContacts extends React.Component {
+export default class SyncContacts extends React.Component {
   constructor(props) {
     super(props);
     this.getPermission = this.getPermission.bind(this);
@@ -54,7 +54,6 @@ class SyncContacts extends React.Component {
       return (
         <Button
           title='Create Reminder'
-          // onPress={() => this.props.openFormModal(this.props.showModal)}
           onPress={() => this.setState({ showModal: true, })}
         />
       );
@@ -80,7 +79,6 @@ class SyncContacts extends React.Component {
         <CreateForm
           showCreateForm={ this.state.showModal }
           closeCreateForm={ () => this.setState({ showModal: false, }) }
-            // currentContact={ this.currentContact }
         />
       </View>
     );
@@ -130,19 +128,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-mapStateToProps = (state) => {
-  return {
-    currentContact: state.contact,
-  };
-};
-
-mapDispatchToProps = (dispatch) => {
-  return ({
-    setCurrentContact: (showModal) => {
-      dispatch(Action.currentContact(showModal));
-    },
-  });
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SyncContacts);

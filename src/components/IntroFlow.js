@@ -43,7 +43,7 @@ class IntroFlow extends React.Component {
 
 IntroFlow.propTypes = {
   onTap: PropTypes.func.isRequired,
-}
+};
 
 const styles = StyleSheet.create({
   container: {

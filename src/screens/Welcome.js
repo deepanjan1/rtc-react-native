@@ -7,14 +7,14 @@ export default class Welcome extends React.Component {
 
   state = {
     showTitle: true,
-  }
+  };
 
   componentDidMount() {
     setTimeout(() => {
       this.setState({
         showTitle: false,
       });
-    }, 2000)
+    }, 2000);
   }
 
   render() {
@@ -33,7 +33,6 @@ export default class Welcome extends React.Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -42,5 +41,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-// export default Welcome;

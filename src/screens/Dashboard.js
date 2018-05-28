@@ -54,6 +54,7 @@ class Dashboard extends React.Component {
               onPress={() => {
                 console.log('Settings');
               }}
+
               text='Settings' />
           </View>
           <View style={ styles.subHeading }>
@@ -133,18 +134,14 @@ const styles = StyleSheet.create({
   },
 });
 
-mapStateToProps = (state) => {
-  return {
+mapStateToProps = (state) => (
+  {
     reminders: state.reminders,
-  };
-};
+  }
+);
 
-mapDispatchToProps = (dispatch) => {
-  return ({
-    // setReminder: (reminder) => {
-    //   dispatch(Action.addReminder(reminder));
-    // },
-
+mapDispatchToProps = (dispatch) => (
+  ({
     watchReminderData: () => {
       dispatch(Action.watchReminderData());
     },
@@ -152,7 +149,7 @@ mapDispatchToProps = (dispatch) => {
     deleteReminder: (reminder) => {
       dispatch(Action.deleteReminder(reminder));
     },
-  });
-};
+  })
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
