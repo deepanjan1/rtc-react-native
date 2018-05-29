@@ -2,6 +2,7 @@ import { actionTypes } from '../actions/actions';
 
 const initialState = {
   reminders: [],
+  activeReminder: {},
 };
 
 export default function storeReminder(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function storeReminder(state = initialState, action) {
       return {
         ...state,
         reminders: action.reminders,
+      };
+    case 'SELECTED_REMINDER':
+      return {
+        ...state,
+        activeReminder: action.reminder,
       };
     default:
       return state;

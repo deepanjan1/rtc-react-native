@@ -204,7 +204,7 @@ export default class CreateForm extends React.Component {
 CreateForm.propTypes = {
   showCreateForm: PropTypes.bool.isRequired,
   closeCreateForm: PropTypes.func.isRequired,
-  addReminder: PropTypes.object.isRequired,
+  addReminder: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

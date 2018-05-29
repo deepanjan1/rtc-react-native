@@ -11,13 +11,15 @@ import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
 import Button from 'apsl-react-native-button';
 import CreateForm from '../components/CreateForm/CreateForm';
+import EditForm from '../components/EditForm/EditForm';
 import * as Action from '../actions/actions';
 import { connect } from 'react-redux';
 import {
   createReminder,
   getReminders,
   removeReminder,
-  shutOffGetReminders
+  shutOffGetReminders,
+  updateReminder,
 } from '../services/api';
 
 class Dashboard extends React.Component {
@@ -46,7 +48,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { reminders, deleteReminder } = this.props;
+    const { reminders, activeReminder, selectedReminder } = this.props;
     return (
       <View style={ styles.container }>
           <View style={ styles.row }>
@@ -65,7 +67,9 @@ class Dashboard extends React.Component {
           <View style={ styles.reminderList }>
             <ReminderList
               reminders = { reminders }
-              deleteReminder = { deleteReminder }/>
+              loadActiveReminder = { selectedReminder }
+              showEditModal = { () => this.setState({ showEditModal: true }) }
+            />
             <View style={ styles.center}>
               <TouchableHighlight
                 onPress={ () => this.setState({ showCreateModal: true, }) }>
@@ -80,11 +84,12 @@ class Dashboard extends React.Component {
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
             addReminder={ (reminder) => createReminder(reminder) }
           />
-          {/* <EditForm
-            showCreateForm={ this.state.showCreateModal }
-            closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
-            editReminder={  }
-          /> */}
+          <EditForm
+            showEditForm={ this.state.showEditModal }
+            closeEditForm={ () => this.setState({ showEditModal: false, }) }
+            editReminder={ activeReminder }
+            updateReminder={ (reminder) => updateReminder(reminder) }
+          />
       </View>
     );
   }
@@ -137,6 +142,7 @@ const styles = StyleSheet.create({
 mapStateToProps = (state) => (
   {
     reminders: state.reminders,
+    activeReminder: state.activeReminder,
   }
 );
 
@@ -146,8 +152,8 @@ mapDispatchToProps = (dispatch) => (
       dispatch(Action.watchReminderData());
     },
 
-    deleteReminder: (reminder) => {
-      dispatch(Action.deleteReminder(reminder));
+    selectedReminder: (reminder) => {
+      dispatch(Action.selectedReminder(reminder));
     },
   })
 );

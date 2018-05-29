@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableHighlight
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { removeReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
@@ -49,25 +55,33 @@ export default class ReminderList extends React.Component {
         data={this.props.reminders}
         renderItem={
           ({ item, index }) =>
-          <Swipeout
-            right={this.swipeoutButtons}
-            backgroundColor='white'
-            onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
-            onClose={() => this.setState({ activeKey: '', index: null, }) }
-            autoClose
-            >
-            <View style={ styles.container }>
-              <Text style={ styles.name }>
-                { item.name }
-              </Text>
-              <Text style={ styles.nextReminder }>
-                Frequency:  { this.storeContact(item.frequency) }
-              </Text>
-              <Text style={ styles.nextReminder }>
-                Next Reminder: { item.date }
-              </Text>
-            </View>
-          </Swipeout>
+            <Swipeout
+              right={this.swipeoutButtons}
+              backgroundColor='white'
+              onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
+              onClose={() => this.setState({ activeKey: '', index: null, }) }
+              autoClose
+              >
+              <TouchableHighlight
+                onPress={ () => {
+                  this.props.loadActiveReminder(item);
+                  this.props.showEditModal();
+                } }
+                underlayColor='transparent'
+                >
+                <View style={ styles.container }>
+                  <Text style={ styles.name }>
+                    { item.name }
+                  </Text>
+                  <Text style={ styles.nextReminder }>
+                    Frequency:  { this.storeContact(item.frequency) }
+                  </Text>
+                  <Text style={ styles.nextReminder }>
+                    Next Reminder: { item.date }
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </Swipeout>
         }
         keyExtractor={(item, index) => (`reminders-${index}`)}
       />
@@ -77,6 +91,8 @@ export default class ReminderList extends React.Component {
 
 ReminderList.propTypes = {
   reminders: PropTypes.array.isRequired,
+  loadActiveReminder: PropTypes.func.isRequired,
+  showEditModal: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

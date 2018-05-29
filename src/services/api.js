@@ -2,7 +2,7 @@ import {
   initialize,
   setListener,
   setListenerOff,
-  pushData,
+  updateData,
   removeData,
   writeData,
   readData,
@@ -19,7 +19,14 @@ export const createReminder = (reminder) => {
   // so I can save within redux store
   if (Boolean(reminder)) {
     var reminderWithKey = createKey('reminders/', reminder);
-    pushData('reminders/', reminderWithKey);
+    updateData('reminders/', reminderWithKey);
+  }
+};
+
+export const updateReminder = (reminder) => {
+  // take in a reminder with updated values but same key and replace
+  if (Boolean(reminder)) {
+    updateData('reminders/', reminder);
   }
 };
 
@@ -34,9 +41,5 @@ export const removeReminder = (key) => {
     removeData('reminders/', key);
   }
 };
-
-// export const removeContacts = () => {
-//   removeData('contacts');
-// };
 
 export const getContacts = () => readData('contacts');
