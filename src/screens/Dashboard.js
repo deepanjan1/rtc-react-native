@@ -12,6 +12,7 @@ import ReminderList from '../components/ReminderList';
 import Button from 'apsl-react-native-button';
 import CreateForm from '../components/CreateForm/CreateForm';
 import EditForm from '../components/EditForm/EditForm';
+import SyncContacts from '../components/SyncContacts/SyncContacts';
 import * as Action from '../actions/actions';
 import { connect } from 'react-redux';
 import {
@@ -30,6 +31,7 @@ class Dashboard extends React.Component {
   state = {
     showCreateModal: false,
     showEditModal: false,
+    showSyncContactModal: true,
   };
 
   componentDidMount() {
@@ -79,6 +81,10 @@ class Dashboard extends React.Component {
               </TouchableHighlight>
             </View>
           </View>
+          <SyncContacts
+            showSyncContactModal={ this.state.showSyncContactModal }
+            closeSyncContactModal={ () => this.setState({ showSyncContactModal: false, }) }
+          />
           <CreateForm
             showCreateForm={ this.state.showCreateModal }
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }

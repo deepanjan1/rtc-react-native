@@ -1,7 +1,7 @@
 import { actionTypes } from '../actions/actions';
 
 const initialState = {
-  contact: '',
+  contacts: [],
 };
 
 export default function storeContact(state = initialState, action) {

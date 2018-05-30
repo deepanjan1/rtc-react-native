@@ -58,19 +58,6 @@ const Navigator = StackNavigator(
         },
       }),
     },
-    CreateReminder: {
-      screen: CreateReminder,
-      navigationOptions: ({
-        title: 'Create Your Reminder',
-        headerStyle: {
-          backgroundColor: 'white',
-          borderBottomWidth: 0,
-        },
-        headerTitleStyle: {
-          fontSize: 20,
-        },
-      }),
-    },
   },
   {
     initialRouteName: 'Dashboard',

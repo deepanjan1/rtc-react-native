@@ -67,6 +67,7 @@ export default class ReminderList extends React.Component {
                   this.props.loadActiveReminder(item);
                   this.props.showEditModal();
                 } }
+                
                 underlayColor='transparent'
                 >
                 <View style={ styles.container }>
