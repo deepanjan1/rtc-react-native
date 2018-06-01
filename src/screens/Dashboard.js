@@ -12,7 +12,14 @@ import ReminderList from '../components/ReminderList';
 import Button from 'apsl-react-native-button';
 import CreateForm from '../components/CreateForm/CreateForm';
 import EditForm from '../components/EditForm/EditForm';
+
+// Contact Stuff
 import SyncContacts from '../components/SyncContacts/SyncContacts';
+import {
+  getPermission,
+  loadContacts
+} from '../components/SyncContacts/loadContacts';
+
 import * as Action from '../actions/actions';
 import { connect } from 'react-redux';
 import {
@@ -21,6 +28,9 @@ import {
   removeReminder,
   shutOffGetReminders,
   updateReminder,
+  initLoadContacts,
+  contactListener,
+  shutOffGetContacts,
 } from '../services/api';
 
 class Dashboard extends React.Component {
@@ -31,14 +41,38 @@ class Dashboard extends React.Component {
   state = {
     showCreateModal: false,
     showEditModal: false,
-    showSyncContactModal: true,
+    showSyncContactModal: false,
+    error: {},
+  };
+
+  showContactModal = async () => {
+    const status = await getPermission();
+    if (status !== 'granted') {
+      this.setState({
+        showSyncContactModal: true,
+      });
+    } else {
+      loadContacts();
+      console.log('Contacts Loading in Background');
+    }
   };
 
   componentDidMount() {
+    this.showContactModal();
     this.unsubscribeGetReminders = getReminders((snapshot) => {
       try {
         this.props.watchReminderData();
       } catch (e) {
+        this.setState({ error: e, });
+        console.log(e);
+      }
+    });
+
+    this.unsubscribeGetContacts = contactListener((snapshot) => {
+      try {
+        this.props.watchContactData();
+      } catch (e) {
+        this.setState({ error: e, });
         console.log(e);
       }
     });
@@ -46,11 +80,12 @@ class Dashboard extends React.Component {
 
   componentWillUnmount() {
     this.shutOffGetReminders();
+    this.shutOffGetContacts();
   }
 
   render() {
     const { navigate } = this.props.navigation;
-    const { reminders, activeReminder, selectedReminder } = this.props;
+    const { reminders, activeReminder, selectedReminder, contacts } = this.props;
     return (
       <View style={ styles.container }>
           <View style={ styles.row }>
@@ -147,8 +182,9 @@ const styles = StyleSheet.create({
 
 mapStateToProps = (state) => (
   {
-    reminders: state.reminders,
-    activeReminder: state.activeReminder,
+    reminders: state.reminder.reminders,
+    activeReminder: state.reminder.activeReminder,
+    contacts: state.contact.contacts,
   }
 );
 
@@ -160,6 +196,10 @@ mapDispatchToProps = (dispatch) => (
 
     selectedReminder: (reminder) => {
       dispatch(Action.selectedReminder(reminder));
+    },
+
+    watchContactData: () => {
+      dispatch(Action.watchContactData());
     },
   })
 );

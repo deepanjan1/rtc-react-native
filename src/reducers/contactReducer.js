@@ -4,21 +4,14 @@ const initialState = {
   contacts: [],
 };
 
-export default function storeContact(state = initialState, action) {
+export default function contactReducer(state = initialState, action) {
   switch (action.type) {
-    case 'CURRENT_CONTACT':
+    case actionTypes.SYNC_CONTACTS:
       return {
         ...state,
-        contact: action.contact,
-      };
-    case 'CLEAR_CURRENT_CONTACT':
-      return {
-        ...state,
-        contact: '',
+        contacts: action.contacts,
       };
     default:
       return state;
   }
 };
-
-// export default contacts;

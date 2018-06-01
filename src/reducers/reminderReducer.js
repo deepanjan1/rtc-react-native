@@ -5,14 +5,14 @@ const initialState = {
   activeReminder: {},
 };
 
-export default function storeReminder(state = initialState, action) {
+export default function reminderReducer(state = initialState, action) {
   switch (action.type) {
-    case 'LOAD_REMINDERS':
+    case actionTypes.LOAD_REMINDERS:
       return {
         ...state,
         reminders: action.reminders,
       };
-    case 'SELECTED_REMINDER':
+    case actionTypes.SELECTED_REMINDER:
       return {
         ...state,
         activeReminder: action.reminder,

@@ -3,12 +3,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import { Icon, Button } from 'react-native-elements';
+import { loadContacts } from './loadContacts';
 
 export default class SyncContacts extends React.Component {
   render = () => (
     <Modal
       isVisible={ this.props.showSyncContactModal }
-      // onBackdropPress={ this.props.closeSyncContactModal }
+      onBackdropPress={ this.props.closeSyncContactModal }
+      animationIn='fadeIn'
+      animationInTiming={200}
+      animationOut='fadeOut'
+      animationOutTiming={200}
       >
       <View style={ styles.container }>
         <View style={ styles.headerContainer }>
@@ -18,7 +23,12 @@ export default class SyncContacts extends React.Component {
           <Button
             title='Sync My Contacts!'
             buttonStyle={ styles.button }
-            onPress= { () => console.log('button pressed!') }>
+            onPress= { () =>
+              {
+                loadContacts();
+                this.props.closeSyncContactModal();
+              }
+            }>
           </Button>
         </View>
       </View>

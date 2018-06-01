@@ -4,12 +4,11 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 
-import storeReminder from './src/reducers/reminderReducer';
+import rootReducer from './src/reducers/rootReducer';
 
 import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
 import SyncContacts from './src/screens/SyncContacts';
-import CreateReminder from './src/screens/CreateReminder';
 
 import { StackNavigator } from 'react-navigation';
 import { initApi } from './src/services/api';
@@ -64,7 +63,7 @@ const Navigator = StackNavigator(
   },
 );
 
-const store = createStore(storeReminder, applyMiddleware(logger, reduxThunk));
+const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
 
 export default class App extends React.Component {
   state = {

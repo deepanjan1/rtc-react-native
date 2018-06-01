@@ -20,7 +20,12 @@ export const setListenerOff = (endpoint) => (
 
 export const updateData = (endpoint, data) => {
   var updates = {};
-  updates[data.key] = data;
+  if (Boolean(data.key)) {
+    updates[data.key] = data;
+  } else {
+    updates = data;
+  }
+
   return firebase.database().ref(endpoint).update(updates);
 };
 
