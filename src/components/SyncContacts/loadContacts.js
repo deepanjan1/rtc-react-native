@@ -9,7 +9,7 @@ export const getPermission = async() => {
   return status;
 };
 
-export const loadContacts = async () => {
+export const loadContacts = async (uid) => {
   const status = await getPermission();
   if (status !== 'granted') {
     console.log('permission not granted');
@@ -23,7 +23,7 @@ export const loadContacts = async () => {
       pageOffset: 0,
     });
     response = contacts.data;
-    const user = 'Deep';
+    const user = uid;
     initLoadContacts(user, response);
   };
 };

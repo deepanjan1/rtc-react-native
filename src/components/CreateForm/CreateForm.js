@@ -184,9 +184,9 @@ export default class CreateForm extends React.Component {
       <Modal
         isVisible={ this.props.showCreateForm }
         onBackdropPress={ this.props.closeCreateForm }
-        animationIn='fadeIn'
+        animationIn='slideInUp'
         animationInTiming={200}
-        animationOut='fadeOut'
+        animationOut='slideOutDown'
         animationOutTiming={200}>
         <View style={styles.container}>
           <FormLabel>Name</FormLabel>

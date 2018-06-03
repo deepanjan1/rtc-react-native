@@ -1,5 +1,6 @@
-import { getReminders, contactListener } from '../services/api';
+import { getReminders, contactListener, currentUserListener } from '../services/api';
 import AsyncStorage from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 export const actionTypes = {
   LOAD_REMINDERS: 'LOAD_REMINDERS',
@@ -58,6 +59,19 @@ export const syncContacts = (contacts) => (
 );
 
 // User Stuff
+export const watchUserData = () => (
+  (dispatch) => {
+    currentUserListener((user) => {
+      if (user !== null) {
+        console.log(user);
+        dispatch(loadUser(user));
+      } else {
+        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+      }
+    });
+  }
+);
+
 export const loadUser = (user) => (
   {
     type: 'LOAD_USER',
@@ -65,6 +79,7 @@ export const loadUser = (user) => (
       name: user.displayName,
       uid: user.uid,
       email: user.email,
+      photo: user.photoURL,
     },
   }
 );

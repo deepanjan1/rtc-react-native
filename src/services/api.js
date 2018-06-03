@@ -2,6 +2,7 @@ import {
   initialize,
   setListener,
   setListenerOff,
+  setUserListener,
   updateData,
   removeData,
   writeData,
@@ -21,6 +22,8 @@ export const shutOffGetReminders = () => setListenerOff('reminders');
 export const contactListener = (updaterFn) => setListener('contacts', updaterFn);
 export const shutOffContactListener = () => setListenerOff('contacts');
 
+export const currentUserListener = (updaterFn) => setUserListener(updaterFn);
+
 export const createReminder = (reminder) => {
   // creating a reminder and key and returning full reminder object
   // so I can save within redux store
@@ -37,9 +40,9 @@ export const updateReminder = (reminder) => {
   }
 };
 
-export const initLoadContacts = (name, contacts) => {
+export const initLoadContacts = (uid, contacts) => {
   if (Boolean(contacts)) {
-    writeData('contacts/' + name, { contacts });
+    writeData('contacts/' + uid, { contacts });
   }
 };
 

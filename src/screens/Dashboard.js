@@ -32,10 +32,12 @@ import {
   contactListener,
   shutOffContactListener,
 } from '../services/api';
+import { loadCurrentUser } from '../services/facebookAPI';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this.loadUser = this.props.loadUser.bind(this);
   };
 
   state = {
@@ -57,7 +59,7 @@ class Dashboard extends React.Component {
     }
   };
 
-  componentDidMount() {
+  componentDidMount = async() => {
     this.showContactModal();
     this.unsubscribeGetReminders = getReminders((snapshot) => {
       try {
@@ -76,7 +78,15 @@ class Dashboard extends React.Component {
         console.log(e);
       }
     });
-  }
+
+    this.props.watchUserData();
+  };
+
+  // componentWillReceiveProps = async(nextProps) => {
+  //   if (nextProps.user !== this.props.user) {
+  //     await loadCurrentUser(this.loadUser);
+  //   }
+  // };
 
   componentWillUnmount() {
     shutOffGetReminders();
@@ -85,7 +95,19 @@ class Dashboard extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { reminders, activeReminder, selectedReminder, contacts } = this.props;
+    const {
+      reminders,
+      activeReminder,
+      selectedReminder,
+      contacts,
+      user,
+      loadUser,
+    } = this.props;
+
+    // if (!Boolean(user.uid)) {
+    //   navigate('Login');
+    // }
+
     return (
       <View style={ styles.container }>
           <View style={ styles.subHeading }>
@@ -127,6 +149,7 @@ class Dashboard extends React.Component {
           <SyncContacts
             showSyncContactModal={ this.state.showSyncContactModal }
             closeSyncContactModal={ () => this.setState({ showSyncContactModal: false, }) }
+            uid = { user.uid }
           />
           <CreateForm
             showCreateForm={ this.state.showCreateModal }
@@ -220,6 +243,14 @@ mapDispatchToProps = (dispatch) => (
 
     watchContactData: () => {
       dispatch(Action.watchContactData());
+    },
+
+    watchUserData: () => {
+      dispatch(Action.watchUserData());
+    },
+
+    loadUser: (user) => {
+      dispatch(Action.loadUser(user));
     },
   })
 );

@@ -18,6 +18,20 @@ export const setListenerOff = (endpoint) => (
   () => firebase.database().ref(endpoint).off()
 );
 
+export const setUserListener = (updaterFn) => (
+  firebase.auth().onAuthStateChanged(updaterFn)
+);
+
+// export const setUserListener = () => (
+//   firebase.auth().onAuthStateChanged((user) => {
+//     if (user) {
+//       return user;
+//     } else {
+//       return null;
+//     }
+//   })
+// );
+
 export const updateData = (endpoint, data) => {
   var updates = {};
   if (Boolean(data.key)) {
@@ -65,9 +79,6 @@ export const storeLoginWithFacebook = async(type, token) => {
   }
 };
 
-export const userLoginStatus = () => {
-  var user = firebase.auth().currentUser;
-  if (Boolean(user)) {
-    return user;
-  }
-};
+export const userLoginStatus = () => (
+  firebase.auth().currentUser
+);

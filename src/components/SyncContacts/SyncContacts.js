@@ -25,7 +25,7 @@ export default class SyncContacts extends React.Component {
             buttonStyle={ styles.button }
             onPress= { () =>
               {
-                loadContacts();
+                loadContacts(uid);
                 this.props.closeSyncContactModal();
               }
             }>

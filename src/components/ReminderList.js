@@ -84,7 +84,7 @@ export default class ReminderList extends React.Component {
                       name='date-range'
                       color='#1787fb'
                       iconStyle={ styles.icon }
-                      size='20'
+                      size={ 20 }
                       ></Icon>
                     <Text style={ styles.nextReminder }>
                       { item.date }

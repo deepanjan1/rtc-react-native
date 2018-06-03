@@ -1,5 +1,5 @@
 import Expo from 'expo';
-import { storeLoginWithFacebook } from './firebase';
+import { storeLoginWithFacebook, userLoginStatus } from './firebase';
 import Alert from 'react-native';
 
 export const loginWithFacebook = async() => {
@@ -19,5 +19,16 @@ export const loginWithFacebook = async() => {
       'Logged in!',
       `Hi ${(await response.json()).name}!`,
     );
+  }
+};
+
+export const loadCurrentUser = async(loadUser) => {
+  const user = await userLoginStatus();
+  if (Boolean(user)) {
+    console.log(user.displayName + ' is logged in!');
+    loadUser(user);
+  } else {
+    console.log('user not logged in');
+    return null;
   }
 };

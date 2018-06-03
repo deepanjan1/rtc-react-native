@@ -27,7 +27,8 @@ const Navigator = StackNavigator(
           borderBottomWidth: 0,
         },
         headerTitleStyle: {
-          fontSize: 20,
+          fontSize: 30,
+          fontFamily: 'Roboto-Bold',
         },
       }),
     },
@@ -40,8 +41,10 @@ const Navigator = StackNavigator(
           borderBottomWidth: 0,
         },
         headerTitleStyle: {
-          fontSize: 25,
+          fontSize: 30,
+          fontFamily: 'Roboto-Bold',
         },
+        headerLeft: null,
       }),
     },
     Login: {
@@ -53,8 +56,10 @@ const Navigator = StackNavigator(
           borderBottomWidth: 0,
         },
         headerTitleStyle: {
-          fontSize: 20,
+          fontSize: 30,
+          fontFamily: 'Roboto-Bold',
         },
+        headerLeft: null,
       }),
     },
   },
@@ -98,6 +103,7 @@ export default class App extends React.Component {
       'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
       'Roboto-Regular': require('./src/assets/Roboto/Roboto-Regular.ttf'),
       'Roboto-Medium': require('./src/assets/Roboto/Roboto-Medium.ttf'),
+      'Roboto-Bold': require('./src/assets/Roboto/Roboto-Bold.ttf'),
     });
 
     this.setState({
