@@ -24,7 +24,9 @@ export default class SearchEntry extends React.Component {
                   <Text style={styles.name}>{item.name}</Text>
                   { item.emails.map((data) => (
                         <Text
-                          key={ data.key + data.email }>{ data.email }
+                          key={ data.key + data.email }
+                          style={ styles.email }>
+                          { data.email }
                         </Text>
                     ))
                   }
@@ -64,6 +66,10 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   name: {
+    fontFamily: 'Roboto-Regular',
     fontWeight: 'bold',
+  },
+  email: {
+    fontFamily: 'Roboto-Regular',
   },
 });

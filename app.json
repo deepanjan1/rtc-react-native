@@ -3,6 +3,17 @@
   "displayName": "rtc-react-native",
   "expo":
     {
-      "sdkVersion": "26.0.0"
-    }
+      "sdkVersion": "26.0.0",
+    },
+  "facebookScheme":
+    {
+      "CFBundleURLTypes":
+      [
+          {
+            "CFBundleURLSchemes": ["fb140333090089093"],
+          }
+      ]
+    },
+    "FacebookAppID": "140333090089093",
+    "FacebookDisplayName": "Remember To Call",
 }

@@ -9,6 +9,8 @@ import {
 import PropTypes from 'prop-types';
 import { removeReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
+import Moment from 'moment';
+import { Icon } from 'react-native-elements';
 
 export default class ReminderList extends React.Component {
 
@@ -77,9 +79,17 @@ export default class ReminderList extends React.Component {
                   <Text style={ styles.nextReminder }>
                     Frequency:  { this.storeContact(item.frequency) }
                   </Text>
-                  <Text style={ styles.nextReminder }>
-                    Next Reminder: { item.date }
-                  </Text>
+                  <View style={ styles.nextReminderContainer }>
+                    <Icon
+                      name='date-range'
+                      color='#1787fb'
+                      iconStyle={ styles.icon }
+                      size='20'
+                      ></Icon>
+                    <Text style={ styles.nextReminder }>
+                      { item.date }
+                    </Text>
+                  </View>
                 </View>
               </TouchableHighlight>
             </Swipeout>
@@ -102,12 +112,28 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   name: {
+    fontFamily: 'Roboto-Regular',
     fontSize: 20,
-    fontWeight: 'bold',
+  },
+  nextReminderContainer: {
+    flexDirection: 'row',
+    borderColor: '#e8e9ea',
+    borderWidth: 2,
+    borderRadius: 5,
+    backgroundColor: '#edf1f2',
+    width: '35%',
+    alignItems: 'center',
+    marginTop: 5,
+    paddingTop: 2,
+    paddingBottom: 2,
+    justifyContent: 'center',
   },
   nextReminder: {
+    fontFamily: 'Roboto-Regular',
     fontSize: 15,
-    fontWeight: '200',
     color: '#5d5d5d',
+  },
+  icon: {
+    marginRight: 2,
   },
 });

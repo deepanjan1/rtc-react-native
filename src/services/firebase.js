@@ -50,3 +50,24 @@ export const readData = (endpoint) => (
 
 // other end points besides "push" are "set" to override and "update"
 // to update a specific entry
+
+// AUTHENTICATION MANAGEMENT //
+export const storeLoginWithFacebook = async(type, token) => {
+  if (type === 'success') {
+    // Build Firebase credential with the Facebook access token.
+    const credential = firebase.auth.FacebookAuthProvider.credential(token);
+    console.log(credential);
+
+    // Sign in with credential from the Facebook user.
+    firebase.auth().signInWithCredential(credential).catch((error) => {
+      console.log('storing in firebase did not work');
+    });
+  }
+};
+
+export const userLoginStatus = () => {
+  var user = firebase.auth().currentUser;
+  if (Boolean(user)) {
+    return user;
+  }
+};

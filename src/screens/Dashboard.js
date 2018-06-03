@@ -6,10 +6,10 @@ import {
   TouchableHighlight,
   Modal
 } from 'react-native';
+import { Icon, Button } from 'react-native-elements';
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
-import Button from 'apsl-react-native-button';
 import CreateForm from '../components/CreateForm/CreateForm';
 import EditForm from '../components/EditForm/EditForm';
 
@@ -30,7 +30,7 @@ import {
   updateReminder,
   initLoadContacts,
   contactListener,
-  shutOffGetContacts,
+  shutOffContactListener,
 } from '../services/api';
 
 class Dashboard extends React.Component {
@@ -79,8 +79,8 @@ class Dashboard extends React.Component {
   }
 
   componentWillUnmount() {
-    this.shutOffGetReminders();
-    this.shutOffGetContacts();
+    shutOffGetReminders();
+    shutOffContactListener();
   }
 
   render() {
@@ -88,33 +88,41 @@ class Dashboard extends React.Component {
     const { reminders, activeReminder, selectedReminder, contacts } = this.props;
     return (
       <View style={ styles.container }>
-          <View style={ styles.row }>
-            <NavButton
-              onPress={() => {
-                console.log('Settings');
-              }}
-
-              text='Settings' />
-          </View>
           <View style={ styles.subHeading }>
             <Text style={ styles.subHeadingText }>
               Below are your existing reminders.
             </Text>
           </View>
+          <View
+            style={ styles.horizontalRule }
+          />
           <View style={ styles.reminderList }>
             <ReminderList
               reminders = { reminders }
               loadActiveReminder = { selectedReminder }
               showEditModal = { () => this.setState({ showEditModal: true }) }
             />
-            <View style={ styles.center}>
-              <TouchableHighlight
-                onPress={ () => this.setState({ showCreateModal: true, }) }>
-                <Text style={ styles.createButton }>
-                  Create Reminder
-                </Text>
-              </TouchableHighlight>
-            </View>
+            <View
+              style={ styles.horizontalRule }
+            />
+          </View>
+          <View style={ styles.center}>
+            <Icon
+              name='settings'
+              color='#c0c0c0'
+              >
+            </Icon>
+            <Button
+              title='Create Reminder'
+              buttonStyle={ styles.createButton }
+              textStyle={ styles.createButtonText }
+              onPress={ () => this.setState({ showCreateModal: true, }) }>
+            </Button>
+            <Icon
+              name='settings'
+              color='transparent'
+              >
+            </Icon>
           </View>
           <SyncContacts
             showSyncContactModal={ this.state.showSyncContactModal }
@@ -124,6 +132,7 @@ class Dashboard extends React.Component {
             showCreateForm={ this.state.showCreateModal }
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
             addReminder={ (reminder) => createReminder(reminder) }
+            contacts={ contacts }
           />
           <EditForm
             showEditForm={ this.state.showEditModal }
@@ -152,12 +161,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
+    marginBottom: 10,
   },
   subHeadingText: {
+    fontFamily: 'Roboto-Regular',
     fontSize: 15,
-    fontWeight: '200',
+    color: '#5d5d5d',
   },
   reminderList: {
     height: '80%',
@@ -166,17 +175,27 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   createButton: {
-    backgroundColor: '#1a9bfc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    color: 'white',
+      borderRadius: 25,
+      backgroundColor: '#1787fb',
+      width: '100%',
+    },
+  createButtonText: {
+    fontFamily: 'Roboto-Regular',
     fontSize: 15,
-    fontWeight: '200',
   },
   center: {
-    justifyContent: 'center',
+    marginTop: 10,
+    justifyContent: 'space-between',
     alignItems: 'center',
+    flexDirection: 'row',
+  },
+  horizontalRule: {
+    borderTopColor: '#c0c0c0',
+    borderTopWidth: 1,
+  },
+  modalComponents: {
+    height: 0,
+    width: 0,
   },
 });
 
@@ -185,6 +204,7 @@ mapStateToProps = (state) => (
     reminders: state.reminder.reminders,
     activeReminder: state.reminder.activeReminder,
     contacts: state.contact.contacts,
+    user: state.user.user,
   }
 );
 

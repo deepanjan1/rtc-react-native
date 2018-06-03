@@ -29,7 +29,6 @@ export default class CreateForm extends React.Component {
   }
 
   state = {
-    contacts: [],
     filteredContacts: [],
     searchText: '',
     showForm: false,
@@ -54,14 +53,24 @@ export default class CreateForm extends React.Component {
     });
   };
 
-  componentDidMount() {
-    getContacts().then((snapshot) => {
-      this.setState({
-        contacts: Object.values(snapshot.val())[0],
-        filteredContacts: Object.values(snapshot.val())[0],
-      });
-    });
-  }
+  // componentDidMount() {
+  //   getContacts().then((snapshot) => {
+  //     this.setState({
+  //       contacts: Object.values(snapshot.val())[0],
+  //       filteredContacts: Object.values(snapshot.val())[0],
+  //     });
+  //   });
+  // }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.contacts !== this.props.contacts) {
+      this.setState(
+        {
+          filteredContacts: nextProps.contacts,
+        }
+      );
+    }
+  };
 
   filterItems = (e) => {
     this.setState({
@@ -70,7 +79,7 @@ export default class CreateForm extends React.Component {
 
     var text = this.state.searchText.e;
     try {
-      var filteredContacts = this.state.contacts.filter((el) =>
+      var filteredContacts = this.props.contacts.filter((el) =>
         el.firstName.toLowerCase().indexOf(text.toLowerCase()) > -1
       );
       this.setState({
@@ -205,6 +214,7 @@ CreateForm.propTypes = {
   showCreateForm: PropTypes.bool.isRequired,
   closeCreateForm: PropTypes.func.isRequired,
   addReminder: PropTypes.func.isRequired,
+  contacts: PropTypes.array.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -5,6 +5,7 @@ export const actionTypes = {
   LOAD_REMINDERS: 'LOAD_REMINDERS',
   SELECTED_REMINDER: 'SELECTED_REMINDER',
   SYNC_CONTACTS: 'SYNC_CONTACTS',
+  LOAD_USER: 'LOAD_USER',
 };
 
 // Reminder Stuff
@@ -53,5 +54,17 @@ export const syncContacts = (contacts) => (
   {
     type: 'SYNC_CONTACTS',
     contacts: contacts[0].contacts,
+  }
+);
+
+// User Stuff
+export const loadUser = (user) => (
+  {
+    type: 'LOAD_USER',
+    user: {
+      name: user.displayName,
+      uid: user.uid,
+      email: user.email,
+    },
   }
 );

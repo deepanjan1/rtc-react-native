@@ -8,7 +8,7 @@ import rootReducer from './src/reducers/rootReducer';
 
 import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
-import SyncContacts from './src/screens/SyncContacts';
+import Login from './src/screens/Login';
 
 import { StackNavigator } from 'react-navigation';
 import { initApi } from './src/services/api';
@@ -44,10 +44,10 @@ const Navigator = StackNavigator(
         },
       }),
     },
-    SyncContacts: {
-      screen: SyncContacts,
+    Login: {
+      screen: Login,
       navigationOptions: ({
-        title: 'Sync Your Contacts',
+        title: 'Login or Register',
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
@@ -96,6 +96,8 @@ export default class App extends React.Component {
   async _loadAssetsAsync() {
     await Font.loadAsync({
       'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
+      'Roboto-Regular': require('./src/assets/Roboto/Roboto-Regular.ttf'),
+      'Roboto-Medium': require('./src/assets/Roboto/Roboto-Medium.ttf'),
     });
 
     this.setState({

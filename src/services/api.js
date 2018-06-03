@@ -19,8 +19,7 @@ export const shutOffGetReminders = () => setListenerOff('reminders');
 // contact listeners so contacts are automatically updated in UI when
 // deleted, updated, or added in database (PULL FUNCTION)
 export const contactListener = (updaterFn) => setListener('contacts', updaterFn);
-
-// export const shutOffContactListener = () => setListenerOff('contacts');
+export const shutOffContactListener = () => setListenerOff('contacts');
 
 export const createReminder = (reminder) => {
   // creating a reminder and key and returning full reminder object
@@ -43,12 +42,6 @@ export const initLoadContacts = (name, contacts) => {
     writeData('contacts/' + name, { contacts });
   }
 };
-
-// export const updateContacts = (name, contacts) => {
-//   if (Boolean(contacts)) {
-//     updateData('contacts/' + name, { contacts });
-//   }
-// };
 
 export const removeReminder = (key) => {
   if (Boolean(key)) {
