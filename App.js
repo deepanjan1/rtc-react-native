@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 
@@ -10,7 +10,7 @@ import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
 import Login from './src/screens/Login';
 
-import { StackNavigator } from 'react-navigation';
+import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import { initApi } from './src/services/api';
 import { Font, AppLoading, Asset } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -68,7 +68,8 @@ const Navigator = StackNavigator(
   },
 );
 
-const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
+// const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
+const store = createStore(rootReducer, applyMiddleware(reduxThunk));
 
 export default class App extends React.Component {
   state = {

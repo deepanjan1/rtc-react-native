@@ -98,7 +98,7 @@ export default class EditForm extends React.Component {
                 color='#1a9bfc'
                 containerStyle={{ marginTop: 0, flex: 1, }}
                 onPress={() => {
-                  this.props.updateReminder({
+                  this.props.updateReminder(this.props.user, {
                     name: this.state.name,
                     date: this.state.date,
                     personID: this.state.personID,
@@ -141,6 +141,7 @@ EditForm.propTypes = {
   closeEditForm: PropTypes.func.isRequired,
   editReminder: PropTypes.object.isRequired,
   updateReminder: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

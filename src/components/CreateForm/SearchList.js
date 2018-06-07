@@ -46,12 +46,18 @@ export default class SearchList extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={ styles.container }>
         { this.showList() }
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: '90%',
+  },
+});
 
 SearchList.propTypes = {
   filteredContacts: PropTypes.array.isRequired,

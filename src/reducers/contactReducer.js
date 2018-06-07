@@ -1,7 +1,7 @@
 import { actionTypes } from '../actions/actions';
 
 const initialState = {
-  contacts: [],
+  contacts: null,
 };
 
 export default function contactReducer(state = initialState, action) {

@@ -22,16 +22,6 @@ export const setUserListener = (updaterFn) => (
   firebase.auth().onAuthStateChanged(updaterFn)
 );
 
-// export const setUserListener = () => (
-//   firebase.auth().onAuthStateChanged((user) => {
-//     if (user) {
-//       return user;
-//     } else {
-//       return null;
-//     }
-//   })
-// );
-
 export const updateData = (endpoint, data) => {
   var updates = {};
   if (Boolean(data.key)) {
@@ -44,7 +34,6 @@ export const updateData = (endpoint, data) => {
 };
 
 export const createKey = (endpoint, data) => {
-  var updates = {};
   const dataKey = firebase.database().ref(endpoint).push().key;
   data.key = dataKey;
   return data;
@@ -56,6 +45,10 @@ export const writeData = (endpoint, data) => (
 
 export const removeData = (endpoint, key) => (
   firebase.database().ref(endpoint).child(key).remove()
+);
+
+export const removeAllData = () => (
+  firebase.database().ref('contacts/').remove()
 );
 
 export const readData = (endpoint) => (

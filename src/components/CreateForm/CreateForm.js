@@ -53,15 +53,6 @@ export default class CreateForm extends React.Component {
     });
   };
 
-  // componentDidMount() {
-  //   getContacts().then((snapshot) => {
-  //     this.setState({
-  //       contacts: Object.values(snapshot.val())[0],
-  //       filteredContacts: Object.values(snapshot.val())[0],
-  //     });
-  //   });
-  // }
-
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.contacts !== this.props.contacts) {
       this.setState(
@@ -100,11 +91,13 @@ export default class CreateForm extends React.Component {
   restOfForm = () => {
     const frequency = ['Bi-Weekly', 'Quarterly', 'Bi-Annually', 'Annually'];
     const { selectedFrequency } = this.state;
+    const { user } = this.props;
 
     if (this.state.showForm) {
       return (
         <View>
-          <FormLabel>Frequency</FormLabel>
+          <FormLabel
+            fontFamily={ 'Roboto-Medium' }>Frequency</FormLabel>
           <View style={styles.frequency}>
             <ButtonGroup
               onPress={this.updateFrequency}
@@ -118,7 +111,8 @@ export default class CreateForm extends React.Component {
             />
           </View>
           <View style={ styles.row } />
-          <FormLabel>First Reminder</FormLabel>
+          <FormLabel
+            fontFamily={ 'Roboto-Medium' }>First Reminder</FormLabel>
           <View style={ styles.datePicker }>
             <Icon
               name='date-range'
@@ -135,7 +129,7 @@ export default class CreateForm extends React.Component {
               containerStyle={{ marginTop: 0, flex: 1, }}
               onPress={() => {
 
-                this.addReminder({
+                this.addReminder(user, {
                   name: this.state.person.name,
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
@@ -189,7 +183,8 @@ export default class CreateForm extends React.Component {
         animationOut='slideOutDown'
         animationOutTiming={200}>
         <View style={styles.container}>
-          <FormLabel>Name</FormLabel>
+          <FormLabel
+            fontFamily={ 'Roboto-Medium' }>Name</FormLabel>
           <FormInput
             onChangeText={ this.filterItems.bind(this) }
             value={ this.state.person.name }
@@ -215,6 +210,7 @@ CreateForm.propTypes = {
   closeCreateForm: PropTypes.func.isRequired,
   addReminder: PropTypes.func.isRequired,
   contacts: PropTypes.array.isRequired,
+  user: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -230,8 +226,9 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 20,
+    fontFamily: 'Roboto-Regular',
     width: '100%',
-    color: '#1a9bfc',
+    color: '#000000',
   },
   frequency: {
     padding: 15,
@@ -258,6 +255,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
   barText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 15,
     color: '#ffffff',
   },
   frequencyButton: {
@@ -277,8 +276,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   dateStyle: {
+    fontFamily: 'Roboto-Regular',
     fontSize: 20,
-    color: '#1a9bfc',
+    color: '#000000',
     flex: 4,
   },
 });

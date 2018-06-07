@@ -1,6 +1,6 @@
 import { getReminders, contactListener, currentUserListener } from '../services/api';
 import AsyncStorage from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 export const actionTypes = {
   LOAD_REMINDERS: 'LOAD_REMINDERS',
@@ -10,9 +10,9 @@ export const actionTypes = {
 };
 
 // Reminder Stuff
-export const watchReminderData = () => (
+watchReminderData = (uid) => (
   (dispatch) => {
-    getReminders((snapshot) => {
+    getReminders(uid, (snapshot) => {
       try {
         dispatch(loadReminders(Object.values(snapshot.val())));
       }
@@ -38,13 +38,12 @@ export const selectedReminder = (reminder) => (
 );
 
 // Contact Stuff
-export const watchContactData = () => (
+watchContactData = (uid) => (
   (dispatch) => {
-    contactListener((snapshot) => {
+    contactListener(uid, (snapshot) => {
       try {
         dispatch(syncContacts(Object.values(snapshot.val())));
       } catch (error) {
-        Object.values(snapshot.val()).forEach((element) => console.log('error: ' + element));
         dispatch(syncContacts([]));
       }
     });
@@ -54,7 +53,7 @@ export const watchContactData = () => (
 export const syncContacts = (contacts) => (
   {
     type: 'SYNC_CONTACTS',
-    contacts: contacts[0].contacts,
+    contacts: contacts,
   }
 );
 
@@ -65,8 +64,11 @@ export const watchUserData = () => (
       if (user !== null) {
         console.log(user);
         dispatch(loadUser(user));
+        dispatch(watchReminderData(user.uid));
+        dispatch(watchContactData(user.uid));
       } else {
-        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+        console.log(user);
+        dispatch(loadUser(user));
       }
     });
   }

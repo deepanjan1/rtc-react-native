@@ -1,5 +1,5 @@
 import { Permissions, Contacts } from 'expo';
-import { initLoadContacts } from '../../services/api';
+import { initLoadContacts, updateContacts } from '../../services/api';
 
 // going to create a listener to listen for contact updates and load
 // contacts to state with a new reducer (contactReducer.js)
@@ -9,7 +9,7 @@ export const getPermission = async() => {
   return status;
 };
 
-export const loadContacts = async (uid) => {
+export const loadContacts = async (uid, stateContacts) => {
   const status = await getPermission();
   if (status !== 'granted') {
     console.log('permission not granted');
@@ -23,7 +23,10 @@ export const loadContacts = async (uid) => {
       pageOffset: 0,
     });
     response = contacts.data;
-    const user = uid;
-    initLoadContacts(user, response);
+    if (stateContacts.length > 0) {
+      updateContacts(uid, response);
+    } else {
+      initLoadContacts(uid, response);
+    }
   };
 };

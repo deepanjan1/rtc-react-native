@@ -8,48 +8,66 @@ import {
   writeData,
   readData,
   createKey,
+  removeAllData,
 } from './firebase';
 
 export const initApi = () => initialize();
 
 // reminder listeners so reminders are automatically updated in UI when
 // deleted, updated, or added in database (PULL FUNCTION)
-export const getReminders = (updaterFn) => setListener('reminders', updaterFn);
-export const shutOffGetReminders = () => setListenerOff('reminders');
+export const getReminders = (uid, updaterFn) => setListener('reminders/' + uid, updaterFn);
+export const shutOffGetReminders = (uid) => setListenerOff('reminders/' + uid);
 
 // contact listeners so contacts are automatically updated in UI when
 // deleted, updated, or added in database (PULL FUNCTION)
-export const contactListener = (updaterFn) => setListener('contacts', updaterFn);
-export const shutOffContactListener = () => setListenerOff('contacts');
+export const contactListener = (uid, updaterFn) => setListener('contacts/' + uid, updaterFn);
+export const shutOffContactListener = (uid) => setListenerOff('contacts/' + uid);
 
 export const currentUserListener = (updaterFn) => setUserListener(updaterFn);
 
-export const createReminder = (reminder) => {
+export const createReminder = (uid, reminder) => {
   // creating a reminder and key and returning full reminder object
   // so I can save within redux store
   if (Boolean(reminder)) {
-    var reminderWithKey = createKey('reminders/', reminder);
-    updateData('reminders/', reminderWithKey);
+    const endpoint = 'reminders/' + uid + '/';
+    console.log(endpoint);
+    var reminderWithKey = createKey(endpoint, reminder);
+    updateData(endpoint, reminderWithKey);
   }
 };
 
-export const updateReminder = (reminder) => {
+export const updateReminder = (uid, reminder) => {
   // take in a reminder with updated values but same key and replace
   if (Boolean(reminder)) {
-    updateData('reminders/', reminder);
+    const endpoint = 'reminders/' + uid + '/';
+    updateData(endpoint, reminder);
   }
 };
 
 export const initLoadContacts = (uid, contacts) => {
-  if (Boolean(contacts)) {
-    writeData('contacts/' + uid, { contacts });
+  if (Boolean(contacts && uid)) {
+    console.log('initLoadContacts ' + uid);
+    writeData('contacts/' + uid, contacts);
   }
 };
 
-export const removeReminder = (key) => {
+export const updateContacts = (uid, contacts) => {
+  if (Boolean(contacts && uid)) {
+    const endpoint = 'contacts/' + uid;
+    console.log('updating contacts: ' + uid);
+    updateData(endpoint, contacts);
+  }
+};
+
+export const removeReminder = (uid, key) => {
+  const endpoint = 'reminders/' + uid + '/';
   if (Boolean(key)) {
-    removeData('reminders/', key);
+    removeData(endpoint, key);
   }
 };
 
-export const getContacts = () => readData('contacts');
+export const deleteAllContacts = () => {
+  removeAllData();
+};
+
+// export const getContacts = () => readData('contacts');

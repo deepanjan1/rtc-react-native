@@ -25,7 +25,7 @@ export default class ReminderList extends React.Component {
         backgroundColor: '#fc0d1c',
         type: 'delete',
         onPress: () => {
-          removeReminder(this.state.activeKey); // remove from database
+          removeReminder(this.props.user, this.state.activeKey); // remove from database
         },
       },
     ];
@@ -76,19 +76,29 @@ export default class ReminderList extends React.Component {
                   <Text style={ styles.name }>
                     { item.name }
                   </Text>
-                  <Text style={ styles.nextReminder }>
-                    Frequency:  { this.storeContact(item.frequency) }
-                  </Text>
-                  <View style={ styles.nextReminderContainer }>
-                    <Icon
-                      name='date-range'
-                      color='#1787fb'
-                      iconStyle={ styles.icon }
-                      size={ 20 }
-                      ></Icon>
-                    <Text style={ styles.nextReminder }>
-                      { item.date }
-                    </Text>
+                  <View style={ styles.reminderDetails }>
+                    <View style={ styles.frequencyContainer }>
+                      <Icon
+                        name='cached'
+                        color='#1787fb'
+                        iconStyle={ styles.icon }
+                        size={ 20 }
+                      />
+                      <Text style={ styles.nextReminder }>
+                        { this.storeContact(item.frequency) }
+                      </Text>
+                    </View>
+                    <View style={ styles.nextReminderContainer }>
+                      <Icon
+                        name='date-range'
+                        color='#1787fb'
+                        iconStyle={ styles.icon }
+                        size={ 20 }
+                      />
+                      <Text style={ styles.nextReminder }>
+                        { item.date }
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </TouchableHighlight>
@@ -104,6 +114,7 @@ ReminderList.propTypes = {
   reminders: PropTypes.array.isRequired,
   loadActiveReminder: PropTypes.func.isRequired,
   showEditModal: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -115,15 +126,31 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 20,
   },
+  reminderDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    alignItems: 'center',
+    width: '60%',
+  },
+  frequencyContainer: {
+    flexDirection: 'row',
+    borderColor: '#e8e9ea',
+    borderWidth: 2,
+    borderRadius: 5,
+    backgroundColor: '#edf1f2',
+    alignItems: 'center',
+    paddingTop: 2,
+    paddingBottom: 2,
+    justifyContent: 'center',
+  },
   nextReminderContainer: {
     flexDirection: 'row',
     borderColor: '#e8e9ea',
     borderWidth: 2,
     borderRadius: 5,
     backgroundColor: '#edf1f2',
-    width: '35%',
     alignItems: 'center',
-    marginTop: 5,
     paddingTop: 2,
     paddingBottom: 2,
     justifyContent: 'center',

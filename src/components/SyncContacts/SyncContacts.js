@@ -25,7 +25,7 @@ export default class SyncContacts extends React.Component {
             buttonStyle={ styles.button }
             onPress= { () =>
               {
-                loadContacts(uid);
+                loadContacts(user, contacts);
                 this.props.closeSyncContactModal();
               }
             }>
@@ -39,6 +39,8 @@ export default class SyncContacts extends React.Component {
 SyncContacts.propTypes = {
   showSyncContactModal: PropTypes.bool.isRequired,
   closeSyncContactModal: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired,
+  contacts: PropTypes.array.isRequired,
 };
 
 const styles = StyleSheet.create({

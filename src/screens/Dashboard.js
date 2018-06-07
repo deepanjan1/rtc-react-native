@@ -12,6 +12,7 @@ import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
 import CreateForm from '../components/CreateForm/CreateForm';
 import EditForm from '../components/EditForm/EditForm';
+import Settings from '../components/Settings/Settings';
 
 // Contact Stuff
 import SyncContacts from '../components/SyncContacts/SyncContacts';
@@ -31,66 +32,73 @@ import {
   initLoadContacts,
   contactListener,
   shutOffContactListener,
+  deleteAllContacts,
+  currentUserListener,
 } from '../services/api';
 import { loadCurrentUser } from '../services/facebookAPI';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.loadUser = this.props.loadUser.bind(this);
   };
 
   state = {
     showCreateModal: false,
     showEditModal: false,
     showSyncContactModal: false,
+    showSettingsModal: true,
     error: {},
+    contactsLoaded: false,
   };
 
-  showContactModal = async () => {
-    const status = await getPermission();
-    if (status !== 'granted') {
-      this.setState({
-        showSyncContactModal: true,
-      });
-    } else {
-      loadContacts();
-      console.log('Contacts Loading in Background');
+  showContactModal = async (uid, contacts) => {
+    if (uid && contacts && !this.state.contactsLoaded) {
+      const status = await getPermission();
+      if (status !== 'granted') {
+        this.setState({
+          showSyncContactModal: true,
+          contactsLoaded: true,
+        });
+      } else {
+        await loadContacts(uid, contacts);
+        this.setState({ contactsLoaded: true, });
+        console.log('Contacts Loading in Background');
+      }
     }
   };
 
-  componentDidMount = async() => {
-    this.showContactModal();
-    this.unsubscribeGetReminders = getReminders((snapshot) => {
+  componentDidMount = () => {
+
+    // this.unsubscribeGetReminders = getReminders((snapshot) => {
+    //   try {
+    //     this.props.watchReminderData();
+    //   } catch (e) {
+    //     this.setState({ error: e, });
+    //     console.log(e);
+    //   }
+    // });
+
+    // this.unsubscribeGetContacts = contactListener((snapshot) => {
+    //   try {
+    //     this.props.watchContactData();
+    //   } catch (e) {
+    //     this.setState({ error: e, });
+    //     console.log(e);
+    //   }
+    // });
+
+    this.unsubscribeCurrentUserListener = currentUserListener((snapshot) => {
       try {
-        this.props.watchReminderData();
+        this.props.watchUserData();
       } catch (e) {
         this.setState({ error: e, });
-        console.log(e);
       }
     });
-
-    this.unsubscribeGetContacts = contactListener((snapshot) => {
-      try {
-        this.props.watchContactData();
-      } catch (e) {
-        this.setState({ error: e, });
-        console.log(e);
-      }
-    });
-
-    this.props.watchUserData();
   };
 
-  // componentWillReceiveProps = async(nextProps) => {
-  //   if (nextProps.user !== this.props.user) {
-  //     await loadCurrentUser(this.loadUser);
-  //   }
-  // };
-
   componentWillUnmount() {
-    shutOffGetReminders();
-    shutOffContactListener();
+    shutOffGetReminders(this.props.user.uid);
+    shutOffContactListener(this.props.user.uid);
   }
 
   render() {
@@ -101,13 +109,8 @@ class Dashboard extends React.Component {
       selectedReminder,
       contacts,
       user,
-      loadUser,
     } = this.props;
-
-    // if (!Boolean(user.uid)) {
-    //   navigate('Login');
-    // }
-
+    this.showContactModal(user.uid, contacts);
     return (
       <View style={ styles.container }>
           <View style={ styles.subHeading }>
@@ -123,6 +126,7 @@ class Dashboard extends React.Component {
               reminders = { reminders }
               loadActiveReminder = { selectedReminder }
               showEditModal = { () => this.setState({ showEditModal: true }) }
+              user = { user.uid }
             />
             <View
               style={ styles.horizontalRule }
@@ -149,19 +153,26 @@ class Dashboard extends React.Component {
           <SyncContacts
             showSyncContactModal={ this.state.showSyncContactModal }
             closeSyncContactModal={ () => this.setState({ showSyncContactModal: false, }) }
-            uid = { user.uid }
+            user = { user.uid }
+            contacts = { contacts }
           />
           <CreateForm
             showCreateForm={ this.state.showCreateModal }
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
-            addReminder={ (reminder) => createReminder(reminder) }
+            addReminder={ (reminder, uid) => createReminder(reminder, uid) }
             contacts={ contacts }
+            user = { user.uid }
           />
           <EditForm
             showEditForm={ this.state.showEditModal }
             closeEditForm={ () => this.setState({ showEditModal: false, }) }
             editReminder={ activeReminder }
-            updateReminder={ (reminder) => updateReminder(reminder) }
+            updateReminder={ (reminder, uid) => updateReminder(reminder, uid) }
+            user = { user.uid }
+          />
+          <Settings
+            showSettingsModal = { this.state.showSettingsModal }
+            user = { user }
           />
       </View>
     );
@@ -233,25 +244,22 @@ mapStateToProps = (state) => (
 
 mapDispatchToProps = (dispatch) => (
   ({
-    watchReminderData: () => {
-      dispatch(Action.watchReminderData());
-    },
+    // watchReminderData: () => {
+    //   dispatch(Action.watchReminderData());
+    // },
 
     selectedReminder: (reminder) => {
       dispatch(Action.selectedReminder(reminder));
     },
 
-    watchContactData: () => {
-      dispatch(Action.watchContactData());
-    },
+    // watchContactData: () => {
+    //   dispatch(Action.watchContactData());
+    // },
 
     watchUserData: () => {
       dispatch(Action.watchUserData());
     },
 
-    loadUser: (user) => {
-      dispatch(Action.loadUser(user));
-    },
   })
 );
 
