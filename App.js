@@ -10,66 +10,16 @@ import Welcome from './src/screens/Welcome';
 import Dashboard from './src/screens/Dashboard';
 import Login from './src/screens/Login';
 
-import { addNavigationHelpers, StackNavigator } from 'react-navigation';
+import { addNavigationHelpers } from 'react-navigation';
 import { initApi } from './src/services/api';
 import { Font, AppLoading, Asset } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import reduxThunk from 'redux-thunk';
-
-const Navigator = StackNavigator(
-  {
-    Welcome: {
-      screen: Welcome,
-      navigationOptions: ({
-        header: 'null',
-        headerStyle: {
-          backgroundColor: 'white',
-          borderBottomWidth: 0,
-        },
-        headerTitleStyle: {
-          fontSize: 30,
-          fontFamily: 'Roboto-Bold',
-        },
-      }),
-    },
-    Dashboard: {
-      screen: Dashboard,
-      navigationOptions: ({
-        title: 'Dashboard',
-        headerStyle: {
-          backgroundColor: 'white',
-          borderBottomWidth: 0,
-        },
-        headerTitleStyle: {
-          fontSize: 30,
-          fontFamily: 'Roboto-Bold',
-        },
-        headerLeft: null,
-      }),
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: ({
-        title: 'Login or Register',
-        headerStyle: {
-          backgroundColor: 'white',
-          borderBottomWidth: 0,
-        },
-        headerTitleStyle: {
-          fontSize: 30,
-          fontFamily: 'Roboto-Bold',
-        },
-        headerLeft: null,
-      }),
-    },
-  },
-  {
-    initialRouteName: 'Dashboard',
-  },
-);
+import AppWithInternalState from './src/navigators/AppWithInternalState';
+import { middleware } from './src/navigators/middleware';
 
 // const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
-const store = createStore(rootReducer, applyMiddleware(reduxThunk));
+const store = createStore(rootReducer, applyMiddleware(middleware, logger, reduxThunk));
 
 export default class App extends React.Component {
   state = {
@@ -93,7 +43,7 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-          <Navigator />
+          <AppWithInternalState />
         </Provider>
       );
     }

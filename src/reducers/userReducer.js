@@ -2,6 +2,7 @@ import { actionTypes } from '../actions/actions';
 
 const initialState = {
   user: {},
+  isLoggedIn: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -10,6 +11,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         user: action.user,
+        isLoggedIn: action.isLoggedIn,
       };
     default:
       return state;

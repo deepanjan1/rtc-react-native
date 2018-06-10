@@ -46,7 +46,7 @@ class Dashboard extends React.Component {
     showCreateModal: false,
     showEditModal: false,
     showSyncContactModal: false,
-    showSettingsModal: true,
+    showSettingsModal: false,
     error: {},
     contactsLoaded: false,
   };
@@ -134,8 +134,9 @@ class Dashboard extends React.Component {
           </View>
           <View style={ styles.center}>
             <Icon
-              name='settings'
+              name='menu'
               color='#c0c0c0'
+              onPress={ () => this.setState({ showSettingsModal: true }) }
               >
             </Icon>
             <Button
@@ -145,7 +146,7 @@ class Dashboard extends React.Component {
               onPress={ () => this.setState({ showCreateModal: true, }) }>
             </Button>
             <Icon
-              name='settings'
+              name='menu'
               color='transparent'
               >
             </Icon>
@@ -172,6 +173,7 @@ class Dashboard extends React.Component {
           />
           <Settings
             showSettingsModal = { this.state.showSettingsModal }
+            closeSettingsModal = { () => this.setState({ showSettingsModal: false, }) }
             user = { user }
           />
       </View>
@@ -226,10 +228,6 @@ const styles = StyleSheet.create({
   horizontalRule: {
     borderTopColor: '#c0c0c0',
     borderTopWidth: 1,
-  },
-  modalComponents: {
-    height: 0,
-    width: 0,
   },
 });
 

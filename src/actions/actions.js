@@ -1,6 +1,6 @@
 import { getReminders, contactListener, currentUserListener } from '../services/api';
 import AsyncStorage from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 export const actionTypes = {
   LOAD_REMINDERS: 'LOAD_REMINDERS',
@@ -63,18 +63,21 @@ export const watchUserData = () => (
     currentUserListener((user) => {
       if (user !== null) {
         console.log(user);
-        dispatch(loadUser(user));
+        dispatch(loadUser(user, true));
         dispatch(watchReminderData(user.uid));
         dispatch(watchContactData(user.uid));
+        dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       } else {
         console.log(user);
-        dispatch(loadUser(user));
+
+        // dispatch(loadUser(user));
+        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
       }
     });
   }
 );
 
-export const loadUser = (user) => (
+export const loadUser = (user, isLoggedIn) => (
   {
     type: 'LOAD_USER',
     user: {
@@ -83,5 +86,6 @@ export const loadUser = (user) => (
       email: user.email,
       photo: user.photoURL,
     },
+    isLoggedIn: isLoggedIn,
   }
 );
