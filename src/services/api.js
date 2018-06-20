@@ -3,6 +3,7 @@ import {
   setListener,
   setListenerOff,
   setUserListener,
+  setUserListenerOff,
   updateData,
   removeData,
   writeData,
@@ -24,6 +25,7 @@ export const contactListener = (uid, updaterFn) => setListener('contacts/' + uid
 export const shutOffContactListener = (uid) => setListenerOff('contacts/' + uid);
 
 export const currentUserListener = (updaterFn) => setUserListener(updaterFn);
+export const currentUserListenerOff = (updaterFn) => setUserListenerOff(updaterFn);
 
 export const createReminder = (uid, reminder) => {
   // creating a reminder and key and returning full reminder object

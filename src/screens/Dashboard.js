@@ -34,8 +34,13 @@ import {
   shutOffContactListener,
   deleteAllContacts,
   currentUserListener,
+  currentUserListenerOff,
 } from '../services/api';
-import { loadCurrentUser } from '../services/facebookAPI';
+import {
+  loadCurrentUser,
+  logoutCurrentUser
+} from '../services/facebookAPI';
+import { NavigationActions } from 'react-navigation';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -68,25 +73,6 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
-
-    // this.unsubscribeGetReminders = getReminders((snapshot) => {
-    //   try {
-    //     this.props.watchReminderData();
-    //   } catch (e) {
-    //     this.setState({ error: e, });
-    //     console.log(e);
-    //   }
-    // });
-
-    // this.unsubscribeGetContacts = contactListener((snapshot) => {
-    //   try {
-    //     this.props.watchContactData();
-    //   } catch (e) {
-    //     this.setState({ error: e, });
-    //     console.log(e);
-    //   }
-    // });
-
     this.unsubscribeCurrentUserListener = currentUserListener((snapshot) => {
       try {
         this.props.watchUserData();
@@ -97,9 +83,14 @@ class Dashboard extends React.Component {
   };
 
   componentWillUnmount() {
-    shutOffGetReminders(this.props.user.uid);
-    shutOffContactListener(this.props.user.uid);
+    // shutOffGetReminders(this.props.user.uid);
+    // shutOffContactListener(this.props.user.uid);
+    // currentUserListenerOff();
   }
+
+  logOut = async () => {
+    await logoutCurrentUser(); // remove from firebase
+  };
 
   render() {
     const { navigate } = this.props.navigation;
@@ -109,6 +100,7 @@ class Dashboard extends React.Component {
       selectedReminder,
       contacts,
       user,
+      isLoggedIn,
     } = this.props;
     this.showContactModal(user.uid, contacts);
     return (
@@ -175,6 +167,11 @@ class Dashboard extends React.Component {
             showSettingsModal = { this.state.showSettingsModal }
             closeSettingsModal = { () => this.setState({ showSettingsModal: false, }) }
             user = { user }
+            logout = { () => {
+                this.logOut();
+                this.setState({ showSettingsModal: false, });
+              }
+            }
           />
       </View>
     );
@@ -237,22 +234,23 @@ mapStateToProps = (state) => (
     activeReminder: state.reminder.activeReminder,
     contacts: state.contact.contacts,
     user: state.user.user,
+    isLoggedIn: state.user.isLoggedIn,
   }
 );
 
 mapDispatchToProps = (dispatch) => (
   ({
-    // watchReminderData: () => {
-    //   dispatch(Action.watchReminderData());
-    // },
+    removeUser: () => {
+      dispatch(Action.removeUser());
+    },
+
+    logOutUser: () => {
+      dispatch(Action.logOutUser());
+    },
 
     selectedReminder: (reminder) => {
       dispatch(Action.selectedReminder(reminder));
     },
-
-    // watchContactData: () => {
-    //   dispatch(Action.watchContactData());
-    // },
 
     watchUserData: () => {
       dispatch(Action.watchUserData());

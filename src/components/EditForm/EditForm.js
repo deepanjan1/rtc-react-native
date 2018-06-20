@@ -59,7 +59,7 @@ export default class EditForm extends React.Component {
         animationOut='fadeOut'
         animationOutTiming={200}>
         <View style={styles.container}>
-          <FormLabel>Name</FormLabel>
+          <FormLabel fontFamily={ 'Roboto-Medium' }>Name</FormLabel>
           <FormInput
             value={ this.state.name }
             inputStyle={ styles.input }
@@ -68,7 +68,7 @@ export default class EditForm extends React.Component {
           />
           <View style={ styles.row } />
           <View>
-            <FormLabel>Frequency</FormLabel>
+            <FormLabel fontFamily={ 'Roboto-Medium' }>Frequency</FormLabel>
             <View style={styles.frequency}>
               <ButtonGroup
                 onPress={this.updateFrequency}
@@ -82,7 +82,7 @@ export default class EditForm extends React.Component {
               />
             </View>
             <View style={ styles.row } />
-            <FormLabel>First Reminder</FormLabel>
+            <FormLabel fontFamily={ 'Roboto-Medium' }>First Reminder</FormLabel>
             <View style={ styles.datePicker }>
               <Icon
                 name='date-range'
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: '100%',
     color: '#8e8e8e',
+    fontFamily: 'Roboto-Regular',
   },
   frequency: {
     padding: 15,
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
   },
   barText: {
     color: '#ffffff',
+    fontFamily: 'Roboto-Medium',
   },
   frequencyButton: {
     borderColor: '#1a9bfc',
@@ -206,6 +208,7 @@ const styles = StyleSheet.create({
   dateStyle: {
     fontSize: 20,
     color: '#1a9bfc',
+    fontFamily: 'Roboto-Regular',
     flex: 4,
   },
 });

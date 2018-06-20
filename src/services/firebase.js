@@ -22,6 +22,10 @@ export const setUserListener = (updaterFn) => (
   firebase.auth().onAuthStateChanged(updaterFn)
 );
 
+export const setUserListenerOff = (updaterFn) => (
+  firebase.auth().onAuthStateChanged(updaterFn).off()
+);
+
 export const updateData = (endpoint, data) => {
   var updates = {};
   if (Boolean(data.key)) {
@@ -75,3 +79,8 @@ export const storeLoginWithFacebook = async(type, token) => {
 export const userLoginStatus = () => (
   firebase.auth().currentUser
 );
+
+export const userLogout = () => {
+  firebase.auth().signOut();
+  console.log('sign-out from firebase success');
+};

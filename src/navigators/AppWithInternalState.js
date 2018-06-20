@@ -8,9 +8,11 @@ import {
   createReduxBoundAddListener,
 } from 'react-navigation-redux-helpers';
 import { navigationPropConstructor } from './middleware';
+import { loadCurrentUser } from '../services/facebookAPI';
+import * as Action from '../actions/actions';
 
 class AppWithInternalState extends React.Component {
-  componentDidMount = () => {
+  componentDidMount = async () => {
     initializeListeners('root', this.props.nav);
   };
 
@@ -34,4 +36,4 @@ const mapStateToProps = state => ({
   nav: state.nav,
 });
 
-export default connect(mapStateToProps)(AppWithInternalState);
+export default connect(mapStateToProps, mapDispatchToProps)(AppWithInternalState);

@@ -4,40 +4,72 @@ import {
   Text,
   View,
   TouchableHighlight,
-  Alert,
 } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { loginWithFacebook, loadCurrentUser } from '../services/facebookAPI';
 import * as Action from '../actions/actions';
+import { currentUserListener } from '../services/api';
+import { NavigationActions } from 'react-navigation';
 
 class Login extends React.Component {
-  // componentDidMount = () => {
-  //   userLoginStatus();
-  // };
+  constructor (props) {
+    super(props);
+  };
 
-  render() {
+  componentDidMount = () => {
+    this.unsubscribeCurrentUserListener = currentUserListener((snapshot) => {
+      try {
+        this.props.watchUserDataForLogin();
+      } catch (e) {
+        this.setState({ error: e, });
+      }
+    });
+  };
+
+  componentWillUnmount = () => {
+    this.currentUserListenerOff();
+  };
+
+  logUserIn = async () => {
+    await loginWithFacebook();
+  };
+
+  render = () => {
     const { navigate } = this.props.navigation;
-    const { loadUser, user } = this.props;
+    const {
+      loadUser,
+      user,
+      isLoggedIn,
+      setLoggedInUser,
+    } = this.props;
     return (
       <View style={ styles.container }>
-        <Button
+        <TouchableHighlight
+          onPress={ () => this.logUserIn(loadUser, setLoggedInUser) }
+          underlayColor='transparent'>
+          <View style={ styles.loginButtonViewContainer }>
+            <View style={ styles.fbIconView }>
+              <Ionicons
+                name='logo-facebook'
+                color='#ffffff'
+                size={40} />
+            </View>
+            <View style={ styles.textView }>
+              <Text style={ styles.loginButtonText }>
+                Continue with Facebook
+              </Text>
+            </View>
+          </View>
+        </TouchableHighlight>
+        {/* <Button
           title='Login'
-          onPress={
-            async() => {
-              if (Boolean(user)) {
-                console.log(user.name + ' is already logged in!');
-                navigate('Dashboard');
-              } else {
-                await loginWithFacebook();
-                loadCurrentUser(loadUser);
-              }
-            }
-          }
-          />
+          onPress={ () => this.logUserIn(loadUser, setLoggedInUser) }
+          /> */}
       </View>
     );
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -45,12 +77,35 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 10,
+    alignItems: 'center',
+  },
+  loginButtonViewContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    backgroundColor: '#4468b0',
+    borderRadius: 5,
+  },
+  fbIconView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textView: {
+    flex: 4,
+  },
+  loginButtonText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 20,
+    color: '#ffffff',
   },
 });
 
 mapStateToProps = (state) => (
   {
     user: state.user.user,
+    isLoggedIn: state.user.isLoggedIn,
   }
 );
 
@@ -59,6 +114,15 @@ mapDispatchToProps = (dispatch) => (
     loadUser: (user) => {
       dispatch(Action.loadUser(user));
     },
+
+    setLoggedInUser: (isLoggedIn) => {
+      dispatch(Action.setLoggedInUser(isLoggedIn));
+    },
+
+    watchUserDataForLogin: () => {
+      dispatch(Action.watchUserDataForLogin());
+    },
+
   })
 );
 

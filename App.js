@@ -13,13 +13,13 @@ import Login from './src/screens/Login';
 import { addNavigationHelpers } from 'react-navigation';
 import { initApi } from './src/services/api';
 import { Font, AppLoading, Asset } from 'expo';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import reduxThunk from 'redux-thunk';
 import AppWithInternalState from './src/navigators/AppWithInternalState';
 import { middleware } from './src/navigators/middleware';
 
 // const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
-const store = createStore(rootReducer, applyMiddleware(middleware, logger, reduxThunk));
+const store = createStore(rootReducer, applyMiddleware(middleware, reduxThunk));
 
 export default class App extends React.Component {
   state = {
@@ -52,7 +52,10 @@ export default class App extends React.Component {
   async _loadAssetsAsync() {
     await Font.loadAsync({
       'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
+      'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
       'Roboto-Regular': require('./src/assets/Roboto/Roboto-Regular.ttf'),
+      'Roboto-Light': require('./src/assets/Roboto/Roboto-Light.ttf'),
+      'Roboto-Thin': require('./src/assets/Roboto/Roboto-Thin.ttf'),
       'Roboto-Medium': require('./src/assets/Roboto/Roboto-Medium.ttf'),
       'Roboto-Bold': require('./src/assets/Roboto/Roboto-Bold.ttf'),
     });

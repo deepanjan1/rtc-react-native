@@ -23,7 +23,7 @@ export default class SearchList extends React.Component {
     if (this.props.visible === true) {
       var filteredContacts = this.props.filteredContacts;
       return (
-        <View>
+        <View style={ styles.container }>
           <FlatList
             data={ this.props.filteredContacts }
             renderItem={
@@ -46,7 +46,7 @@ export default class SearchList extends React.Component {
 
   render() {
     return (
-      <View style={ styles.container }>
+      <View>
         { this.showList() }
       </View>
     );
@@ -55,7 +55,7 @@ export default class SearchList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: '90%',
+    height: '95%',
   },
 });
 

@@ -7,6 +7,9 @@ export const actionTypes = {
   SELECTED_REMINDER: 'SELECTED_REMINDER',
   SYNC_CONTACTS: 'SYNC_CONTACTS',
   LOAD_USER: 'LOAD_USER',
+  LOGGED_IN: 'LOGGED_IN',
+  LOGGED_OUT: 'LOGGED_OUT',
+  REMOVE_USER: 'REMOVE_USER',
 };
 
 // Reminder Stuff
@@ -23,18 +26,18 @@ watchReminderData = (uid) => (
   }
 );
 
-export const loadReminders = (reminders) => (
-  {
+export const loadReminders = (reminders) => (dispatch) => (
+  dispatch({
     type: 'LOAD_REMINDERS',
     reminders,
-  }
+  })
 );
 
-export const selectedReminder = (reminder) => (
-  {
+export const selectedReminder = (reminder) => (dispatch) => (
+  dispatch({
     type: 'SELECTED_REMINDER',
     reminder,
-  }
+  })
 );
 
 // Contact Stuff
@@ -50,11 +53,11 @@ watchContactData = (uid) => (
   }
 );
 
-export const syncContacts = (contacts) => (
-  {
-    type: 'SYNC_CONTACTS',
-    contacts: contacts,
-  }
+export const syncContacts = (contacts) => (dispatch) => (
+  dispatch({
+      type: 'SYNC_CONTACTS',
+      contacts: contacts,
+    })
 );
 
 // User Stuff
@@ -62,22 +65,40 @@ export const watchUserData = () => (
   (dispatch) => {
     currentUserListener((user) => {
       if (user !== null) {
-        console.log(user);
-        dispatch(loadUser(user, true));
+        console.log('from action creator: ' + user.displayName);
+        dispatch(loadUser(user));
         dispatch(watchReminderData(user.uid));
         dispatch(watchContactData(user.uid));
-        dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       } else {
-        console.log(user);
-
-        // dispatch(loadUser(user));
+        console.log('from action creator: ' + user);
+        dispatch(removeUser(user));
+        dispatch(logOutUser(false));
         dispatch(NavigationActions.navigate({ routeName: 'Login' }));
       }
     });
   }
 );
 
-export const loadUser = (user, isLoggedIn) => (
+export const watchUserDataForLogin = () => (
+  (dispatch) => {
+    currentUserListener((user) => {
+      if (user !== null) {
+        dispatch(loadUser(user));
+        dispatch(setLoggedInUser(true));
+        dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
+      }
+    });
+  }
+);
+
+export const setLoggedInUser = (isLoggedIn) => (dispatch) => {
+  dispatch({
+    type: 'LOGGED_IN',
+    isLoggedIn: isLoggedIn,
+  });
+};
+
+export const loadUser = (user) => (
   {
     type: 'LOAD_USER',
     user: {
@@ -86,6 +107,19 @@ export const loadUser = (user, isLoggedIn) => (
       email: user.email,
       photo: user.photoURL,
     },
-    isLoggedIn: isLoggedIn,
+  }
+);
+
+export const logOutUser = (isLoggedIn) => (dispatch) => {
+  dispatch({
+    type: 'LOGGED_OUT',
+    isLoggedIn,
+  });
+};
+
+export const removeUser = (user) => (
+  {
+    type: 'REMOVE_USER',
+    user,
   }
 );

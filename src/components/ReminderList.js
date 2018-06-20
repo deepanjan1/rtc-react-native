@@ -88,6 +88,7 @@ export default class ReminderList extends React.Component {
                         { this.storeContact(item.frequency) }
                       </Text>
                     </View>
+                    <View style={ styles.gap } />
                     <View style={ styles.nextReminderContainer }>
                       <Icon
                         name='date-range'
@@ -128,36 +129,48 @@ const styles = StyleSheet.create({
   },
   reminderDetails: {
     flexDirection: 'row',
+    flex: 1,
+    alignSelf: 'stretch',
     justifyContent: 'space-between',
     marginTop: 5,
     alignItems: 'center',
-    width: '60%',
+    width: '70%',
   },
   frequencyContainer: {
     flexDirection: 'row',
+    alignSelf: 'stretch',
+    flex: 4,
     borderColor: '#e8e9ea',
-    borderWidth: 2,
-    borderRadius: 5,
-    backgroundColor: '#edf1f2',
+    borderWidth: 1,
+    borderRadius: 2.5,
+    backgroundColor: '#f8f9fa',
     alignItems: 'center',
     paddingTop: 2,
     paddingBottom: 2,
+    paddingRight: 2,
     justifyContent: 'center',
+  },
+  gap: {
+    alignSelf: 'stretch',
+    flex: 1,
   },
   nextReminderContainer: {
     flexDirection: 'row',
+    flex: 4,
+    alignSelf: 'stretch',
     borderColor: '#e8e9ea',
-    borderWidth: 2,
-    borderRadius: 5,
-    backgroundColor: '#edf1f2',
+    borderWidth: 1,
+    borderRadius: 2.5,
+    backgroundColor: '#f8f9fa',
     alignItems: 'center',
     paddingTop: 2,
     paddingBottom: 2,
+    paddingRight: 2,
     justifyContent: 'center',
   },
   nextReminder: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 15,
+    fontFamily: 'Roboto-Light',
+    fontSize: 12,
     color: '#5d5d5d',
   },
   icon: {

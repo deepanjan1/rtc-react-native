@@ -53,7 +53,7 @@ export default class Settings extends React.Component {
                     title='Logout'
                     buttonStyle={ styles.logoutButton }
                     textStyle={ styles.logoutButtonText }
-                    onPress={ () => console.log('logout button pressed') }>
+                    onPress={ () => this.props.logout() }>
                   </Button>
                 </View>
               </View>
@@ -72,6 +72,7 @@ Settings.propTypes = {
   showSettingsModal: PropTypes.bool.isRequired,
   closeSettingsModal: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

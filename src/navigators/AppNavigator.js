@@ -5,30 +5,6 @@ import Welcome from '../screens/Welcome';
 import Dashboard from '../screens/Dashboard';
 import Login from '../screens/Login';
 
-// routeNames = {
-//   Welcome: { screen: Welcome },
-//   Dashboard: { screen: Dashboard },
-//   Login: { screen: Login },
-// };
-//
-// config = {
-//   navigationOptions: ({
-//     header: 'null',
-//     headerStyle: {
-//       backgroundColor: 'white',
-//       borderBottomWidth: 0,
-//     },
-//     headerLeft: null,
-//     headerTitleStyle: {
-//       fontSize: 30,
-//       fontFamily: 'Roboto-Bold',
-//     },
-//   }),
-//   initialRouteName: 'Dashboard',
-// };
-//
-// export const AppNavigator = StackNavigator(routeNames, config);
-
 export const AppNavigator = StackNavigator(
   {
     Welcome: {
@@ -77,6 +53,6 @@ export const AppNavigator = StackNavigator(
     },
   },
   {
-    initialRouteName: 'Dashboard',
+    initialRouteName: 'Login',
   },
 );
