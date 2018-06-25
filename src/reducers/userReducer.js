@@ -2,6 +2,8 @@ import { actionTypes } from '../actions/actions';
 
 const initialState = {
   user: {},
+  notificationToken: '',
+  contactToken: '',
   isLoggedIn: false,
 };
 
@@ -26,6 +28,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         user: {},
+      };
+    case actionTypes.LOAD_NOTIFICATION_TOKEN:
+      return {
+        ...state,
+        notificationToken: action.notificationToken,
       };
     default:
       return state;

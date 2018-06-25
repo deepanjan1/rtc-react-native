@@ -13,6 +13,10 @@ import ReminderList from '../components/ReminderList';
 import CreateForm from '../components/CreateForm/CreateForm';
 import EditForm from '../components/EditForm/EditForm';
 import Settings from '../components/Settings/Settings';
+import Notifications from '../components/Notifications/Notifications';
+import {
+  getExistingPermission
+} from '../components/Notifications/NotificationFunctions';
 
 // Contact Stuff
 import SyncContacts from '../components/SyncContacts/SyncContacts';
@@ -52,6 +56,7 @@ class Dashboard extends React.Component {
     showEditModal: false,
     showSyncContactModal: false,
     showSettingsModal: false,
+    showNotificationsModal: false,
     error: {},
     contactsLoaded: false,
   };
@@ -73,6 +78,7 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
+    // Listener that loads the user, reminders, contacts, and notification data
     this.unsubscribeCurrentUserListener = currentUserListener((snapshot) => {
       try {
         this.props.watchUserData();
@@ -82,10 +88,19 @@ class Dashboard extends React.Component {
     });
   };
 
+  componentDidUpdate = (prevProps) => {
+    if (!prevProps.notificationToken && this.props.notificationToken) {
+      if (!getExistingPermission(
+        this.props.notificationToken,
+        this.props.user.uid
+      )) {
+        this.setState({ showNotificationsModal: true });
+      }
+    }
+  };
+
   componentWillUnmount() {
-    // shutOffGetReminders(this.props.user.uid);
-    // shutOffContactListener(this.props.user.uid);
-    // currentUserListenerOff();
+    currentUserListenerOff();
   }
 
   logOut = async () => {
@@ -101,6 +116,8 @@ class Dashboard extends React.Component {
       contacts,
       user,
       isLoggedIn,
+      loadNotificationToken,
+      notificationToken,
     } = this.props;
     this.showContactModal(user.uid, contacts);
     return (
@@ -149,12 +166,21 @@ class Dashboard extends React.Component {
             user = { user.uid }
             contacts = { contacts }
           />
+          <Notifications
+            showNotificationsModal={ this.state.showNotificationsModal }
+            closeNotificationsModal={ () => this.setState({ showNotificationsModal: false, }) }
+            loadNotificationToken = { loadNotificationToken }
+          />
           <CreateForm
             showCreateForm={ this.state.showCreateModal }
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
-            addReminder={ (reminder, uid) => createReminder(reminder, uid) }
+            addReminder={
+              (uid, reminder, notificationToken) =>
+              createReminder(uid, reminder, notificationToken)
+            }
             contacts={ contacts }
             user = { user.uid }
+            notificationToken={ notificationToken }
           />
           <EditForm
             showEditForm={ this.state.showEditModal }
@@ -234,6 +260,7 @@ mapStateToProps = (state) => (
     activeReminder: state.reminder.activeReminder,
     contacts: state.contact.contacts,
     user: state.user.user,
+    notificationToken: state.user.notificationToken,
     isLoggedIn: state.user.isLoggedIn,
   }
 );
@@ -246,6 +273,10 @@ mapDispatchToProps = (dispatch) => (
 
     logOutUser: () => {
       dispatch(Action.logOutUser());
+    },
+
+    loadNotificationToken: (notificationToken) => {
+      dispatch(Action.loadNotificationToken(notificationToken));
     },
 
     selectedReminder: (reminder) => {

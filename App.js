@@ -19,7 +19,9 @@ import AppWithInternalState from './src/navigators/AppWithInternalState';
 import { middleware } from './src/navigators/middleware';
 
 // const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
-const store = createStore(rootReducer, applyMiddleware(middleware, reduxThunk));
+const store = createStore(
+  rootReducer,
+  applyMiddleware(middleware, reduxThunk));
 
 export default class App extends React.Component {
   state = {

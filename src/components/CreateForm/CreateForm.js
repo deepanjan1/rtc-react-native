@@ -134,7 +134,7 @@ export default class CreateForm extends React.Component {
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
                   frequency: this.state.selectedFrequency,
-                });
+                }, this.props.notificationToken);
 
                 // set form variables to null
                 this.setState({
@@ -211,6 +211,7 @@ CreateForm.propTypes = {
   addReminder: PropTypes.func.isRequired,
   contacts: PropTypes.array.isRequired,
   user: PropTypes.string.isRequired,
+  notificationToken: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

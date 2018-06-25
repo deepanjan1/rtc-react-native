@@ -56,7 +56,7 @@ export const removeAllData = () => (
 );
 
 export const readData = (endpoint) => (
-  firebase.database().ref(endpoint).child('Deep').once('value')
+  firebase.database().ref(endpoint).once('value')
 );
 
 // other end points besides "push" are "set" to override and "update"

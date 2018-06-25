@@ -1,5 +1,10 @@
-import { getReminders, contactListener, currentUserListener } from '../services/api';
-import AsyncStorage from 'react-native';
+import {
+  getReminders,
+  contactListener,
+  currentUserListener,
+  getPermissions,
+} from '../services/api';
+import { getExistingPermission } from '../components/Notifications/NotificationFunctions';
 import { NavigationActions } from 'react-navigation';
 
 export const actionTypes = {
@@ -10,10 +15,11 @@ export const actionTypes = {
   LOGGED_IN: 'LOGGED_IN',
   LOGGED_OUT: 'LOGGED_OUT',
   REMOVE_USER: 'REMOVE_USER',
+  LOAD_NOTIFICATION_TOKEN: 'LOAD_NOTIFICATION_TOKEN',
 };
 
 // Reminder Stuff
-watchReminderData = (uid) => (
+export const watchReminderData = (uid) => (
   (dispatch) => {
     getReminders(uid, (snapshot) => {
       try {
@@ -41,7 +47,7 @@ export const selectedReminder = (reminder) => (dispatch) => (
 );
 
 // Contact Stuff
-watchContactData = (uid) => (
+export const watchContactData = (uid) => (
   (dispatch) => {
     contactListener(uid, (snapshot) => {
       try {
@@ -60,6 +66,20 @@ export const syncContacts = (contacts) => (dispatch) => (
     })
 );
 
+// Permissions stuff
+watchPermissions = (uid) => (
+  (dispatch) => {
+    getPermissions(uid + '/notificationToken', (snapshot) => {
+      try {
+        dispatch(loadNotificationToken(Object.values([snapshot.val()])[0]));
+      }
+      catch (error) {
+        dispatch(loadNotificationToken(''));
+      }
+    });
+  }
+);
+
 // User Stuff
 export const watchUserData = () => (
   (dispatch) => {
@@ -67,8 +87,9 @@ export const watchUserData = () => (
       if (user !== null) {
         console.log('from action creator: ' + user.displayName);
         dispatch(loadUser(user));
-        dispatch(watchReminderData(user.uid));
-        dispatch(watchContactData(user.uid));
+        dispatch(watchReminderData(user.uid));  //listener to pull reminder data
+        dispatch(watchContactData(user.uid));  //listener to pull contact data
+        dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
       } else {
         console.log('from action creator: ' + user);
         dispatch(removeUser(user));
@@ -107,6 +128,13 @@ export const loadUser = (user) => (
       email: user.email,
       photo: user.photoURL,
     },
+  }
+);
+
+export const loadNotificationToken = (notificationToken) => (
+  {
+    type: 'LOAD_NOTIFICATION_TOKEN',
+    notificationToken,
   }
 );
 

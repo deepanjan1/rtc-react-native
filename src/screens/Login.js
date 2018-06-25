@@ -106,6 +106,7 @@ mapStateToProps = (state) => (
   {
     user: state.user.user,
     isLoggedIn: state.user.isLoggedIn,
+    notificationToken: state.user.notificationToken,
   }
 );
 
@@ -117,6 +118,10 @@ mapDispatchToProps = (dispatch) => (
 
     setLoggedInUser: (isLoggedIn) => {
       dispatch(Action.setLoggedInUser(isLoggedIn));
+    },
+
+    loadNotificationToken: (notificationToken) => {
+      dispatch(Action.loadNotificationToken(notificationToken));
     },
 
     watchUserDataForLogin: () => {
