@@ -73,9 +73,11 @@ export default class ReminderList extends React.Component {
                 underlayColor='transparent'
                 >
                 <View style={ styles.container }>
-                  <Text style={ styles.name }>
-                    { item.name }
-                  </Text>
+                  <View style={ styles.nameContainer }>
+                    <Text style={ styles.name }>
+                      { item.name }
+                    </Text>
+                  </View>
                   <View style={ styles.reminderDetails }>
                     <View style={ styles.frequencyContainer }>
                       <Icon
@@ -122,6 +124,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+
+    // borderWidth: 1,
+    // borderRadius: 10,
+    // marginBottom: 10,
+    // marginTop: 10,
+    // borderColor: '#e8e9ea',
+  },
+  nameContainer: {
+    marginBottom: 5,
   },
   name: {
     fontFamily: 'Roboto-Regular',

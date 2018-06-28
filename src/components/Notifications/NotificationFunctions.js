@@ -1,8 +1,9 @@
 import { Permissions, Notifications } from 'expo';
 import { writeNotificationToken } from '../../services/api';
 
-// function to ask for permission for Notifications
+// import Expo from 'expo-server-sdk';
 
+// function to ask for permission for Notifications
 export const getExistingPermission = async (
   notificationToken,
   uid,
@@ -21,8 +22,6 @@ export const getExistingPermission = async (
       console.log('existing token loaded');
       return true;
     } else {
-      console.log('token: ' + token);
-      console.log('notificationToken: ' + notificationToken);
       console.log('token is not loading, re-writing token to firebase');
       writeNotificationToken(uid, token);
       return false;

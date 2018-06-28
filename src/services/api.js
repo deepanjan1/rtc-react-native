@@ -8,6 +8,7 @@ import {
   removeData,
   writeData,
   createKey,
+  readData,
   removeAllData,
 } from './firebase';
 
@@ -45,6 +46,11 @@ export const updateReminder = (uid, reminder) => {
     const endpoint = 'reminders/' + uid + '/';
     updateData(endpoint, reminder);
   }
+};
+
+export const loadAllRemindersAndPermissions = () => {
+  readData('permissions');
+  return (readData('reminders'));
 };
 
 export const initLoadContacts = (uid, contacts) => {

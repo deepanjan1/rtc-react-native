@@ -23,6 +23,7 @@
     "@expo/vector-icons": "^6.3.1",
     "apsl-react-native-button": "^3.1.0",
     "expo": "^26.0.0",
+    "expo-server-sdk": "^2.4.0",
     "firebase": "^4.12.1",
     "firebaseui": "^3.0.0",
     "moment": "^2.22.1",
