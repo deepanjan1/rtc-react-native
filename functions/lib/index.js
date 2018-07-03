@@ -12,6 +12,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require("firebase-admin");
+// Import Expo notification
+const Expo = require("expo-server-sdk");
+// Create a new expo client
+let expo = new Expo();
+// Create new Date Object
+const getTodayDate = () => {
+    var today = new Date();
+    console.log({ today });
+    var dd = today.getUTCDate();
+    var mm = today.getUTCMonth() + 1; //January is 0!
+    var yyyy = today.getUTCFullYear();
+    let day;
+    let month;
+    if (dd < 10) {
+        day = '0' + dd.toString();
+    }
+    else {
+        day = dd.toString();
+    }
+    if (mm < 10) {
+        month = '0' + mm.toString();
+    }
+    else {
+        month = mm.toString();
+    }
+    var todayString = month + '/' + day + '/' + yyyy.toString();
+    return todayString;
+};
 admin.initializeApp();
 var db = admin.database();
 var refReminders = db.ref('reminders');
@@ -22,74 +50,61 @@ var refPermissions = db.ref('permissions');
 exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
     var dailyReminderObject = [];
     // pulling reminder data
-    refReminders.orderByChild('date').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
+    console.log(getTodayDate());
+    refReminders.orderByChild('date').equalTo('06/23/2018').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
         console.log(snapshot.val());
         yield snapshot.forEach((data) => {
             // user level
             let uid = data.key;
             let notificationToken;
             refPermissions.orderByKey().equalTo(uid).once('value', (permission) => {
-                notificationToken = Promise.all(permission.val()[uid]['notificationToken']);
-                console.log(notificationToken);
-            })
-                .then(
-            // let object;
-            data.forEach((reminder) => {
-                // reminder level
-                console.log(reminder.val());
-                dailyReminderObject.push({
-                    'uid': uid,
-                    'name': reminder.val().name,
-                    'notificationToken': notificationToken,
+                notificationToken = permission.val()[uid]['notificationToken'];
+                // let object;
+                console.log('notificationToken: ' + notificationToken);
+                data.forEach((reminder) => {
+                    // reminder level
+                    console.log(reminder.val());
+                    dailyReminderObject.push({
+                        'uid': uid,
+                        'name': reminder.val().name,
+                        'notificationToken': notificationToken,
+                    });
+                    return false;
                 });
-                return false;
-            }));
+                console.log({ dailyReminderObject });
+                buildMessages(dailyReminderObject);
+            });
             return false;
         });
-        console.log(dailyReminderObject);
     }));
-    return dailyReminderObject;
+    // insert function for sending batch notifications
+    return ('function works');
 });
-// export const dailyJob =
-//   functions.pubsub.topic('daily-tick').onPublish((event) => {
-//     var dailyReminderObject = [];
-//
-//     // pulling reminder data
-//     refReminders.orderByChild('date').once('value', (snapshot) => {
-//         // pulling all reminders
-//         console.log(snapshot.val());
-//         snapshot.forEach((data) => {
-//           // user level
-//           console.log('uid: ' + data.key);
-//           const uid = data.key;
-//           const object = {};
-//           data.forEach((item) => {
-//             // reminder level
-//             object['uid'] = uid;
-//             object['name'] = item.val().name;
-//             dailyReminderObject.push(object);
-//             console.log(item.val().name);
-//           });
-//         });
-//       }).then(() => {
-//         console.log(dailyReminderObject);
-//       });
-//
-//     return dailyReminderObject;
-//   });
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   refReminders.orderByChild('date').on('value', function (snapshot) {
-//       // pulling all reminders
-//       console.log(snapshot.val());
-//       snapshot.forEach(function (data) {
-//         // user level
-//         console.log('uid: ' + data.key);
-//         data.forEach(function (item) {
-//           // reminder level
-//           console.log(item.val().name);
-//         });
-//       });
-//     });
-//   response.send('Firebase is working');
-// });
+const buildMessages = (dailyReminderObject) => {
+    let messages = [];
+    const length = dailyReminderObject.length;
+    for (var i = 0; i < length; i++) {
+        messages.push({
+            'to': dailyReminderObject[i].notificationToken,
+            'sound': 'default',
+            'body': 'Reach out to ' + dailyReminderObject[i].name,
+        });
+    }
+    console.log({ messages });
+    let chunks = expo.chunkPushNotifications(messages);
+    (() => __awaiter(this, void 0, void 0, function* () {
+        // Send the chunks to the Expo push notification service. There are
+        // different strategies you could use. A simple one is to send one chunk at a
+        // time, which nicely spreads the load out over time:
+        for (let chunk of chunks) {
+            try {
+                let receipts = yield expo.sendPushNotificationsAsync(chunk);
+                console.log({ receipts });
+            }
+            catch (error) {
+                console.error({ error });
+            }
+        }
+    }))();
+};
 //# sourceMappingURL=index.js.map
