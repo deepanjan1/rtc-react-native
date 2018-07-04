@@ -11,15 +11,12 @@ import * as Expo from 'expo-server-sdk';
 let expo = new Expo();
 
 // Create new Date Object
-
-
 const getTodayDate = () => {
   var today = new Date();
   console.log({today});
   var dd = today.getUTCDate();
   var mm = today.getUTCMonth()+1; //January is 0!
   var yyyy = today.getUTCFullYear();
-
   let day;
   let month;
 
@@ -34,11 +31,11 @@ const getTodayDate = () => {
   } else {
     month = mm.toString();
   }
-
   var todayString = month + '/' + day + '/' + yyyy.toString();
-
   return todayString;
 }
+
+var today = getTodayDate();
 
 admin.initializeApp();
 
@@ -54,8 +51,8 @@ export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) =
   var dailyReminderObject = [];
 
   // pulling reminder data
-  console.log(getTodayDate());
-  refReminders.orderByChild('date').equalTo('06/23/2018').once('value', async (snapshot) => {
+  console.log(today);
+  refReminders.orderByChild('date').once('value', async (snapshot) => {
     console.log(snapshot.val());
     await snapshot.forEach((data) => {
       // user level
@@ -68,13 +65,15 @@ export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) =
         data.forEach((reminder) => {
           // reminder level
           console.log(reminder.val())
-          dailyReminderObject.push(
-            {
-              'uid': uid,
-              'name': reminder.val().name,
-              'notificationToken': notificationToken,
-            }
-          );
+          if (reminder.val().date == today) {
+            dailyReminderObject.push(
+              {
+                'uid': uid,
+                'name': reminder.val().name,
+                'notificationToken': notificationToken,
+              }
+            );
+          }
           return false;
         });
         console.log({dailyReminderObject});

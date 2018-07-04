@@ -40,6 +40,7 @@ const getTodayDate = () => {
     var todayString = month + '/' + day + '/' + yyyy.toString();
     return todayString;
 };
+var today = getTodayDate();
 admin.initializeApp();
 var db = admin.database();
 var refReminders = db.ref('reminders');
@@ -50,8 +51,8 @@ var refPermissions = db.ref('permissions');
 exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
     var dailyReminderObject = [];
     // pulling reminder data
-    console.log(getTodayDate());
-    refReminders.orderByChild('date').equalTo('06/23/2018').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
+    console.log(today);
+    refReminders.orderByChild('date').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
         console.log(snapshot.val());
         yield snapshot.forEach((data) => {
             // user level
@@ -64,11 +65,13 @@ exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
                 data.forEach((reminder) => {
                     // reminder level
                     console.log(reminder.val());
-                    dailyReminderObject.push({
-                        'uid': uid,
-                        'name': reminder.val().name,
-                        'notificationToken': notificationToken,
-                    });
+                    if (reminder.val().date == today) {
+                        dailyReminderObject.push({
+                            'uid': uid,
+                            'name': reminder.val().name,
+                            'notificationToken': notificationToken,
+                        });
+                    }
                     return false;
                 });
                 console.log({ dailyReminderObject });

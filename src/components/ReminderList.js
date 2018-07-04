@@ -4,6 +4,7 @@ import {
   Text,
   View,
   FlatList,
+  SectionList,
   TouchableHighlight
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -11,6 +12,7 @@ import { removeReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
 import Moment from 'moment';
 import { Icon } from 'react-native-elements';
+import _ from 'underscore';
 
 export default class ReminderList extends React.Component {
 
@@ -36,6 +38,27 @@ export default class ReminderList extends React.Component {
     index: null,
   };
 
+  sortRemindersByDate = (reminders) => {
+    const today = new Date();
+
+    // sorting reminders by date
+    var sortedReminders = reminders.sort((a, b) =>
+      (new Date(b.date) - new Date(a.date))
+    );
+
+    var groupedReminder = _.groupBy(sortedReminders, (reminder) => (
+      new Date(reminder.date).getTime() < today.getTime()
+    ));
+
+    if (!groupedReminder['true']) {
+      groupedReminder['true'] = [];
+    } else if (!groupedReminder['false']) {
+      groupedReminder['false'] = [];
+    }
+
+    return groupedReminder;
+  };
+
   storeContact = nextDate => {
     switch (nextDate) {
       case 0:
@@ -51,65 +74,159 @@ export default class ReminderList extends React.Component {
     }
   };
 
-  render() {
-    return (
-      <FlatList
-        data={this.props.reminders}
-        renderItem={
-          ({ item, index }) =>
-            <Swipeout
-              right={this.swipeoutButtons}
-              backgroundColor='white'
-              onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
-              onClose={() => this.setState({ activeKey: '', index: null, }) }
-              autoClose
-              >
-              <TouchableHighlight
-                onPress={ () => {
-                  this.props.loadActiveReminder(item);
-                  this.props.showEditModal();
-                } }
+  sectionHeaders = (upcomingReminders, pastReminders) => {
+    const overrideRenderItem = ({ item, index, section }) =>
+      <Swipeout
+        right={this.swipeoutButtons}
+        backgroundColor='white'
+        onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
+        onClose={() => this.setState({ activeKey: '', index: null, }) }
+        autoClose
+        key={ index }
+        >
+        <TouchableHighlight
+          onPress={ () => {
+            this.props.loadActiveReminder(item);
+            this.props.showEditModal();
+          } }
 
-                underlayColor='transparent'
-                >
-                <View style={ styles.container }>
-                  <View style={ styles.nameContainer }>
-                    <Text style={ styles.name }>
-                      { item.name }
-                    </Text>
-                  </View>
-                  <View style={ styles.reminderDetails }>
-                    <View style={ styles.frequencyContainer }>
-                      <Icon
-                        name='cached'
-                        color='#1787fb'
-                        iconStyle={ styles.icon }
-                        size={ 20 }
-                      />
-                      <Text style={ styles.nextReminder }>
-                        { this.storeContact(item.frequency) }
-                      </Text>
-                    </View>
-                    <View style={ styles.gap } />
-                    <View style={ styles.nextReminderContainer }>
-                      <Icon
-                        name='date-range'
-                        color='#1787fb'
-                        iconStyle={ styles.icon }
-                        size={ 20 }
-                      />
-                      <Text style={ styles.nextReminder }>
-                        { item.date }
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableHighlight>
-            </Swipeout>
-        }
-        keyExtractor={(item, index) => (`reminders-${index}`)}
-      />
+          underlayColor='transparent'
+          >
+          <View style={ styles.container }>
+            <View style={ styles.nameContainer }>
+              <Text style={ styles.name }>
+                { item.name }
+              </Text>
+            </View>
+            <View style={ styles.reminderDetails }>
+              <View style={ styles.frequencyContainer }>
+                <Icon
+                  name='cached'
+                  color='#1787fb'
+                  iconStyle={ styles.icon }
+                  size={ 20 }
+                />
+                <Text style={ styles.nextReminder }>
+                  { this.storeContact(item.frequency) }
+                </Text>
+              </View>
+              <View style={ styles.gap } />
+              <View style={ styles.nextReminderContainer }>
+                <Icon
+                  name='date-range'
+                  color='#d7322d'
+                  iconStyle={ styles.icon }
+                  size={ 20 }
+                />
+                <Text style={ styles.nextReminder }>
+                  { item.date }
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableHighlight>
+      </Swipeout>;
+
+    if (!_.isEmpty(upcomingReminders) && !_.isEmpty(pastReminders)) {
+      return (
+        [
+          {
+            title: 'People You Need to Reach Out To',
+            data: upcomingReminders,
+            renderItem: overrideRenderItem,
+          }, {
+            title: 'Upcoming Reach Outs',
+            data: pastReminders,
+          },
+        ]
       );
+    } else if (_.isEmpty(pastReminders)) {
+      return (
+        [
+          {
+            title: 'Upcoming Reminders',
+            data: upcomingReminders,
+          },
+        ]
+      );
+    } else {
+      return (
+        [
+          {
+            title: 'Past Reminders',
+            data: pastReminders,
+          },
+        ]
+      );
+    }
+  };
+
+  render() {
+    const { reminders } = this.props;
+    const upcomingReminders = this.sortRemindersByDate(reminders)['true'];
+    const pastReminders = this.sortRemindersByDate(reminders)['false'];
+    return (
+        <SectionList
+          sections={ this.sectionHeaders(upcomingReminders, pastReminders) }
+          renderItem={
+            ({ item, index, section }) =>
+              <Swipeout
+                right={this.swipeoutButtons}
+                backgroundColor='white'
+                onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
+                onClose={() => this.setState({ activeKey: '', index: null, }) }
+                autoClose
+                key={ index }
+                >
+                <TouchableHighlight
+                  onPress={ () => {
+                    this.props.loadActiveReminder(item);
+                    this.props.showEditModal();
+                  } }
+
+                  underlayColor='transparent'
+                  >
+                  <View style={ styles.container }>
+                    <View style={ styles.nameContainer }>
+                      <Text style={ styles.name }>
+                        { item.name }
+                      </Text>
+                    </View>
+                    <View style={ styles.reminderDetails }>
+                      <View style={ styles.frequencyContainer }>
+                        <Icon
+                          name='cached'
+                          color='#1787fb'
+                          iconStyle={ styles.icon }
+                          size={ 20 }
+                        />
+                        <Text style={ styles.nextReminder }>
+                          { this.storeContact(item.frequency) }
+                        </Text>
+                      </View>
+                      <View style={ styles.gap } />
+                      <View style={ styles.nextReminderContainer }>
+                        <Icon
+                          name='date-range'
+                          color='#1787fb'
+                          iconStyle={ styles.icon }
+                          size={ 20 }
+                        />
+                        <Text style={ styles.nextReminder }>
+                          { item.date }
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableHighlight>
+              </Swipeout>
+          }
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={ styles.sectionHeader }>{ title }</Text>
+          )}
+          keyExtractor={(item, index) => (`reminders-${index}`)}
+        />
+        );
   }
 }
 
@@ -124,12 +241,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-
-    // borderWidth: 1,
-    // borderRadius: 10,
-    // marginBottom: 10,
-    // marginTop: 10,
-    // borderColor: '#e8e9ea',
+  },
+  sectionHeader: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 15,
+    padding: 5,
+    backgroundColor: '#f5f5f5',
+    color: '#5d5d5d',
   },
   nameContainer: {
     marginBottom: 5,
