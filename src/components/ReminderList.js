@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { removeReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
 import Moment from 'moment';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import _ from 'underscore';
 
 export default class ReminderList extends React.Component {
@@ -122,6 +122,11 @@ export default class ReminderList extends React.Component {
                   { item.date }
                 </Text>
               </View>
+              <Button
+                title='Contacted'
+                buttonStyle={ styles.doneButtonStyle }
+                textStyle={ styles.doneButtonStyleTitle }
+              />
             </View>
           </View>
         </TouchableHighlight>
@@ -192,7 +197,7 @@ export default class ReminderList extends React.Component {
                         { item.name }
                       </Text>
                     </View>
-                    <View style={ styles.reminderDetails }>
+                    <View style={ styles.reminderDetailsUpcoming }>
                       <View style={ styles.frequencyContainer }>
                         <Icon
                           name='cached'
@@ -243,20 +248,41 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   sectionHeader: {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Medium',
     fontSize: 15,
-    padding: 5,
+    padding: 10,
     backgroundColor: '#f5f5f5',
     color: '#5d5d5d',
   },
   nameContainer: {
     marginBottom: 5,
+    flexDirection: 'row',
   },
   name: {
     fontFamily: 'Roboto-Regular',
     fontSize: 20,
+    flex: 3,
+  },
+  doneButtonStyle: {
+    flex: 1,
+    padding: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#138b94',
+  },
+  doneButtonStyleTitle: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
   },
   reminderDetails: {
+    flexDirection: 'row',
+    flex: 1,
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    alignItems: 'center',
+    width: '100%',
+  },
+  reminderDetailsUpcoming: {
     flexDirection: 'row',
     flex: 1,
     alignSelf: 'stretch',
