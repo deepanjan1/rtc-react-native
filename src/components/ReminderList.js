@@ -122,7 +122,14 @@ export default class ReminderList extends React.Component {
                   { item.date }
                 </Text>
               </View>
+              <View style={ styles.gap } />
               <Button
+                icon={
+                  <Icon
+                    name='check-circle'
+                    color='#ffffff'
+                  />
+                }
                 title='Contacted'
                 buttonStyle={ styles.doneButtonStyle }
                 textStyle={ styles.doneButtonStyleTitle }
@@ -221,6 +228,7 @@ export default class ReminderList extends React.Component {
                           { item.date }
                         </Text>
                       </View>
+                      <View style={ styles.gap } />
                     </View>
                   </View>
                 </TouchableHighlight>
@@ -264,14 +272,13 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   doneButtonStyle: {
-    flex: 1,
     padding: 5,
     borderRadius: 2.5,
     backgroundColor: '#138b94',
   },
   doneButtonStyleTitle: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 15,
+    fontSize: 12,
   },
   reminderDetails: {
     flexDirection: 'row',
