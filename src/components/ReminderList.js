@@ -123,17 +123,29 @@ export default class ReminderList extends React.Component {
                 </Text>
               </View>
               <View style={ styles.gap } />
-              <Button
-                icon={
+              <TouchableHighlight
+                style={ styles.completedButtonContainer }
+                onPress={ () => {
+                  console.log('button pressed');
+                } }
+
+                underlayColor='transparent'
+                >
+                <View style={ { flexDirection: 'row' } }>
                   <Icon
-                    name='check-circle'
-                    color='#ffffff'
+                    name='done'
+                    size={ 15 }
+                    color= 'white'
                   />
-                }
+                  <Text style={styles.doneButtonStyleTitle }>Contacted</Text>
+                </View>
+              </TouchableHighlight>
+              {/* <Button
+                icon={{ name: 'done' }}
                 title='Contacted'
                 buttonStyle={ styles.doneButtonStyle }
                 textStyle={ styles.doneButtonStyleTitle }
-              />
+              /> */}
             </View>
           </View>
         </TouchableHighlight>
@@ -277,8 +289,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#138b94',
   },
   doneButtonStyleTitle: {
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto-Medium',
+    color: '#ffffff',
     fontSize: 12,
+  },
+  completedButtonContainer: {
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    borderRadius: 2.5,
+    backgroundColor: '#2abf40',
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   reminderDetails: {
     flexDirection: 'row',
