@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { loginWithFacebook, loadCurrentUser } from '../services/facebookAPI';
 import * as Action from '../actions/actions';
 import { currentUserListener } from '../services/api';
-import { NavigationActions } from 'react-navigation';
 
 class Login extends React.Component {
   constructor (props) {
@@ -29,7 +28,9 @@ class Login extends React.Component {
   };
 
   componentWillUnmount = () => {
-    this.currentUserListenerOff();
+    if (this.unsubscribeCurrentUserListener) {
+      this.unsubscribeCurrentUserListener();
+    }
   };
 
   logUserIn = async () => {
@@ -63,10 +64,6 @@ class Login extends React.Component {
             </View>
           </View>
         </TouchableHighlight>
-        {/* <Button
-          title='Login'
-          onPress={ () => this.logUserIn(loadUser, setLoggedInUser) }
-          /> */}
       </View>
     );
   };

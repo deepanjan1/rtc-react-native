@@ -20,6 +20,7 @@ export default function userReducer(state = initialState, action) {
         user: action.user,
       };
     case actionTypes.LOGGED_OUT:
+      console.log('reducer is working properly');
       return {
         ...state,
         isLoggedIn: action.isLoggedIn,

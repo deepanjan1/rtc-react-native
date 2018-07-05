@@ -6,6 +6,7 @@ import {
 } from '../services/api';
 import { getExistingPermission } from '../components/Notifications/NotificationFunctions';
 import { NavigationActions } from 'react-navigation';
+import _ from 'underscore';
 
 export const actionTypes = {
   LOAD_REMINDERS: 'LOAD_REMINDERS',
@@ -84,8 +85,9 @@ watchPermissions = (uid) => (
 export const watchUserData = () => (
   (dispatch) => {
     currentUserListener((user) => {
-      if (user !== null) {
-        console.log('from action creator: ' + user.displayName);
+      // if (user !== null) {
+      if (user) {
+        console.log('from action creator login: ' + user.displayName);
         dispatch(loadUser(user));
         dispatch(watchReminderData(user.uid));  //listener to pull reminder data
         dispatch(watchContactData(user.uid));  //listener to pull contact data
@@ -103,7 +105,7 @@ export const watchUserData = () => (
 export const watchUserDataForLogin = () => (
   (dispatch) => {
     currentUserListener((user) => {
-      if (user !== null) {
+      if (!_.isEmpty(user)) {
         dispatch(loadUser(user));
         dispatch(setLoggedInUser(true));
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));

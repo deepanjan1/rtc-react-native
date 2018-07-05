@@ -8,7 +8,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { removeReminder } from '../services/api';
+import { removeReminder, updateReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
@@ -74,6 +74,51 @@ export default class ReminderList extends React.Component {
     }
   };
 
+  convertFreqtoMill = (frequency) => {
+    switch (frequency) {
+      case 0:
+        return (1209600000);
+      case 1:
+        return (7776000000);
+      case 2:
+        return (15552000000);
+      case 3:
+        return (31104000000);
+    }
+  };
+
+  dateFormat = (date) => {
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+    var yyyy = date.getFullYear();
+    let day;
+    let month;
+
+    if (dd < 10) {
+      day = '0' + dd.toString();
+    } else {
+      day = dd.toString();
+    }
+
+    if (mm < 10) {
+      month = '0' + mm.toString();
+    } else {
+      month = mm.toString();
+    }
+
+    var dateString = month + '/' + day + '/' + yyyy.toString();
+    return dateString;
+  };
+
+  calcNextReminder = (date, frequency) => {
+    dateObject = new Date(date);
+    delta = this.convertFreqtoMill(frequency);
+    dateObject = new Date(dateObject.getTime() + delta);
+    dateInString = this.dateFormat(dateObject);
+    return dateInString;
+  };
+
+  // function to delineate array by date and custom formatting
   sectionHeaders = (upcomingReminders, pastReminders) => {
     const overrideRenderItem = ({ item, index, section }) =>
       <Swipeout
@@ -126,7 +171,9 @@ export default class ReminderList extends React.Component {
               <TouchableHighlight
                 style={ styles.completedButtonContainer }
                 onPress={ () => {
-                  console.log('button pressed');
+                  item.date = this.calcNextReminder(item.date, item.frequency);
+                  console.log('new date: ' + item.date);
+                  updateReminder(this.props.user, item);
                 } }
 
                 underlayColor='transparent'
@@ -140,12 +187,6 @@ export default class ReminderList extends React.Component {
                   <Text style={styles.doneButtonStyleTitle }>Contacted</Text>
                 </View>
               </TouchableHighlight>
-              {/* <Button
-                icon={{ name: 'done' }}
-                title='Contacted'
-                buttonStyle={ styles.doneButtonStyle }
-                textStyle={ styles.doneButtonStyleTitle }
-              /> */}
             </View>
           </View>
         </TouchableHighlight>
