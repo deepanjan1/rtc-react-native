@@ -106,7 +106,7 @@ export const watchUserDataForLogin = () => (
   (dispatch) => {
     currentUserListener((user) => {
       if (!_.isEmpty(user)) {
-        dispatch(loadUser(user));
+        // dispatch(loadUser(user));
         dispatch(setLoggedInUser(true));
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       }

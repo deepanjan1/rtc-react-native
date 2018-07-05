@@ -18,13 +18,7 @@ class Login extends React.Component {
   };
 
   componentDidMount = () => {
-    this.unsubscribeCurrentUserListener = currentUserListener((snapshot) => {
-      try {
-        this.props.watchUserDataForLogin();
-      } catch (e) {
-        this.setState({ error: e, });
-      }
-    });
+    this.unsubscribeCurrentUserListener = this.props.watchUserDataForLogin();
   };
 
   componentWillUnmount = () => {
