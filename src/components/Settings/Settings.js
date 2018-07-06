@@ -19,7 +19,6 @@ export default class Settings extends React.Component {
       photo: this.props.user.photo,
       email: this.props.user.email,
     };
-
     return (
       <Modal
         isVisible={ this.props.showSettingsModal}

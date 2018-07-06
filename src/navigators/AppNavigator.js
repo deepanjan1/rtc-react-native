@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Welcome from '../screens/Welcome';
 import Dashboard from '../screens/Dashboard';
 import Login from '../screens/Login';
 
-export const AppNavigator = StackNavigator(
+export const AppNavigator = createStackNavigator(
   {
     Welcome: {
       screen: Welcome,

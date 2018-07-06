@@ -78,14 +78,6 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
-    // Listener that loads the user, reminders, contacts, and notification data
-    // this.unsubscribeCurrentUserListener = currentUserListener((snapshot) => {
-    //   try {
-    //     this.props.watchUserData();
-    //   } catch (e) {
-    //     this.setState({ error: e, });
-    //   }
-    // });
     this.unsubscribeCurrentUserListener = this.props.watchUserData();
   };
 
@@ -101,13 +93,15 @@ class Dashboard extends React.Component {
   };
 
   componentWillUnmount() {
-    this.unsubscribeCurrentUserListener();
+    if (this.unsubscribeCurrentUserListener) {
+      this.unsubscribeCurrentUserListener();
+    }
 
     // currentUserListenerOff();
   }
 
-  logOut = async () => {
-    await logoutCurrentUser(); // remove from firebase
+  logOut = () => {
+    logoutCurrentUser(); // remove from firebase
   };
 
   render() {

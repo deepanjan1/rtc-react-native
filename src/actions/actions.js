@@ -5,7 +5,7 @@ import {
   getPermissions,
 } from '../services/api';
 import { getExistingPermission } from '../components/Notifications/NotificationFunctions';
-import { NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import _ from 'underscore';
 
 export const actionTypes = {
@@ -85,18 +85,16 @@ watchPermissions = (uid) => (
 export const watchUserData = () => (
   (dispatch) => {
     currentUserListener((user) => {
-      // if (user !== null) {
-      if (user) {
+      if (!_.isEmpty(user)) {
         console.log('from action creator login: ' + user.displayName);
         dispatch(loadUser(user));
         dispatch(watchReminderData(user.uid));  //listener to pull reminder data
         dispatch(watchContactData(user.uid));  //listener to pull contact data
         dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
       } else {
-        console.log('from action creator: ' + user);
         dispatch(removeUser(user));
         dispatch(logOutUser(false));
-        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+        dispatch(popAction);
       }
     });
   }
@@ -106,7 +104,6 @@ export const watchUserDataForLogin = () => (
   (dispatch) => {
     currentUserListener((user) => {
       if (!_.isEmpty(user)) {
-        // dispatch(loadUser(user));
         dispatch(setLoggedInUser(true));
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       }
@@ -153,3 +150,7 @@ export const removeUser = (user) => (
     user,
   }
 );
+
+const popAction = StackActions.pop({
+  n: 1,
+});
