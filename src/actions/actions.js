@@ -100,6 +100,19 @@ export const watchUserData = () => (
   }
 );
 
+export const watchUserDataForLoad = () => (
+  (dispatch) => {
+    currentUserListener((user) => {
+      if (!_.isEmpty(user)) {
+        dispatch(setLoggedInUser(true));
+        dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
+      } else {
+        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+      }
+    });
+  }
+);
+
 export const watchUserDataForLogin = () => (
   (dispatch) => {
     currentUserListener((user) => {

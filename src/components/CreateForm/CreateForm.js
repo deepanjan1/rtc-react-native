@@ -6,7 +6,6 @@ import {
   ScrollView,
 } from 'react-native';
 import SearchList from './SearchList';
-import { Permissions, Contacts } from 'expo';
 import {
   FormLabel,
   FormInput,
@@ -15,7 +14,6 @@ import {
   Icon,
   Button,
 } from 'react-native-elements';
-import { getContacts } from '../../services/api';
 import Calendar from 'react-native-calendar-datepicker';
 import Moment from 'moment';
 import Modal from 'react-native-modal';
@@ -24,7 +22,6 @@ import PropTypes from 'prop-types';
 export default class CreateForm extends React.Component {
   constructor(props) {
     super(props);
-    this.filterItems = this.filterItems.bind(this);
     this.addReminder = this.props.addReminder.bind(this);
   }
 

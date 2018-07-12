@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import Welcome from '../screens/Welcome';
 import Dashboard from '../screens/Dashboard';
 import Login from '../screens/Login';
+import Splash from '../screens/Splash';
 
 export const AppNavigator = createStackNavigator(
   {
@@ -51,8 +52,22 @@ export const AppNavigator = createStackNavigator(
         headerLeft: null,
       }),
     },
+    Splash: {
+      screen: Splash,
+      navigationOptions: ({
+        headerStyle: {
+          backgroundColor: 'white',
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          fontSize: 30,
+          fontFamily: 'Roboto-Bold',
+        },
+        headerLeft: null,
+      }),
+    },
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Splash',
   },
 );

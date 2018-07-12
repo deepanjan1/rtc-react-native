@@ -27,14 +27,11 @@ export const shutOffContactListener = (uid) => setListenerOff('contacts/' + uid)
 export const currentUserListener = (updaterFn) => setUserListener(updaterFn);
 export const currentUserListenerOff = (updaterFn) => setUserListenerOff(updaterFn);
 
-export const createReminder = (uid, reminder, notificationToken) => {
+export const createReminder = (uid, reminder) => {
   // creating a reminder and key and returning full reminder object
   // so I can save within redux store
   if (Boolean(reminder)) {
     const endpoint = 'reminders/' + uid + '/';
-
-    // console.log('from firebase store: ' + notificationToken);
-    // reminder.notificationToken = notificationToken;
     var reminderWithKey = createKey(endpoint, reminder);
     updateData(endpoint, reminderWithKey);
   }

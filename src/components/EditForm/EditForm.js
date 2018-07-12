@@ -4,11 +4,10 @@ import {
   Text,
   View,
   ScrollView,
+  TouchableHighlight,
 } from 'react-native';
 import {
-  FormLabel,
-  FormInput,
-  FormValidationMessage,
+  Input,
   ButtonGroup,
   Icon,
   Button,
@@ -59,57 +58,87 @@ export default class EditForm extends React.Component {
         animationOut='fadeOut'
         animationOutTiming={200}>
         <View style={styles.container}>
-          <FormLabel fontFamily={ 'Roboto-Medium' }>Name</FormLabel>
+          <Text style={styles.name}>Who do you want to remember to call?</Text>
+          <View style={styles.inputField}>
+            <Icon
+              name='person'
+              size={25}
+              color='#1787fb'
+            />
+            <Input
+              inputStyle = { styles.input }
+              containerStyle = { styles.inputContainer }
+              onFocus={ this.onFocus }
+              value={ this.state.name }
+              editable={ false }
+            />
+          </View>
+          {/* <FormLabel fontFamily={ 'Roboto-Medium' }>Name</FormLabel>
           <FormInput
             value={ this.state.name }
             inputStyle={ styles.input }
             onFocus={this.onFocus}
             editable={ false }
-          />
-          <View style={ styles.row } />
-          <View>
-            <FormLabel fontFamily={ 'Roboto-Medium' }>Frequency</FormLabel>
-            <View style={styles.frequency}>
-              <ButtonGroup
-                onPress={this.updateFrequency}
-                selectedIndex={this.state.selectedFrequency}
-                buttons={frequency}
-                buttonStyle={ styles.frequencyButton }
-                textStyle={ styles.frequencyButtonText }
-                containerStyle={{ height: 50 }}
-                selectedButtonStyle={ styles.selectedFrequencyButton }
-                selectedTextStyle={ styles.selectedFrequencyButtonText }
+          /> */}
+          {/* <View style={ styles.row } /> */}
+          <View style={ { marginTop: 20 } }>
+            <Text style={styles.name}>When do you want your first reminder?</Text>
+            <TouchableHighlight
+              onPress={ () => this.setState({ datePickerModal: true }) }
+              underlayColor='transparent'>
+              <View style={ styles.inputField }>
+                <Icon
+                  name='date-range'
+                  size={25}
+                  color='#1787fb'
+                />
+                <Input
+                  value={ this.state.date }
+                />
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View style={ { marginTop: 20 } }>
+            <Text style={styles.name}>How often to you want to be reminded to call?</Text>
+            <View style={ styles.inputField }>
+              <Icon
+                name='cached'
+                size={25}
+                color='#1787fb'
               />
+              <View style={{ width: '100%' }}>
+                <ButtonGroup
+                  onPress={this.updateFrequency}
+                  selectedIndex={this.state.selectedFrequency}
+                  buttons={frequency}
+                  buttonStyle={ styles.frequencyButton }
+                  textStyle={ styles.frequencyButtonText }
+                  containerStyle={{ width: '80%' }}
+                  selectedButtonStyle={ styles.selectedFrequencyButton }
+                  selectedTextStyle={ styles.selectedFrequencyButtonText }
+                />
+              </View>
             </View>
-            <View style={ styles.row } />
-            <FormLabel fontFamily={ 'Roboto-Medium' }>First Reminder</FormLabel>
-            <View style={ styles.datePicker }>
-              <Icon
-                name='date-range'
-                color='#1a9bfc'
-                containerStyle={{ marginTop: 0, flex: 1, }}
-                onPress={() => this.setState({ datePickerModal: true })}
-              />
-              <Text style={ styles.dateStyle }>
-                { this.state.date }
-              </Text>
-              <Icon
-                name='check-circle'
-                color='#1a9bfc'
-                containerStyle={{ marginTop: 0, flex: 1, }}
-                onPress={() => {
-                  this.props.updateReminder(this.props.user, {
-                    name: this.state.name,
-                    date: this.state.date,
-                    personID: this.state.personID,
-                    frequency: this.state.selectedFrequency,
-                    key: this.props.editReminder.key,
-                  });
-                  this.props.closeEditForm();
-                }}
+          </View>
+          <View style={ { marginTop: 20 } }>
+            <Button
+              title='Save Reminder'
+              buttonStyle={ styles.saveButton }
+              textStyle={ styles.saveButtonText }
+              onPress={ () => {
+                this.props.updateReminder(this.props.user, {
+                  name: this.state.name,
+                  date: this.state.date,
+                  personID: this.state.personID,
+                  frequency: this.state.selectedFrequency,
+                  key: this.props.editReminder.key,
+                });
+                this.props.closeEditForm();
+              } }
 
-              />
-            </View>
+            />
+          </View>
+          <View>
             <Modal
               isVisible={ this.state.datePickerModal }
               onBackdropPress={() => this.setState({ datePickerModal: false })}
@@ -152,14 +181,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 600,
   },
-  row: {
-    marginTop: 20,
-  },
   input: {
     fontSize: 20,
     width: '100%',
     color: '#8e8e8e',
     fontFamily: 'Roboto-Regular',
+  },
+  inputContainer: {
+    backgroundColor: '#ffffff',
+  },
+  input: {
+    fontSize: 20,
+    fontFamily: 'Roboto-Regular',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  email: {
+    fontFamily: 'Roboto-Light',
+  },
+  name: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 20,
+    marginBottom: 5,
+  },
+  inputField: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
   },
   frequency: {
     padding: 15,
@@ -210,5 +258,14 @@ const styles = StyleSheet.create({
     color: '#1a9bfc',
     fontFamily: 'Roboto-Regular',
     flex: 4,
+  },
+  saveButton: {
+      borderRadius: 25,
+      backgroundColor: '#1787fb',
+      width: '100%',
+    },
+  saveButtonText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
   },
 });

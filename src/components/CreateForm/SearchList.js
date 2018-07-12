@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SearchEntry from './SearchEntry';
+import SearchBar from 'react-native-searchbar';
 
 import { Font, AppLoading, Asset } from 'expo';
 
@@ -15,6 +16,7 @@ export default class SearchList extends React.Component {
     super(props);
     this.props.filteredContacts;
     this.visible = this.props.visible;
+    this.onPress = this.props.onPress.bind(this);
   }
 
   // _keyExtractor = (item, index) => item.id;
@@ -29,7 +31,7 @@ export default class SearchList extends React.Component {
             renderItem={
               ({ item }) => (
                 <SearchEntry
-                  onPress={ (e) => this.props.onPress(item) }
+                  onPress={ this.onPress }
                   item={ item }
                 />
               )

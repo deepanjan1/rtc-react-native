@@ -19,7 +19,7 @@ export default class SearchEntry extends React.Component {
       try {
         return (
           <TouchableHighlight
-            onPress={ (e) => this.onPress(item) }>
+            onPress={ () => this.onPress(item) }>
             <View style={styles.contactSearch}>
                   <Text style={styles.name}>{item.name}</Text>
                   { item.emails.map((data) => (

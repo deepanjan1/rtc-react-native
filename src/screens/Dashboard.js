@@ -10,7 +10,8 @@ import { Icon, Button } from 'react-native-elements';
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
-import CreateForm from '../components/CreateForm/CreateForm';
+// import CreateForm from '../components/CreateForm/CreateForm';
+import CreateFormRevised from '../components/CreateForm/CreateFormRevised';
 import EditForm from '../components/EditForm/EditForm';
 import Settings from '../components/Settings/Settings';
 import Notifications from '../components/Notifications/Notifications';
@@ -168,7 +169,18 @@ class Dashboard extends React.Component {
             closeNotificationsModal={ () => this.setState({ showNotificationsModal: false, }) }
             loadNotificationToken = { loadNotificationToken }
           />
-          <CreateForm
+          <CreateFormRevised
+            showCreateForm={ this.state.showCreateModal }
+            closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
+            addReminder={
+              (uid, reminder) =>
+              createReminder(uid, reminder)
+            }
+            contacts={ contacts }
+            user = { user.uid }
+            notificationToken={ notificationToken }
+          />
+          {/* <CreateForm
             showCreateForm={ this.state.showCreateModal }
             closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
             addReminder={
@@ -178,7 +190,7 @@ class Dashboard extends React.Component {
             contacts={ contacts }
             user = { user.uid }
             notificationToken={ notificationToken }
-          />
+          /> */}
           <EditForm
             showEditForm={ this.state.showEditModal }
             closeEditForm={ () => this.setState({ showEditModal: false, }) }
