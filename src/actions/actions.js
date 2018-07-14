@@ -94,7 +94,7 @@ export const watchUserData = () => (
       } else {
         dispatch(removeUser(user));
         dispatch(logOutUser(false));
-        dispatch(popAction);
+        dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
       }
     });
   }
@@ -107,7 +107,7 @@ export const watchUserDataForLoad = () => (
         dispatch(setLoggedInUser(true));
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       } else {
-        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+        dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
       }
     });
   }

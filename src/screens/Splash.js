@@ -11,7 +11,9 @@ class Splash extends React.Component {
   };
 
   componentDidMount = () => {
-    this.unsubscribeCurrentUserListener = this.props.watchUserDataForLoad();
+    setTimeout(() => {
+      this.unsubscribeCurrentUserListener = this.props.watchUserDataForLoad();
+    }, 1000);
   };
 
   componentWillUnmount = () => {

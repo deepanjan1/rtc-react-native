@@ -218,7 +218,7 @@ export default class ReminderList extends React.Component {
       return (
         [
           {
-            title: 'Past Reminders',
+            title: 'Upcoming Reminders',
             data: pastReminders,
           },
         ]
