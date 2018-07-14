@@ -3,7 +3,17 @@
   "displayName": "rtc-react-native",
   "expo":
     {
+      "name": "Remember To Call",
+      "icon": "./src/assets/images/Icon.png",
+      "version": "0.1.0",
+      "slug": "remember-to-call",
       "sdkVersion": "27.0.0",
+      "ios": {
+        "bundleIdentifier": "DeepCreations"
+      },
+      "android": {
+        "package": "com.remembertocall"
+      }
     },
   "facebookScheme":
     {

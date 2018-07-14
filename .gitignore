@@ -19,6 +19,7 @@ yarn-error.log*
 
 # api
 /src/config
+/functions-cron
 
 #app builds
 /android

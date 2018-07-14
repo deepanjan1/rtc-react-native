@@ -11,25 +11,25 @@ class IntroFlow extends React.Component {
   }
 
   handleOnTap() {
-    this.props.onTap('Dashboard');
+    this.props.onTap('Login');
   }
 
   render() {
     return (
       <Swiper loop={false} bounces={true}>
         <View style={styles.container}>
-          <Text>
+          <Text style={ styles.caption }>
             Stay in touch with the friends you love but can't find the time.
           </Text>
         </View>
         <View style={styles.container}>
-          <Text>
-            Pick your Friends
+          <Text style={ styles.caption }>
+            Pick Your Friends
           </Text>
         </View>
         <View style={styles.container}>
-          <Text>
-            Create Reminders and Get Reminded!
+          <Text style={ styles.caption }>
+            Create Reminders and Always Remember to Call!
           </Text>
           <Button
             title='Login'
@@ -48,9 +48,14 @@ IntroFlow.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  caption: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 30,
+    textAlign: 'center',
   },
 });
 

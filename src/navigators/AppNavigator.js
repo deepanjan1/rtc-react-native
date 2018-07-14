@@ -11,7 +11,7 @@ export const AppNavigator = createStackNavigator(
     Welcome: {
       screen: Welcome,
       navigationOptions: ({
-        header: 'null',
+        header: null,
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
@@ -68,6 +68,6 @@ export const AppNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Splash',
+    initialRouteName: 'Welcome',
   },
 );

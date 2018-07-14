@@ -21,13 +21,7 @@ export default class Welcome extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        { this.state.showTitle ?
-          <Header title='Remember to Call' />
-          :
-          <View>
-            <IntroFlow onTap={ navigate }/>
-          </View>
-        }
+        <IntroFlow onTap={ navigate }/>
       </View>
     );
   }
@@ -39,5 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
 });
