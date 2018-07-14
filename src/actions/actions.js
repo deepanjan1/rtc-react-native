@@ -107,7 +107,7 @@ export const watchUserDataForLoad = () => (
         dispatch(setLoggedInUser(true));
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       } else {
-        dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
+        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
       }
     });
   }

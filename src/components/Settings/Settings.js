@@ -34,9 +34,6 @@ export default class Settings extends React.Component {
               />
             </TouchableHighlight>
           <View style={ styles.settings }>
-            <Text style={ styles.modalHeader }>
-              Settings
-            </Text>
             <View style={ styles.visibleModal }>
               <View style={ styles.userInformation }>
                 <Image
@@ -47,18 +44,15 @@ export default class Settings extends React.Component {
                   <Text style={ styles.nameText }>{ user.name }</Text>
                   <Text style={ styles.emailText }>{ user.email }</Text>
                 </View>
-                <View style={ styles.logoutButtonContainer }>
-                  <Button
-                    title='Logout'
-                    buttonStyle={ styles.logoutButton }
-                    textStyle={ styles.logoutButtonText }
-                    onPress={ () => this.props.logout() }>
-                  </Button>
-                </View>
               </View>
-              <View
-                style={ styles.horizontalRule }
-              />
+              <View style={ styles.logoutButtonContainer }>
+                <Button
+                  title='Logout'
+                  buttonStyle={ styles.logoutButton }
+                  textStyle={ styles.logoutButtonText }
+                  onPress={ () => this.props.logout() }>
+                </Button>
+              </View>
             </View>
           </View>
         </View>
@@ -76,9 +70,12 @@ Settings.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    height: screenHeight,
-    width: screenWidth,
-    marginLeft: -18,
+    marginTop: '200%',
+    padding: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    height: '25%',
+    width: '100%',
   },
   upperPadding: {
     flex: 3,
@@ -87,12 +84,6 @@ const styles = StyleSheet.create({
     flex: 2,
     backgroundColor: '#ffffff',
   },
-  modalHeader: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 20,
-    marginTop: 10,
-    marginLeft: 10,
-  },
   image: {
     width: 50,
     height: 50,
@@ -100,17 +91,11 @@ const styles = StyleSheet.create({
   },
   visibleModal: {
     height: 100,
-    marginTop: 10,
-    marginLeft: 10,
+    marginTop: 5,
   },
   userInformation: {
     flexDirection: 'row',
     marginBottom: 10,
-  },
-  horizontalRule: {
-    borderTopColor: '#c0c0c0',
-    borderTopWidth: 1,
-    marginLeft: -18,
   },
   nameEmail: {
     flexDirection: 'column',
