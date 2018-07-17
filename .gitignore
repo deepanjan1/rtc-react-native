@@ -24,3 +24,6 @@ yarn-error.log*
 #app builds
 /android
 /ios
+
+.DS_Store
+src/.DS_Store
