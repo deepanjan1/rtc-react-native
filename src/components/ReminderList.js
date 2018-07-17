@@ -168,26 +168,37 @@ export default class ReminderList extends React.Component {
                 </Text>
               </View>
               <View style={ styles.gap } />
-              <TouchableHighlight
-                style={ styles.completedButtonContainer }
-                onPress={ () => {
-                  item.date = this.calcNextReminder(item.date, item.frequency);
-                  console.log('new date: ' + item.date);
-                  updateReminder(this.props.user, item);
-                } }
-
-                underlayColor='transparent'
-                >
-                <View style={ { flexDirection: 'row' } }>
-                  <Icon
-                    name='done'
-                    size={ 15 }
-                    color= 'white'
-                  />
-                  <Text style={styles.doneButtonStyleTitle }>Contacted</Text>
-                </View>
-              </TouchableHighlight>
             </View>
+            <Button
+              title='Contacted'
+              buttonStyle={ styles.completedButtonContainer }
+              textStyle={ styles.doneButtonStyleTitle }
+              onPress={ () => {
+                item.date = this.calcNextReminder(item.date, item.frequency);
+                console.log('new date: ' + item.date);
+                updateReminder(this.props.user, item);
+              } }>
+
+            </Button>
+            {/* <TouchableHighlight
+              style={ styles.completedButtonContainer }
+              onPress={ () => {
+                item.date = this.calcNextReminder(item.date, item.frequency);
+                console.log('new date: ' + item.date);
+                updateReminder(this.props.user, item);
+              } }
+
+              underlayColor='transparent'
+              >
+              <View style={ { flexDirection: 'row' } }>
+                <Icon
+                  name='done'
+                  size={ 15 }
+                  color= 'white'
+                />
+                <Text style={styles.doneButtonStyleTitle }>Contacted</Text>
+              </View>
+            </TouchableHighlight> */}
           </View>
         </TouchableHighlight>
       </Swipeout>;
@@ -257,7 +268,7 @@ export default class ReminderList extends React.Component {
                         { item.name }
                       </Text>
                     </View>
-                    <View style={ styles.reminderDetailsUpcoming }>
+                    <View style={ styles.reminderDetails }>
                       <View style={ styles.frequencyContainer }>
                         <Icon
                           name='cached'
@@ -324,22 +335,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 3,
   },
-  doneButtonStyle: {
-    padding: 5,
-    borderRadius: 2.5,
-    backgroundColor: '#138b94',
-  },
   doneButtonStyleTitle: {
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
     color: '#ffffff',
-    fontSize: 12,
   },
   completedButtonContainer: {
     flexDirection: 'row',
     alignSelf: 'stretch',
-    borderRadius: 2.5,
+    borderRadius: 25,
     backgroundColor: '#2abf40',
-    padding: 5,
+    marginTop: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -350,7 +356,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 5,
     alignItems: 'center',
-    width: '100%',
+    width: '70%',
   },
   reminderDetailsUpcoming: {
     flexDirection: 'row',
