@@ -222,7 +222,22 @@ export default class CreateFormRevised extends React.Component {
     return (
       <Modal
         isVisible={ this.props.showCreateForm }
-        onBackdropPress={ this.props.closeCreateForm }
+        onBackdropPress={ () => {
+          this.props.closeCreateForm();
+          this.setState({
+            showForm: false,
+            person: {},
+            personID: '',
+            results: [],
+            search: '',
+            showSearchResults: true,
+            nameSelected: false,
+            datePickerModal: false,
+            date: Moment().startOf('day'),  // to firebase
+            selectedFrequency: 0, // to firebase
+          });
+        } }
+
         animationIn='slideInUp'
         animationInTiming={200}
         animationOut='slideOutDown'
@@ -241,10 +256,17 @@ export default class CreateFormRevised extends React.Component {
                 containerStyle = { styles.inputContainer }
                 onChangeText={(search) => {
                   if (search !== '') {
-                    this.setState({ search });
+                    this.setState({ search: search, });
                     this.showResults(search);
-                  }
+                  };
                 }}
+
+                onChange={ () => {
+                  if (this.state.nameSelected &&
+                    this.state.search !== this.state.person.name) {
+                    this.setState({ person: {}, });
+                  };
+                } }
 
                 clearTextOnFocus={true}
                 placeholder="Type in your friend's name"
@@ -252,6 +274,7 @@ export default class CreateFormRevised extends React.Component {
                   {
                     showSearchResults: true,
                     showForm: false,
+                    person: {},
                   }) }
                 value={ this.state.search }
               />
@@ -326,7 +349,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 5,
   },
   inputField: {
