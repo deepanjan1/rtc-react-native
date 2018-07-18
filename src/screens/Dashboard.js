@@ -149,7 +149,7 @@ class Dashboard extends React.Component {
             <Button
               title='Create Reminder'
               buttonStyle={ styles.createButton }
-              textStyle={ styles.createButtonText }
+              titleStyle={ styles.createButtonText }
               onPress={ () => this.setState({ showCreateModal: true, }) }>
             </Button>
             <Icon

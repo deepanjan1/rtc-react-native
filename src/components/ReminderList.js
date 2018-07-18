@@ -168,37 +168,31 @@ export default class ReminderList extends React.Component {
                 </Text>
               </View>
               <View style={ styles.gap } />
+              <View style={ styles.streakContainer }>
+                <View style={ styles.streakIconContainer }>
+                  <Icon
+                    name='phone'
+                    color='#1787fb'
+                    iconStyle={ styles.icon }
+                    size={ 20 }
+                  />
+                </View>
+                <View style={ styles.streakNumberContainer }>
+                  <Text style={ styles.streakNumber }>2X</Text>
+                </View>
+              </View>
             </View>
             <Button
               title='Contacted'
               buttonStyle={ styles.completedButtonContainer }
-              textStyle={ styles.doneButtonStyleTitle }
-              onPress={ () => {
-                item.date = this.calcNextReminder(item.date, item.frequency);
-                console.log('new date: ' + item.date);
-                updateReminder(this.props.user, item);
-              } }>
-
-            </Button>
-            {/* <TouchableHighlight
-              style={ styles.completedButtonContainer }
+              titleStyle={ styles.doneButtonStyleTitle }
               onPress={ () => {
                 item.date = this.calcNextReminder(item.date, item.frequency);
                 console.log('new date: ' + item.date);
                 updateReminder(this.props.user, item);
               } }
 
-              underlayColor='transparent'
-              >
-              <View style={ { flexDirection: 'row' } }>
-                <Icon
-                  name='done'
-                  size={ 15 }
-                  color= 'white'
-                />
-                <Text style={styles.doneButtonStyleTitle }>Contacted</Text>
-              </View>
-            </TouchableHighlight> */}
+            />
           </View>
         </TouchableHighlight>
       </Swipeout>;
@@ -293,6 +287,19 @@ export default class ReminderList extends React.Component {
                         </Text>
                       </View>
                       <View style={ styles.gap } />
+                      <View style={ styles.streakContainer }>
+                        <View style={ styles.streakIconContainer }>
+                          <Icon
+                            name='phone'
+                            color='#1787fb'
+                            iconStyle={ styles.icon }
+                            size={ 20 }
+                          />
+                        </View>
+                        <View style={ styles.streakNumberContainer }>
+                          <Text style={ styles.streakNumber }>2X</Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
                 </TouchableHighlight>
@@ -317,7 +324,12 @@ ReminderList.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 15,
+    marginBottom: 5,
+    marginTop: 5,
+    borderWidth: 1,
+    borderColor: '#e8e9ea',
+    borderRadius: 20,
   },
   sectionHeader: {
     fontFamily: 'Roboto-Medium',
@@ -341,13 +353,15 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   completedButtonContainer: {
+    fontFamily: 'Roboto-Regular',
     flexDirection: 'row',
     alignSelf: 'stretch',
     borderRadius: 25,
     backgroundColor: '#2abf40',
-    marginTop: 5,
+    marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
   reminderDetails: {
     flexDirection: 'row',
@@ -356,16 +370,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 5,
     alignItems: 'center',
-    width: '70%',
-  },
-  reminderDetailsUpcoming: {
-    flexDirection: 'row',
-    flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    marginTop: 5,
-    alignItems: 'center',
-    width: '70%',
+    width: '100%',
   },
   frequencyContainer: {
     flexDirection: 'row',
@@ -379,6 +384,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
     paddingRight: 2,
+    margin: 5,
     justifyContent: 'center',
   },
   gap: {
@@ -397,14 +403,50 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
     paddingRight: 2,
+    margin: 5,
     justifyContent: 'center',
   },
   nextReminder: {
-    fontFamily: 'Roboto-Light',
-    fontSize: 12,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
     color: '#5d5d5d',
   },
   icon: {
     marginRight: 2,
+  },
+  streakContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 45,
+    width: 45,
+  },
+  streakIconContainer: {
+    flexDirection: 'row',
+    height: 30,
+    width: 30,
+    borderColor: '#e8e9ea',
+    borderWidth: 1,
+    borderRadius: 15,
+    backgroundColor: '#f8f9fa',
+    alignItems: 'center',
+    padding: 4,
+    justifyContent: 'center',
+  },
+  streakNumberContainer: {
+    position: 'absolute',
+    top: 1,
+    right: 1,
+    height: 18,
+    width: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 9,
+    backgroundColor: '#e78e54',
+  },
+  streakNumber: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 10,
+    color: '#ffffff',
   },
 });
