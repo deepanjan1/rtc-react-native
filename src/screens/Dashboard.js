@@ -10,7 +10,6 @@ import { Icon, Button } from 'react-native-elements';
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
 import ReminderList from '../components/ReminderList';
-// import CreateForm from '../components/CreateForm/CreateForm';
 import CreateFormRevised from '../components/CreateForm/CreateFormRevised';
 import EditForm from '../components/EditForm/EditForm';
 import Settings from '../components/Settings/Settings';
@@ -97,8 +96,6 @@ class Dashboard extends React.Component {
     if (this.unsubscribeCurrentUserListener) {
       this.unsubscribeCurrentUserListener();
     }
-
-    // currentUserListenerOff();
   }
 
   logOut = () => {

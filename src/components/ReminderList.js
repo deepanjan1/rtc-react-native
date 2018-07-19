@@ -118,6 +118,39 @@ export default class ReminderList extends React.Component {
     return dateInString;
   };
 
+  showStreak = (streakNumber) => {
+    if (streakNumber > 0) {
+      return (
+        <View style={ styles.streakContainer }>
+          <View style={ styles.streakIconContainer }>
+            <Icon
+              name='phone'
+              color='#1787fb'
+              iconStyle={ styles.icon }
+              size={ 20 }
+            />
+          </View>
+          <View style={ styles.streakNumberContainer }>
+            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={ styles.streakContainer }>
+          <View style={ styles.emptyStreakIconContainer }>
+            <Icon
+              name='phone'
+              color='transparent'
+              iconStyle={ styles.icon }
+              size={ 20 }
+            />
+          </View>
+        </View>
+      );
+    }
+  };
+
   // function to delineate array by date and custom formatting
   sectionHeaders = (upcomingReminders, pastReminders) => {
     const overrideRenderItem = ({ item, index, section }) =>
@@ -168,25 +201,14 @@ export default class ReminderList extends React.Component {
                 </Text>
               </View>
               <View style={ styles.gap } />
-              <View style={ styles.streakContainer }>
-                <View style={ styles.streakIconContainer }>
-                  <Icon
-                    name='phone'
-                    color='#1787fb'
-                    iconStyle={ styles.icon }
-                    size={ 20 }
-                  />
-                </View>
-                <View style={ styles.streakNumberContainer }>
-                  <Text style={ styles.streakNumber }>2X</Text>
-                </View>
-              </View>
+              { this.showStreak(item.streak) }
             </View>
             <Button
               title='Contacted'
               buttonStyle={ styles.completedButtonContainer }
               titleStyle={ styles.doneButtonStyleTitle }
               onPress={ () => {
+                item.streak += 1;
                 item.date = this.calcNextReminder(item.date, item.frequency);
                 console.log('new date: ' + item.date);
                 updateReminder(this.props.user, item);
@@ -287,19 +309,7 @@ export default class ReminderList extends React.Component {
                         </Text>
                       </View>
                       <View style={ styles.gap } />
-                      <View style={ styles.streakContainer }>
-                        <View style={ styles.streakIconContainer }>
-                          <Icon
-                            name='phone'
-                            color='#1787fb'
-                            iconStyle={ styles.icon }
-                            size={ 20 }
-                          />
-                        </View>
-                        <View style={ styles.streakNumberContainer }>
-                          <Text style={ styles.streakNumber }>2X</Text>
-                        </View>
-                      </View>
+                      { this.showStreak(item.streak) }
                     </View>
                   </View>
                 </TouchableHighlight>
@@ -429,6 +439,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: '#f8f9fa',
+    alignItems: 'center',
+    padding: 4,
+    justifyContent: 'center',
+  },
+  emptyStreakIconContainer: {
+    flexDirection: 'row',
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    backgroundColor: 'transparent',
     alignItems: 'center',
     padding: 4,
     justifyContent: 'center',

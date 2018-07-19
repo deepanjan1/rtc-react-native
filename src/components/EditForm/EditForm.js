@@ -73,14 +73,6 @@ export default class EditForm extends React.Component {
               editable={ false }
             />
           </View>
-          {/* <FormLabel fontFamily={ 'Roboto-Medium' }>Name</FormLabel>
-          <FormInput
-            value={ this.state.name }
-            inputStyle={ styles.input }
-            onFocus={this.onFocus}
-            editable={ false }
-          /> */}
-          {/* <View style={ styles.row } /> */}
           <View style={ { marginTop: 20 } }>
             <Text style={styles.name}>When do you want your first reminder?</Text>
             <TouchableHighlight
@@ -132,6 +124,7 @@ export default class EditForm extends React.Component {
                   personID: this.state.personID,
                   frequency: this.state.selectedFrequency,
                   key: this.props.editReminder.key,
+                  streak: this.props.editReminder.streak,
                 });
                 this.props.closeEditForm();
               } }

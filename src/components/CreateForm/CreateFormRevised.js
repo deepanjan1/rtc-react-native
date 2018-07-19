@@ -196,6 +196,7 @@ export default class CreateFormRevised extends React.Component {
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
                   frequency: this.state.selectedFrequency,
+                  streak: 0,
                 });
 
                 // set form variables to null
