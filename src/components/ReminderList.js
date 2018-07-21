@@ -121,23 +121,15 @@ export default class ReminderList extends React.Component {
   showStreak = (streakNumber) => {
     if (streakNumber > 0) {
       return (
-        <View style={ styles.streakContainer }>
-          {/* <View style={ styles.streakIconContainer }>
-            <Icon
-              name='phone'
-              color='#1787fb'
-              iconStyle={ styles.icon }
-              size={ 20 }
-            />
-          </View> */}
-          <View style={ styles.streakNumberContainer }>
+        <View style={ styles.streakNumberContainer }>
+          <View style={ styles.streakIconContainer }>
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
           </View>
         </View>
       );
     } else {
       return (
-        <View style={ styles.streakContainer }>
+        <View style={ styles.streakNumberContainer }>
           <View style={ styles.emptyStreakIconContainer }>
             <Icon
               name='phone'
@@ -424,7 +416,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 2,
   },
-  streakContainer: {
+  streakNumberContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -435,10 +427,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 30,
     width: 30,
-    borderColor: '#e8e9ea',
-    borderWidth: 1,
     borderRadius: 15,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#e78e54',
     alignItems: 'center',
     padding: 4,
     justifyContent: 'center',
@@ -453,20 +443,9 @@ const styles = StyleSheet.create({
     padding: 4,
     justifyContent: 'center',
   },
-  streakNumberContainer: {
-    position: 'absolute',
-    top: 1,
-    right: 1,
-    height: 18,
-    width: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 9,
-    backgroundColor: '#e78e54',
-  },
   streakNumber: {
     fontFamily: 'Roboto-Medium',
-    fontSize: 10,
+    fontSize: 12,
     color: '#ffffff',
   },
 });
