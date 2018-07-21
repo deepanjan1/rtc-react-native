@@ -43,10 +43,7 @@ var db = admin.database();
 var refReminders = db.ref('reminders');
 var refPermissions = db.ref('permissions');
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-
+// Runs a job daily to push notifications to phones for reminders
 export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
   var dailyReminderObject = [];
 
@@ -112,3 +109,41 @@ const buildMessages = (dailyReminderObject) => {
     }
   })();
 }
+
+// check to see if streak is valid
+
+export const streakValidator = functions.pubsub.topic('daily-tick').onPublish((event) => {
+  var dailyReminderObject = [];
+  // one day in milliseconds
+  const one_day=1000*60*60*24;
+  let dayDifference;
+  // pulling reminder data
+  console.log({today});
+  refReminders.orderByChild('date').once('value', async (snapshot) => {
+    await snapshot.forEach((data) => {
+
+      // user level
+      let uid = data.key;
+      data.forEach((reminder) => {
+        // reminder level
+        if (reminder.val().streak > 0) {
+          let reminderDate = new Date(reminder.val().date);
+          let today = new Date();
+          // console.log({reminderDate});
+          console.log({today});
+          if (reminderDate < today) {
+            console.log({reminderDate});
+            dayDifference = (today.getTime() - reminderDate.getTime())/one_day;
+            if (dayDifference > 7) {
+              refReminders.child(uid).child(reminder.val().key).update({
+                'streak': 0,
+              })
+            }
+          }
+        }
+        return true;
+      });
+      return false;
+    });
+    });
+});

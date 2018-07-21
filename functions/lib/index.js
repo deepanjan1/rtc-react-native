@@ -45,9 +45,7 @@ admin.initializeApp();
 var db = admin.database();
 var refReminders = db.ref('reminders');
 var refPermissions = db.ref('permissions');
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
+// Runs a job daily to push notifications to phones for reminders
 exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
     var dailyReminderObject = [];
     // pulling reminder data
@@ -110,4 +108,76 @@ const buildMessages = (dailyReminderObject) => {
         }
     }))();
 };
+// check to see if streak is valid
+exports.streakValidator = functions.pubsub.topic('daily-tick').onPublish((event) => {
+    var dailyReminderObject = [];
+    // one day in milliseconds
+    const one_day = 1000 * 60 * 60 * 24;
+    let dayDifference;
+    // pulling reminder data
+    console.log({ today });
+    refReminders.orderByChild('date').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
+        yield snapshot.forEach((data) => {
+            // user level
+            let uid = data.key;
+            data.forEach((reminder) => {
+                // reminder level
+                if (reminder.val().streak > 0) {
+                    let reminderDate = new Date(reminder.val().date);
+                    let today = new Date();
+                    // console.log({reminderDate});
+                    console.log({ today });
+                    if (reminderDate < today) {
+                        console.log({ reminderDate });
+                        dayDifference = (today.getTime() - reminderDate.getTime()) / one_day;
+                        if (dayDifference > 7) {
+                            refReminders.child(uid).child(reminder.val().key).update({
+                                'streak': 0,
+                            });
+                        }
+                    }
+                }
+                return false;
+            });
+            // refPermissions.orderByKey().equalTo(uid).once('value', (permission) => {
+            //   notificationToken = permission.val()[uid]['notificationToken'];
+            //   // let object;
+            //   console.log('notificationToken: ' + notificationToken);
+            //   data.forEach((reminder) => {
+            //     // reminder level
+            //     console.log(reminder.val())
+            //     if (reminder.val().date == today) {
+            //       dailyReminderObject.push(
+            //         {
+            //           'uid': uid,
+            //           'name': reminder.val().name,
+            //           'notificationToken': notificationToken,
+            //         }
+            //       );
+            //     }
+            //     return false;
+            //   });
+            //   console.log({dailyReminderObject});
+            //   buildMessages(dailyReminderObject);
+            // });
+            return false;
+        });
+    }));
+    // refReminders.orderByChild('date').once('value', async (snapshot) => {
+    //   console.log(snapshot.val());
+    //   await snapshot.forEach((data) => {
+    //     console.log(data.val());
+    //     // // user level
+    //     // let uid = data.key;
+    //     //
+    //     // data.forEach((reminder) => {
+    //     //   if (reminder.val().streak > 0) {
+    //     //     dailyReminderObject.push(reminder.val());
+    //     //   } else {
+    //     //     return;
+    //     //   }
+    //     // })
+    //   });
+    // });
+});
 //# sourceMappingURL=index.js.map
