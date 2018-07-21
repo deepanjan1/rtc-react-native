@@ -109,7 +109,9 @@ const buildMessages = (dailyReminderObject) => {
         }
     }))();
 };
-// check to see if streak is valid
+/* This function checks to see first pull any reminders that have a streak going
+and are due to being reached out to, and also are outside of the 7 day period.
+If a reminder is outside of the 7 day period, the streak counter is reset */
 exports.streakValidator = functions.pubsub.topic('daily-tick').onPublish((event) => {
     var dailyReminderObject = [];
     // one day in milliseconds
@@ -126,8 +128,6 @@ exports.streakValidator = functions.pubsub.topic('daily-tick').onPublish((event)
                 if (reminder.val().streak > 0) {
                     let reminderDate = new Date(reminder.val().date);
                     let today = new Date();
-                    // console.log({reminderDate});
-                    console.log({ today });
                     if (reminderDate < today) {
                         console.log({ reminderDate });
                         dayDifference = (today.getTime() - reminderDate.getTime()) / one_day;
@@ -144,4 +144,75 @@ exports.streakValidator = functions.pubsub.topic('daily-tick').onPublish((event)
         });
     }));
 });
+/* Function will send a push notification 48 hours prior to the 7 day window */
+exports.followUpNotification = functions.pubsub.topic('daily-tick').onPublish((event) => {
+    var followUpReminder = [];
+    // one day in milliseconds
+    const one_day = 1000 * 60 * 60 * 24;
+    let dayDifference;
+    // pulling reminder data
+    console.log(today);
+    refReminders.orderByChild('date').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
+        console.log(snapshot.val());
+        yield snapshot.forEach((data) => {
+            // user level
+            let uid = data.key;
+            let notificationToken;
+            refPermissions.orderByKey().equalTo(uid).once('value', (permission) => {
+                notificationToken = permission.val()[uid]['notificationToken'];
+                // let object;
+                console.log('notificationToken: ' + notificationToken);
+                data.forEach((reminder) => {
+                    // reminder level
+                    let reminderDate = new Date(reminder.val().date);
+                    let today = new Date();
+                    if (reminderDate < today) {
+                        dayDifference = Math.floor((today.getTime() - reminderDate.getTime()) / one_day);
+                        if (dayDifference == 2) {
+                            followUpReminder.push({
+                                'uid': uid,
+                                'name': reminder.val().name,
+                                'notificationToken': notificationToken,
+                            });
+                        }
+                    }
+                    return false;
+                });
+                console.log({ followUpReminder });
+                buildFollowUpMessages(followUpReminder);
+            });
+            return false;
+        });
+    }));
+    // insert function for sending batch notifications
+    return ('function works');
+});
+const buildFollowUpMessages = (followUpReminder) => {
+    let messages = [];
+    const length = followUpReminder.length;
+    for (var i = 0; i < length; i++) {
+        messages.push({
+            'to': followUpReminder[i].notificationToken,
+            'sound': 'default',
+            'title': "Don't forget to reach out to " + followUpReminder[i].name,
+            'body': 'You have 2 days left to keep your streak alive!',
+        });
+    }
+    console.log({ messages });
+    let chunks = expo.chunkPushNotifications(messages);
+    (() => __awaiter(this, void 0, void 0, function* () {
+        // Send the chunks to the Expo push notification service. There are
+        // different strategies you could use. A simple one is to send one chunk at a
+        // time, which nicely spreads the load out over time:
+        for (let chunk of chunks) {
+            try {
+                let receipts = yield expo.sendPushNotificationsAsync(chunk);
+                console.log({ receipts });
+            }
+            catch (error) {
+                console.error({ error });
+            }
+        }
+    }))();
+};
 //# sourceMappingURL=index.js.map
