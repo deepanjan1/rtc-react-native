@@ -122,14 +122,14 @@ export default class ReminderList extends React.Component {
     if (streakNumber > 0) {
       return (
         <View style={ styles.streakContainer }>
-          <View style={ styles.streakIconContainer }>
+          {/* <View style={ styles.streakIconContainer }>
             <Icon
               name='phone'
               color='#1787fb'
               iconStyle={ styles.icon }
               size={ 20 }
             />
-          </View>
+          </View> */}
           <View style={ styles.streakNumberContainer }>
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
           </View>

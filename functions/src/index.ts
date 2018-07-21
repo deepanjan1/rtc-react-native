@@ -90,7 +90,8 @@ const buildMessages = (dailyReminderObject) => {
     messages.push({
       'to': dailyReminderObject[i].notificationToken,
       'sound': 'default',
-      'body': 'Reach out to ' + dailyReminderObject[i].name,
+      'title': 'Remember to call ' + dailyReminderObject[i].name,
+      'body': 'Reach out within a week to create or add to your streak!',
     })
   }
   console.log({messages});

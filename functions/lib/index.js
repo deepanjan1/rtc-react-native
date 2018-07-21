@@ -88,7 +88,8 @@ const buildMessages = (dailyReminderObject) => {
         messages.push({
             'to': dailyReminderObject[i].notificationToken,
             'sound': 'default',
-            'body': 'Reach out to ' + dailyReminderObject[i].name,
+            'title': 'Remember to call ' + dailyReminderObject[i].name,
+            'body': 'Reach out within a week to create or add to your streak!',
         });
     }
     console.log({ messages });
@@ -137,47 +138,10 @@ exports.streakValidator = functions.pubsub.topic('daily-tick').onPublish((event)
                         }
                     }
                 }
-                return false;
+                return true;
             });
-            // refPermissions.orderByKey().equalTo(uid).once('value', (permission) => {
-            //   notificationToken = permission.val()[uid]['notificationToken'];
-            //   // let object;
-            //   console.log('notificationToken: ' + notificationToken);
-            //   data.forEach((reminder) => {
-            //     // reminder level
-            //     console.log(reminder.val())
-            //     if (reminder.val().date == today) {
-            //       dailyReminderObject.push(
-            //         {
-            //           'uid': uid,
-            //           'name': reminder.val().name,
-            //           'notificationToken': notificationToken,
-            //         }
-            //       );
-            //     }
-            //     return false;
-            //   });
-            //   console.log({dailyReminderObject});
-            //   buildMessages(dailyReminderObject);
-            // });
             return false;
         });
     }));
-    // refReminders.orderByChild('date').once('value', async (snapshot) => {
-    //   console.log(snapshot.val());
-    //   await snapshot.forEach((data) => {
-    //     console.log(data.val());
-    //     // // user level
-    //     // let uid = data.key;
-    //     //
-    //     // data.forEach((reminder) => {
-    //     //   if (reminder.val().streak > 0) {
-    //     //     dailyReminderObject.push(reminder.val());
-    //     //   } else {
-    //     //     return;
-    //     //   }
-    //     // })
-    //   });
-    // });
 });
 //# sourceMappingURL=index.js.map
