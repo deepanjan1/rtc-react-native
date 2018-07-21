@@ -24,12 +24,12 @@ class IntroFlow extends React.Component {
         </View>
         <View style={styles.container}>
           <Text style={ styles.caption }>
-            Pick Your Friends
+            Pick your friends.
           </Text>
         </View>
         <View style={styles.container}>
           <Text style={ styles.caption }>
-            Create Reminders and Always Remember to Call!
+            Create reminders, and always Remember to Call!
           </Text>
           <Button
             title='Login'
