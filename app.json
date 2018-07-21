@@ -13,7 +13,8 @@
     "android": {
       "package": "com.remembertocall"
     },
-    "description": ""
+    "description": "",
+    "githubUrl": "https://github.com/deepanjan1/rtc-react-native"
   },
   "facebookScheme": {
     "CFBundleURLTypes": [
