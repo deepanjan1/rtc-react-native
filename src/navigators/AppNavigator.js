@@ -68,6 +68,6 @@ export const AppNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Dashboard',
+    initialRouteName: 'Splash',
   },
 );

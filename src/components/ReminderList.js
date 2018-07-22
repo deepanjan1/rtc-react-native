@@ -21,6 +21,8 @@ export default class ReminderList extends React.Component {
     this.removeReminder = removeReminder.bind(this);
     this.today = new Date();
     this.one_day = 1000 * 60 * 60 * 24;
+    this.upcomingReminders = [];
+    this.pastReminders = [];
 
     // swipeout buttons
     this.swipeoutButtons = [
@@ -38,6 +40,13 @@ export default class ReminderList extends React.Component {
   state = {
     activeKey: '',
     index: null,
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.reminders !== prevProps.reminders) {
+      this.upcomingReminders = this.sortRemindersByDate(this.props.reminders)['true'];
+      this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
+    }
   };
 
   sortRemindersByDate = (reminders) => {
@@ -266,102 +275,101 @@ export default class ReminderList extends React.Component {
   };
 
   render() {
-    const { reminders } = this.props;
-    const upcomingReminders = this.sortRemindersByDate(reminders)['true'];
-    const pastReminders = this.sortRemindersByDate(reminders)['false'];
-    return (
-      <View style={ styles.firstTimeContainer }>
-        <View style = { { flex: 1, } } />
-        <View style = { { flex: 1, justifyContent: 'center', } }>
-          <Text style={ styles.questionHeader }>
-            Who do you want to remember to reach out to on a regular basis?
-          </Text>
-        </View>
-        <View style = { {
-          flex: 1,
-          justifyContent: 'flex-end',
-          marginBottom: 10,
-        } }>
-          <Text style={ styles.directive }>
-            To get started, click on the 'Create Reminders' button below!
-          </Text>
-          <Icon
-            name='arrow-drop-down-circle'
-            color='#e78e54'
-            iconStyle={ {
-              marginTop: 20,
-              marginBottom: 0,
-            } }
-            size={ 40 }
-          />
-        </View>
-      </View>
-    );
+    if (this.props.reminders !== 0) {
+      return (
+          <SectionList
+            sections={ this.sectionHeaders(this.upcomingReminders, this.pastReminders) }
+            renderItem={
+              ({ item, index, section }) =>
+                <Swipeout
+                  right={this.swipeoutButtons}
+                  backgroundColor='white'
+                  onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
+                  onClose={() => this.setState({ activeKey: '', index: null, }) }
+                  autoClose
+                  key={ index }
+                  >
+                  <TouchableHighlight
+                    onPress={ () => {
+                      this.props.loadActiveReminder(item);
+                      this.props.showEditModal();
+                    } }
 
-    // return (
-    //     <SectionList
-    //       sections={ this.sectionHeaders(upcomingReminders, pastReminders) }
-    //       renderItem={
-    //         ({ item, index, section }) =>
-    //           <Swipeout
-    //             right={this.swipeoutButtons}
-    //             backgroundColor='white'
-    //             onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
-    //             onClose={() => this.setState({ activeKey: '', index: null, }) }
-    //             autoClose
-    //             key={ index }
-    //             >
-    //             <TouchableHighlight
-    //               onPress={ () => {
-    //                 this.props.loadActiveReminder(item);
-    //                 this.props.showEditModal();
-    //               } }
-    //
-    //               underlayColor='transparent'
-    //               >
-    //               <View style={ styles.container }>
-    //                 <View style={ styles.nameContainer }>
-    //                   <Text style={ styles.name }>
-    //                     { item.name }
-    //                   </Text>
-    //                 </View>
-    //                 <View style={ styles.reminderDetails }>
-    //                   <View style={ styles.frequencyContainer }>
-    //                     <Icon
-    //                       name='cached'
-    //                       color='#1787fb'
-    //                       iconStyle={ styles.icon }
-    //                       size={ 20 }
-    //                     />
-    //                     <Text style={ styles.nextReminder }>
-    //                       { this.storeContact(item.frequency) }
-    //                     </Text>
-    //                   </View>
-    //                   <View style={ styles.gap } />
-    //                   <View style={ styles.nextReminderContainer }>
-    //                     <Icon
-    //                       name='date-range'
-    //                       color='#1787fb'
-    //                       iconStyle={ styles.icon }
-    //                       size={ 20 }
-    //                     />
-    //                     <Text style={ styles.nextReminder }>
-    //                       { item.date }
-    //                     </Text>
-    //                   </View>
-    //                   <View style={ styles.gap } />
-    //                   { this.showStreak(item.streak, item.date) }
-    //                 </View>
-    //               </View>
-    //             </TouchableHighlight>
-    //           </Swipeout>
-    //       }
-    //       renderSectionHeader={({ section: { title } }) => (
-    //         <Text style={ styles.sectionHeader }>{ title }</Text>
-    //       )}
-    //       keyExtractor={(item, index) => (`reminders-${index}`)}
-    //     />
-    //     );
+                    underlayColor='transparent'
+                    >
+                    <View style={ styles.container }>
+                      <View style={ styles.nameContainer }>
+                        <Text style={ styles.name }>
+                          { item.name }
+                        </Text>
+                      </View>
+                      <View style={ styles.reminderDetails }>
+                        <View style={ styles.frequencyContainer }>
+                          <Icon
+                            name='cached'
+                            color='#1787fb'
+                            iconStyle={ styles.icon }
+                            size={ 20 }
+                          />
+                          <Text style={ styles.nextReminder }>
+                            { this.storeContact(item.frequency) }
+                          </Text>
+                        </View>
+                        <View style={ styles.gap } />
+                        <View style={ styles.nextReminderContainer }>
+                          <Icon
+                            name='date-range'
+                            color='#1787fb'
+                            iconStyle={ styles.icon }
+                            size={ 20 }
+                          />
+                          <Text style={ styles.nextReminder }>
+                            { item.date }
+                          </Text>
+                        </View>
+                        <View style={ styles.gap } />
+                        { this.showStreak(item.streak, item.date) }
+                      </View>
+                    </View>
+                  </TouchableHighlight>
+                </Swipeout>
+            }
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={ styles.sectionHeader }>{ title }</Text>
+            )}
+            keyExtractor={(item, index) => (`reminders-${index}`)}
+          />
+          );
+    } else {
+      return (
+        <View style={ styles.firstTimeContainer }>
+          <View style = { { flex: 1, } } />
+          <View style = { { flex: 1, justifyContent: 'center', } }>
+            <Text style={ styles.questionHeader }>
+              Who do you want to remember to reach out to on a regular basis?
+            </Text>
+          </View>
+          <View style = { {
+            flex: 1,
+            justifyContent: 'flex-end',
+            marginBottom: 10,
+          } }>
+            <Text style={ styles.directive }>
+              To get started, click on the button below!
+            </Text>
+            <Icon
+              name='keyboard-arrow-down'
+              color='#e78e54'
+              iconStyle={ {
+                marginTop: 20,
+                marginBottom: 0,
+              } }
+              size={ 40 }
+            />
+          </View>
+        </View>
+      );
+    }
   }
 }
 
