@@ -19,6 +19,8 @@ export default class ReminderList extends React.Component {
   constructor(props) {
     super(props);
     this.removeReminder = removeReminder.bind(this);
+    this.today = new Date();
+    this.one_day = 1000 * 60 * 60 * 24;
 
     // swipeout buttons
     this.swipeoutButtons = [
@@ -39,7 +41,6 @@ export default class ReminderList extends React.Component {
   };
 
   sortRemindersByDate = (reminders) => {
-    const today = new Date();
 
     // sorting reminders by date
     var sortedReminders = reminders.sort((a, b) =>
@@ -47,7 +48,7 @@ export default class ReminderList extends React.Component {
     );
 
     var groupedReminder = _.groupBy(sortedReminders, (reminder) => (
-      new Date(reminder.date).getTime() < today.getTime()
+      new Date(reminder.date).getTime() < this.today.getTime()
     ));
 
     if (!groupedReminder['true']) {
@@ -118,11 +119,30 @@ export default class ReminderList extends React.Component {
     return dateInString;
   };
 
-  showStreak = (streakNumber) => {
-    if (streakNumber > 0) {
+  showStreak = (streakNumber, date) => {
+    let reminderDate = new Date(date);
+    const dayDifference = (this.today.getTime() - reminderDate.getTime()) / this.one_day;
+
+    if (streakNumber > 0 && dayDifference < 5) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <View style={ styles.streakIconContainer }>
+          <View style={ styles.streakIconContainerBlue }>
+            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          </View>
+        </View>
+      );
+    } else if (streakNumber > 0 && dayDifference >= 5 && dayDifference <= 6) {
+      return (
+        <View style={ styles.streakNumberContainer }>
+          <View style={ styles.streakIconContainerYellow }>
+            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          </View>
+        </View>
+      );
+    } else if (streakNumber > 0 && dayDifference > 6) {
+      return (
+        <View style={ styles.streakNumberContainer }>
+          <View style={ styles.streakIconContainerRed }>
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
           </View>
         </View>
@@ -193,7 +213,7 @@ export default class ReminderList extends React.Component {
                 </Text>
               </View>
               <View style={ styles.gap } />
-              { this.showStreak(item.streak) }
+              { this.showStreak(item.streak, item.date) }
             </View>
             <Button
               title='Contacted'
@@ -301,7 +321,7 @@ export default class ReminderList extends React.Component {
                         </Text>
                       </View>
                       <View style={ styles.gap } />
-                      { this.showStreak(item.streak) }
+                      { this.showStreak(item.streak, item.date) }
                     </View>
                   </View>
                 </TouchableHighlight>
@@ -423,12 +443,32 @@ const styles = StyleSheet.create({
     height: 45,
     width: 45,
   },
-  streakIconContainer: {
+  streakIconContainerBlue: {
+    flexDirection: 'row',
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    backgroundColor: '#1787fb',
+    alignItems: 'center',
+    padding: 4,
+    justifyContent: 'center',
+  },
+  streakIconContainerYellow: {
     flexDirection: 'row',
     height: 30,
     width: 30,
     borderRadius: 15,
     backgroundColor: '#e78e54',
+    alignItems: 'center',
+    padding: 4,
+    justifyContent: 'center',
+  },
+  streakIconContainerRed: {
+    flexDirection: 'row',
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    backgroundColor: '#c20828',
     alignItems: 'center',
     padding: 4,
     justifyContent: 'center',
