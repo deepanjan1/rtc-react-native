@@ -24,36 +24,30 @@ export default class Settings extends React.Component {
         isVisible={ this.props.showSettingsModal}
         onBackdropPress={ this.props.closeSettingsModal }
         >
-        <View style={ styles.container }>
-            <TouchableHighlight
+        <TouchableHighlight
               onPress={ () => this.props.closeSettingsModal() }
               underlayColor='transparent'
-              style={ styles.upperPadding }>
-              <View
-                style={ styles.upperPadding }
-              />
-            </TouchableHighlight>
-          <View style={ styles.settings }>
-            <View style={ styles.visibleModal }>
-              <View style={ styles.userInformation }>
-                <Image
-                  style={ styles.image }
-                  source={ { uri: user.photo } }
-                />
-                <View style={ styles.nameEmail }>
-                  <Text style={ styles.nameText }>{ user.name }</Text>
-                  <Text style={ styles.emailText }>{ user.email }</Text>
-                </View>
-              </View>
-              <View style={ styles.logoutButtonContainer }>
-                <Button
-                  title='Logout'
-                  buttonStyle={ styles.logoutButton }
-                  textStyle={ styles.logoutButtonText }
-                  onPress={ () => this.props.logout() }>
-                </Button>
-              </View>
+              style={ { flex: 6, } }>
+              <View />
+        </TouchableHighlight>
+        <View style={ styles.settings }>
+          <View style={ styles.userInformation }>
+            <Image
+              style={ styles.image }
+              source={ { uri: user.photo } }
+            />
+            <View style={ styles.nameEmail }>
+              <Text style={ styles.nameText }>{ user.name }</Text>
+              <Text style={ styles.emailText }>{ user.email }</Text>
             </View>
+          </View>
+          <View style={ styles.logoutButtonContainer }>
+            <Button
+              title='Logout'
+              buttonStyle={ styles.logoutButton }
+              textStyle={ styles.logoutButtonText }
+              onPress={ () => this.props.logout() }>
+            </Button>
           </View>
         </View>
       </Modal>
@@ -69,29 +63,16 @@ Settings.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: '200%',
-    padding: 15,
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
-    height: '25%',
-    width: '100%',
-  },
-  upperPadding: {
-    flex: 3,
-  },
   settings: {
-    flex: 2,
+    flex: 1,
     backgroundColor: '#ffffff',
+    padding: 10,
+    borderRadius: 10,
   },
   image: {
     width: 50,
     height: 50,
     borderRadius: 25,
-  },
-  visibleModal: {
-    height: 100,
-    marginTop: 5,
   },
   userInformation: {
     flexDirection: 'row',
