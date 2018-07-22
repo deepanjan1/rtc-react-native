@@ -55,6 +55,7 @@ export default class App extends React.Component {
     await Font.loadAsync({
       'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
       'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
+      'Entypo': require('@expo/vector-icons/fonts/Entypo.ttf'),
       'Roboto-Regular': require('./src/assets/Roboto/Roboto-Regular.ttf'),
       'Roboto-Light': require('./src/assets/Roboto/Roboto-Light.ttf'),
       'Roboto-Thin': require('./src/assets/Roboto/Roboto-Thin.ttf'),

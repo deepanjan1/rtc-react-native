@@ -13,7 +13,7 @@
     "android": {
       "package": "com.remembertocall"
     },
-    "description": "",
+    "description": "An app that helps you remember to reach out to your friends and family.  ",
     "githubUrl": "https://github.com/deepanjan1/rtc-react-native"
   },
   "facebookScheme": {
