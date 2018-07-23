@@ -299,6 +299,9 @@ export default class CreateFormRevised extends React.Component {
                   style={ styles.calendar }
                   barView = { styles.barView }
                   barText = { styles.barText }
+                  dayHeaderText = { styles.dayHeaderText }
+                  dayRowView = { styles.dayRowView }
+                  dayText = { styles.dayText }
                 />
             </Modal>
         </View>
@@ -361,11 +364,6 @@ const styles = StyleSheet.create({
   frequency: {
     padding: 15,
   },
-  datePicker: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    padding: 15,
-  },
   calendar: {
     width: '100%',
     backgroundColor: '#ffffff',
@@ -376,6 +374,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    alignSelf: 'center',
   },
   barView: {
     backgroundColor: '#1a9bfc',
@@ -384,8 +383,20 @@ const styles = StyleSheet.create({
   },
   barText: {
     fontFamily: 'Roboto-Medium',
-    fontSize: 15,
+    fontSize: 25,
     color: '#ffffff',
+  },
+  dayRowView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dayHeaderText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 20,
+  },
+  dayText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
   },
   frequencyButton: {
     borderColor: '#1a9bfc',

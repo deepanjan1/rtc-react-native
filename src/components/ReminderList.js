@@ -10,6 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import { removeReminder, updateReminder } from '../services/api';
 import Swipeout from 'react-native-swipeout';
+import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
 import _ from 'underscore';
@@ -25,29 +26,43 @@ export default class ReminderList extends React.Component {
     this.pastReminders = [];
 
     // swipeout buttons
-    this.swipeoutButtons = [
-      {
-        text: 'Delete',
-        backgroundColor: '#fc0d1c',
-        type: 'delete',
-        onPress: () => {
+    this.swipeable = null;
+    this.swipeableButtons = [
+      <TouchableHighlight
+        onPress={() => {
           removeReminder(this.props.user, this.state.activeKey); // remove from database
-        },
-      },
+          this.swipeable.recenter();
+        }}
+
+        underlayColor='white'
+        >
+        <View style={{
+          justifyContent: 'center',
+          height: '100%',
+          alignItems: 'flex-start',
+          paddingLeft: 25,
+        }}>
+          <View
+            style={{
+              backgroundColor: '#c20828',
+              padding: 10,
+              borderRadius: 23,
+            }}>
+            <Icon
+              name='delete'
+              color='white'
+            />
+          </View>
+        </View>
+      </TouchableHighlight>,
     ];
   };
 
   state = {
     activeKey: '',
     index: null,
+    isSwiping: false,
   };
-
-  // componentDidUpdate = (prevProps) => {
-  //   if (this.props.reminders !== prevProps.reminders) {
-  //     this.upcomingReminders = this.sortRemindersByDate(this.props.reminders)['true'];
-  //     this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
-  //   }
-  // };
 
   sortRemindersByDate = (reminders) => {
 
@@ -153,7 +168,7 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <View style={ styles.streakIconContainerRed }>
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          </View>
+          </View>``
         </View>
       );
     } else {
@@ -175,70 +190,74 @@ export default class ReminderList extends React.Component {
   // function to delineate array by date and custom formatting
   sectionHeaders = (upcomingReminders, pastReminders) => {
     const overrideRenderItem = ({ item, index, section }) =>
-      <Swipeout
-        right={this.swipeoutButtons}
-        backgroundColor='white'
-        onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
-        onClose={() => this.setState({ activeKey: '', index: null, }) }
-        autoClose
-        key={ index }
+      <Swipeable
+        rightButtons={ this.swipeableButtons }
+        onRef={ref => this.swipeable = ref}
+        onSwipeStart={ () => this.setState({ isSwiping: true }) }
+        onSwipeRelease={ () => this.setState({
+          activeKey: '',
+          index: null,
+          isSwiping: false,
+        }) }
+        onSwipeComplete={ () => this.setState({ activeKey: item.key, index: index, }) }
+        rightButtonWidth={ 100 }
         >
         <TouchableHighlight
-          onPress={ () => {
-            this.props.loadActiveReminder(item);
-            this.props.showEditModal();
-          } }
+            onPress={ () => {
+              this.props.loadActiveReminder(item);
+              this.props.showEditModal();
+            } }
 
-          underlayColor='transparent'
-          >
-          <View style={ styles.container }>
-            <View style={ styles.nameContainer }>
-              <Text style={ styles.name }>
-                { item.name }
-              </Text>
-            </View>
-            <View style={ styles.reminderDetails }>
-              <View style={ styles.frequencyContainer }>
-                <Icon
-                  name='cached'
-                  color='#1787fb'
-                  iconStyle={ styles.icon }
-                  size={ 20 }
-                />
-                <Text style={ styles.nextReminder }>
-                  { this.storeContact(item.frequency) }
+            underlayColor='transparent'
+            >
+            <View style={ styles.container }>
+              <View style={ styles.nameContainer }>
+                <Text style={ styles.name }>
+                  { item.name }
                 </Text>
               </View>
-              <View style={ styles.gap } />
-              <View style={ styles.nextReminderContainer }>
-                <Icon
-                  name='date-range'
-                  color='#d7322d'
-                  iconStyle={ styles.icon }
-                  size={ 20 }
-                />
-                <Text style={ styles.nextReminder }>
-                  { item.date }
-                </Text>
+              <View style={ styles.reminderDetails }>
+                <View style={ styles.frequencyContainer }>
+                  <Icon
+                    name='cached'
+                    color='#1787fb'
+                    iconStyle={ styles.icon }
+                    size={ 20 }
+                  />
+                  <Text style={ styles.nextReminder }>
+                    { this.storeContact(item.frequency) }
+                  </Text>
+                </View>
+                <View style={ styles.gap } />
+                <View style={ styles.nextReminderContainer }>
+                  <Icon
+                    name='date-range'
+                    color='#d7322d'
+                    iconStyle={ styles.icon }
+                    size={ 20 }
+                  />
+                  <Text style={ styles.nextReminder }>
+                    { item.date }
+                  </Text>
+                </View>
+                <View style={ styles.gap } />
+                { this.showStreak(item.streak, item.date) }
               </View>
-              <View style={ styles.gap } />
-              { this.showStreak(item.streak, item.date) }
-            </View>
-            <Button
-              title='Contacted'
-              buttonStyle={ styles.completedButtonContainer }
-              titleStyle={ styles.doneButtonStyleTitle }
-              onPress={ () => {
-                item.streak += 1;
-                item.date = this.calcNextReminder(item.date, item.frequency);
-                console.log('new date: ' + item.date);
-                updateReminder(this.props.user, item);
-              } }
+              <Button
+                title='Contacted'
+                buttonStyle={ styles.completedButtonContainer }
+                titleStyle={ styles.doneButtonStyleTitle }
+                onPress={ () => {
+                  item.streak += 1;
+                  item.date = this.calcNextReminder(item.date, item.frequency);
+                  console.log('new date: ' + item.date);
+                  updateReminder(this.props.user, item);
+                } }
 
-            />
-          </View>
-        </TouchableHighlight>
-      </Swipeout>;
+              />
+            </View>
+          </TouchableHighlight>
+      </Swipeable>;
 
     if (!_.isEmpty(upcomingReminders) && !_.isEmpty(pastReminders)) {
       return (
@@ -281,15 +300,20 @@ export default class ReminderList extends React.Component {
       return (
           <SectionList
             sections={ this.sectionHeaders(this.upcomingReminders, this.pastReminders) }
+            scrollEnabled={!this.state.isSwiping}
             renderItem={
               ({ item, index, section }) =>
-                <Swipeout
-                  right={this.swipeoutButtons}
-                  backgroundColor='white'
-                  onOpen={ () => this.setState({ activeKey: item.key, index: index, }) }
-                  onClose={() => this.setState({ activeKey: '', index: null, }) }
-                  autoClose
-                  key={ index }
+                <Swipeable
+                  rightButtons={ this.swipeableButtons }
+                  onRef={ref => this.swipeable = ref}
+                  onSwipeStart={ () => this.setState({ isSwiping: true }) }
+                  onSwipeRelease={ () => this.setState({
+                    activeKey: '',
+                    index: null,
+                    isSwiping: false,
+                  }) }
+                  onSwipeComplete={ () => this.setState({ activeKey: item.key, index: index, }) }
+                  rightButtonWidth={ 100 }
                   >
                   <TouchableHighlight
                     onPress={ () => {
@@ -334,7 +358,7 @@ export default class ReminderList extends React.Component {
                       </View>
                     </View>
                   </TouchableHighlight>
-                </Swipeout>
+                </Swipeable>
             }
             renderSectionHeader={({ section: { title } }) => (
               <Text style={ styles.sectionHeader }>{ title }</Text>
