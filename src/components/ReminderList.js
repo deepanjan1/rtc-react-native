@@ -42,12 +42,12 @@ export default class ReminderList extends React.Component {
     index: null,
   };
 
-  componentDidUpdate = (prevProps) => {
-    if (this.props.reminders !== prevProps.reminders) {
-      this.upcomingReminders = this.sortRemindersByDate(this.props.reminders)['true'];
-      this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
-    }
-  };
+  // componentDidUpdate = (prevProps) => {
+  //   if (this.props.reminders !== prevProps.reminders) {
+  //     this.upcomingReminders = this.sortRemindersByDate(this.props.reminders)['true'];
+  //     this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
+  //   }
+  // };
 
   sortRemindersByDate = (reminders) => {
 
@@ -275,6 +275,8 @@ export default class ReminderList extends React.Component {
   };
 
   render() {
+    this.upcomingReminders = this.sortRemindersByDate(this.props.reminders)['true'];
+    this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
     if (this.props.reminders !== 0) {
       return (
           <SectionList
