@@ -8,6 +8,17 @@ class IntroFlow extends React.Component {
   constructor(props) {
     super(props);
     this.handleOnTap = this.handleOnTap.bind(this);
+    this.activeDot = (<View style=
+      {{
+        backgroundColor: '#ffffff',
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
+        marginBottom: 3,
+      }} />);
   }
 
   handleOnTap() {
@@ -16,7 +27,7 @@ class IntroFlow extends React.Component {
 
   render() {
     return (
-      <Swiper loop={false} bounces={true}>
+      <Swiper loop={false} bounces={true} activeDot={ this.activeDot }>
         <View style={styles.containerOne}>
           <View style={ styles.captionContainer }>
             <Text style={ styles.caption }>
@@ -50,12 +61,12 @@ class IntroFlow extends React.Component {
             </Text>
           </View>
         </View>
-        <View style={styles.container}>
+        <View style={styles.containerTwo}>
           <Text style={ styles.caption }>
             Pick your friends.
           </Text>
         </View>
-        <View style={styles.container}>
+        <View style={styles.containerThree}>
           <Text style={ styles.caption }>
             Create reminders, and always Remember to Call!
           </Text>
@@ -91,6 +102,20 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     color: 'white',
+  },
+  containerTwo: {
+    height: '100%',
+    backgroundColor: '#db5149',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  containerThree: {
+    height: '100%',
+    backgroundColor: '#e78e54',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
 });
 
