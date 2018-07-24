@@ -1,6 +1,7 @@
 import Expo from 'expo';
 import {
   storeLoginWithFacebook,
+  storeLoginWithGoogle,
   userLoginStatus,
   userLogout,
 } from './firebase';
@@ -14,15 +15,25 @@ export const loginWithFacebook = async() => {
   if (type === 'success') {
     // build credential and store within firebase
     await storeLoginWithFacebook(type, token);
+  }
+};
 
-    // Get the user's name using Facebook's Graph API
-    // const response = await fetch(
-    //   `https://graph.facebook.com/me?access_token=${token}`);
-    // console.log(await response.json());
-    // Alert.alert(
-    //   'Logged in!',
-    //   `Hi ${(await response.json()).name}!`,
-    // );
+export const loginWithGoogle = async() => {
+  try {
+    const { type, accessToken } = await Expo.Google.logInAsync({
+      iosClientId: '819008592100-qpb34tmehb38o0cs85rvf662os2rhjf2.apps.googleusercontent.com',
+      scopes: ['profile', 'email'],
+    });
+    console.log({type});
+    console.log({accessToken});
+    if (type === 'success') {
+      // build credential and store within firebase
+      await storeLoginWithGoogle(type, accessToken);
+    } else {
+      return { cancelled: true };
+    }
+  } catch (e) {
+    return { error: true };
   }
 };
 

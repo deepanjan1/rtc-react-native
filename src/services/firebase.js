@@ -76,6 +76,36 @@ export const storeLoginWithFacebook = async(type, token) => {
   }
 };
 
+export const storeLoginWithGoogle = async(type, token) => {
+  if (type === 'success') {
+    // Build Firebase credential with the Facebook access token.
+    const credential = firebase.auth.GoogleAuthProvider.credential(token);
+    console.log(credential);
+
+    // Sign in with credential from the Google user.
+    firebase.auth().signInAndRetrieveDataWithCredential(credential.idToken).catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      // The email of the user's account used.
+      var email = error.email;
+
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      console.log({errorCode});
+      console.log({errorMessage});
+      console.log({email});
+    });
+    console.log(userLoginStatus());
+    // Sign in with credential from the Facebook user.
+    // firebase.auth().signInWithCredential(credential.idToken).catch((error) => {
+    //   console.log({error});
+    //   console.log('storing in firebase did not work');
+    // });
+  }
+};
+
 export const userLoginStatus = () => (
   firebase.auth().currentUser
 );

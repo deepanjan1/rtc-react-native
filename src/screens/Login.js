@@ -8,9 +8,8 @@ import {
 import { Icon, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { loginWithFacebook, loadCurrentUser } from '../services/facebookAPI';
+import { loginWithFacebook, loginWithGoogle } from '../services/facebookAPI';
 import * as Action from '../actions/actions';
-import { currentUserListener } from '../services/api';
 
 class Login extends React.Component {
   constructor (props) {
@@ -27,14 +26,17 @@ class Login extends React.Component {
     }
   };
 
-  logUserIn = async () => {
-    await loginWithFacebook();
+  logUserIn = async (provider) => {
+    if (provider === 'facebook') {
+      await loginWithFacebook();
+    } else if (provider === 'google') {
+      await loginWithGoogle();
+    }
   };
 
   render = () => {
     const { navigate } = this.props.navigation;
     const {
-      loadUser,
       user,
       isLoggedIn,
       setLoggedInUser,
@@ -42,10 +44,10 @@ class Login extends React.Component {
     return (
       <View style={ styles.container }>
         <TouchableHighlight
-          onPress={ () => this.logUserIn(loadUser, setLoggedInUser) }
+          onPress={ () => this.logUserIn('facebook') }
           underlayColor='transparent'>
-          <View style={ styles.loginButtonViewContainer }>
-            <View style={ styles.fbIconView }>
+          <View style={ styles.facebookLoginButtonViewContainer }>
+            <View style={ styles.iconView }>
               <Ionicons
                 name='logo-facebook'
                 color='#ffffff'
@@ -58,6 +60,23 @@ class Login extends React.Component {
             </View>
           </View>
         </TouchableHighlight>
+        {/* <TouchableHighlight
+          onPress={ () => this.logUserIn('google') }
+          underlayColor='transparent'>
+          <View style={ styles.googleLoginButtonViewContainer }>
+            <View style={ styles.iconView }>
+              <Ionicons
+                name='logo-google'
+                color='#ffffff'
+                size={40} />
+            </View>
+            <View style={ styles.textView }>
+              <Text style={ styles.loginButtonText }>
+                Continue with Google
+              </Text>
+            </View>
+          </View>
+        </TouchableHighlight> */}
       </View>
     );
   };
@@ -70,15 +89,27 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
   },
-  loginButtonViewContainer: {
+  facebookLoginButtonViewContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     width: '80%',
     backgroundColor: '#4468b0',
+    margin: 10,
     borderRadius: 5,
+    padding: 5,
   },
-  fbIconView: {
+  googleLoginButtonViewContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    backgroundColor: '#e8453c',
+    margin: 10,
+    borderRadius: 5,
+    padding: 5,
+  },
+  iconView: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
