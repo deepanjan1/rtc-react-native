@@ -107,7 +107,7 @@ export const watchUserDataForLoad = () => (
         dispatch(setLoggedInUser(true));
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       } else {
-        dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+        dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
       }
     });
   }
@@ -163,7 +163,3 @@ export const removeUser = (user) => (
     user,
   }
 );
-
-const popAction = StackActions.pop({
-  n: 1,
-});
