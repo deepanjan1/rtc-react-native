@@ -21,6 +21,10 @@ class IntroFlow extends React.Component {
       }} />);
   }
 
+  componentDidMount = () => {
+
+  };
+
   handleOnTap() {
     this.props.onTap('Login');
   }
@@ -29,12 +33,12 @@ class IntroFlow extends React.Component {
     return (
       <Swiper loop={false} bounces={true} activeDot={ this.activeDot }>
         <View style={styles.containerOne}>
-          <View style={ styles.captionContainer }>
+          <View style={ styles.captionContainerTop }>
             <Text style={ styles.caption }>
-              We all have people we wish we talked to move often.
+              We all have people we wish we talked to more often.
             </Text>
           </View>
-          <View style={ { flex: 2, justifyContent: 'center', } }>
+          <View style={ { flex: 1, justifyContent: 'center', } }>
             <View style={ { flexDirection: 'row', } }>
               <Image
                 style={{ width: 120, height: 120, margin: 10, }}
@@ -55,25 +59,57 @@ class IntroFlow extends React.Component {
               />
             </View>
           </View>
-          <View style={ styles.captionContainer }>
+          <View style={ styles.captionContainerBottom }>
             <Text style={ styles.caption }>
               We're here to help.
             </Text>
           </View>
         </View>
         <View style={styles.containerTwo}>
-          <Text style={ styles.caption }>
-            Pick your friends.
-          </Text>
+          <View style={ styles.captionContainerAlignBottom }>
+            <Text style={ styles.caption }>
+              Set up reminders
+            </Text>
+          </View>
+          <View style={ { flex: 2, justifyContent: 'flex-start', marginTop: 20, } }>
+            <Image
+              style={{ width: 150, height: 181, margin: 10, }}
+              resizeMethod='scale'
+              source={require('../assets/images/alarm_clock.png')}
+            />
+          </View>
         </View>
         <View style={styles.containerThree}>
-          <Text style={ styles.caption }>
-            Create reminders, and always Remember to Call!
-          </Text>
-          <Button
-            title='Login'
-            onPress={ this.handleOnTap }
-          />
+          <View style={ styles.captionContainerAlignBottom }>
+            <Text style={ styles.caption }>
+              Get notifications when it's time to reach out to your friend!
+            </Text>
+          </View>
+          <View style={ { flex: 1, justifyContent: 'center', } }>
+            <Image
+              style={{ width: 300, height: 89, margin: 10, }}
+              resizeMethod='scale'
+              source={require('../assets/images/notification_white.png')}
+            />
+          </View>
+          <View style={ styles.captionContainerAlignTop }>
+            <Text style={ styles.caption }>
+              Reach out within a week and create streaks!
+            </Text>
+          </View>
+        </View>
+        <View style={styles.containerFour}>
+          <View style={ styles.captionContainerTop }>
+            <Text style={ styles.captionWhite }>
+              Keep in touch and always remember to call!
+            </Text>
+          </View>
+          <View style={ styles.captionContainerAlignTop }>
+            <Button
+              title='Login'
+              onPress={ this.handleOnTap }
+            />
+          </View>
         </View>
       </Swiper>
     );
@@ -92,9 +128,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  captionContainer: {
+  captionContainerTop: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  captionContainerAlignBottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  captionContainerBottom: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  captionContainerAlignTop: {
+    flex: 1,
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   caption: {
@@ -102,6 +153,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     color: 'white',
+  },
+  captionWhite: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 30,
+    textAlign: 'center',
+    color: '#1787fb',
   },
   containerTwo: {
     height: '100%',
@@ -113,6 +170,13 @@ const styles = StyleSheet.create({
   containerThree: {
     height: '100%',
     backgroundColor: '#e78e54',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  containerFour: {
+    height: '100%',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
