@@ -37,21 +37,6 @@ export const AppNavigator = createStackNavigator(
         headerLeft: null,
       }),
     },
-    Login: {
-      screen: Login,
-      navigationOptions: ({
-        title: 'Login or Register',
-        headerStyle: {
-          backgroundColor: 'white',
-          borderBottomWidth: 0,
-        },
-        headerTitleStyle: {
-          fontSize: 30,
-          fontFamily: 'Roboto-Bold',
-        },
-        headerLeft: null,
-      }),
-    },
     Splash: {
       screen: Splash,
       navigationOptions: ({

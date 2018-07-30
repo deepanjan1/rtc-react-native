@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  Image
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import { StackNavigator } from 'react-navigation';
+import { Ionicons } from '@expo/vector-icons';
 
 class IntroFlow extends React.Component {
   constructor(props) {
     super(props);
-    this.handleOnTap = this.handleOnTap.bind(this);
     this.activeDot = (<View style=
       {{
         backgroundColor: '#ffffff',
@@ -19,14 +25,6 @@ class IntroFlow extends React.Component {
         marginTop: 3,
         marginBottom: 3,
       }} />);
-  }
-
-  componentDidMount = () => {
-
-  };
-
-  handleOnTap() {
-    this.props.onTap('Login');
   }
 
   render() {
@@ -105,10 +103,23 @@ class IntroFlow extends React.Component {
             </Text>
           </View>
           <View style={ styles.captionContainerAlignTop }>
-            <Button
-              title='Login'
-              onPress={ this.handleOnTap }
-            />
+            <TouchableHighlight
+              onPress={ () => this.props.logUserIn('facebook') }
+              underlayColor='transparent'>
+              <View style={ styles.facebookLoginButtonViewContainer }>
+                <View style={ styles.iconView }>
+                  <Ionicons
+                    name='logo-facebook'
+                    color='#ffffff'
+                    size={40} />
+                </View>
+                <View style={ styles.textView }>
+                  <Text style={ styles.loginButtonText }>
+                    Continue with Facebook
+                  </Text>
+                </View>
+              </View>
+            </TouchableHighlight>
           </View>
         </View>
       </Swiper>
@@ -117,7 +128,7 @@ class IntroFlow extends React.Component {
 }
 
 IntroFlow.propTypes = {
-  onTap: PropTypes.func.isRequired,
+  logUserIn: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -180,6 +191,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  facebookLoginButtonViewContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    backgroundColor: '#4468b0',
+    margin: 10,
+    borderRadius: 5,
+    padding: 5,
+  },
+  iconView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textView: {
+    flex: 4,
+  },
+  loginButtonText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 20,
+    color: '#ffffff',
   },
 });
 
