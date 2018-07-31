@@ -9,7 +9,7 @@ export default class SyncContacts extends React.Component {
   render = () => (
     <Modal
       isVisible={ this.props.showSyncContactModal }
-      onBackdropPress={ this.props.closeSyncContactModal }
+      // onBackdropPress={ this.props.closeSyncContactModal }
       animationIn='fadeIn'
       animationInTiming={200}
       animationOut='fadeOut'
@@ -25,7 +25,7 @@ export default class SyncContacts extends React.Component {
             buttonStyle={ styles.button }
             onPress= { () =>
               {
-                loadContacts(user, contacts);
+                loadContacts(this.props.user, this.props.contacts);
                 this.props.closeSyncContactModal();
               }
             }>
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
       height: '30%',
       borderRadius: 15,
       backgroundColor: 'white',
+      padding: 10,
     },
     headerContainer: {
       flex: 1,

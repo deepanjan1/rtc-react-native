@@ -61,24 +61,34 @@ class Dashboard extends React.Component {
     contactsLoaded: false,
   };
 
-  showContactModal = async (uid, contacts) => {
-    if (uid && contacts && !this.state.contactsLoaded) {
-      const status = await getPermission();
-      if (status !== 'granted') {
-        this.setState({
-          showSyncContactModal: true,
-          contactsLoaded: true,
-        });
-      } else {
-        await loadContacts(uid, contacts);
-        this.setState({ contactsLoaded: true, });
-        console.log('Contacts Loading in Background');
-      }
-    }
-  };
+  // showContactModal = async (uid, contacts) => {
+  //   if (uid && contacts && !this.state.contactsLoaded) {
+  //     const status = await getPermission();
+  //     if (status !== 'granted') {
+  //       this.setState({
+  //         showSyncContactModal: true,
+  //         contactsLoaded: true,
+  //       });
+  //     } else {
+  //       await loadContacts(uid, contacts);
+  //       this.setState({ contactsLoaded: true, });
+  //       console.log('Contacts Loading in Background');
+  //     }
+  //   }
+  // };
 
   componentDidMount = () => {
     this.unsubscribeCurrentUserListener = this.props.watchUserData();
+    if (this.props.contacts) {
+      this.setState({
+        showSyncContactModal: true,
+        contactsLoaded: true,
+      });
+    } else {
+      loadContacts(this.props.uid, this.props.contacts);
+      this.setState({ contactsLoaded: true, });
+      console.log('Contacts Loading in Background');
+    }
   };
 
   componentDidUpdate = (prevProps) => {
@@ -103,7 +113,6 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { navigate } = this.props.navigation;
     const {
       reminders,
       activeReminder,
@@ -114,7 +123,6 @@ class Dashboard extends React.Component {
       loadNotificationToken,
       notificationToken,
     } = this.props;
-    this.showContactModal(user.uid, contacts);
     return (
       <View style={ styles.container }>
           <View style={ styles.subHeading }>
