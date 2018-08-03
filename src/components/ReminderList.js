@@ -5,7 +5,8 @@ import {
   View,
   FlatList,
   SectionList,
-  TouchableHighlight
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { removeReminder, updateReminder } from '../services/api';
@@ -13,6 +14,7 @@ import Swipeout from 'react-native-swipeout';
 import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
+import { SimpleLineIcons } from '@expo/vector-icons';
 import _ from 'underscore';
 
 export default class ReminderList extends React.Component {
@@ -151,24 +153,46 @@ export default class ReminderList extends React.Component {
       return (
         <View style={ styles.streakNumberContainer }>
           <View style={ styles.streakIconContainerBlue }>
+            <Image
+              style={{ width: 40, height: 55, }}
+              resizeMethod='contain'
+              source={require('../assets/images/medal.png')}
+            />
+            {/* <SimpleLineIcons
+              name='badge'
+              color='#e78e54'
+              size={60}/> */}
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
           </View>
+          {/* <View style={ styles.streakIconContainerBlue }>
+            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          </View> */}
         </View>
       );
     } else if (streakNumber > 0 && dayDifference >= 5 && dayDifference <= 6) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <View style={ styles.streakIconContainerYellow }>
+          <SimpleLineIcons
+            name='badge'
+            color='blue'
+            size={60}/>
+          <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          {/* <View style={ styles.streakIconContainerYellow }>
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else if (streakNumber > 0 && dayDifference > 6) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <View style={ styles.streakIconContainerRed }>
+          <SimpleLineIcons
+            name='badge'
+            color='blue'
+            size={60} />
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          </View>``
+          {/* <View style={ styles.streakIconContainerRed }>
+            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          </View>`` */}
         </View>
       );
     } else {
@@ -218,30 +242,30 @@ export default class ReminderList extends React.Component {
               </View>
               <View style={ styles.reminderDetails }>
                 <View style={ styles.frequencyContainer }>
+                  <Text style={ styles.nextReminder }>
+                    { this.storeContact(item.frequency) }
+                  </Text>
                   <Icon
                     name='cached'
                     color='#1787fb'
                     iconStyle={ styles.icon }
-                    size={ 20 }
+                    size={ 30 }
                   />
-                  <Text style={ styles.nextReminder }>
-                    { this.storeContact(item.frequency) }
-                  </Text>
-                </View>
-                <View style={ styles.gap } />
-                <View style={ styles.nextReminderContainer }>
-                  <Icon
-                    name='date-range'
-                    color='#d7322d'
-                    iconStyle={ styles.icon }
-                    size={ 20 }
-                  />
-                  <Text style={ styles.nextReminder }>
-                    { item.date }
-                  </Text>
                 </View>
                 <View style={ styles.gap } />
                 { this.showStreak(item.streak, item.date) }
+                <View style={ styles.gap } />
+                <View style={ styles.nextReminderContainer }>
+                  <Text style={ styles.nextReminder }>
+                    { item.date }
+                  </Text>
+                  <Icon
+                    name='date-range'
+                    color='#1787fb'
+                    iconStyle={ styles.icon }
+                    size={ 30 }
+                  />
+                </View>
               </View>
               <Button
                 title='Contacted'
@@ -331,30 +355,30 @@ export default class ReminderList extends React.Component {
                       </View>
                       <View style={ styles.reminderDetails }>
                         <View style={ styles.frequencyContainer }>
+                          <Text style={ styles.nextReminder }>
+                            { this.storeContact(item.frequency) }
+                          </Text>
                           <Icon
                             name='cached'
                             color='#1787fb'
                             iconStyle={ styles.icon }
-                            size={ 20 }
+                            size={ 30 }
                           />
-                          <Text style={ styles.nextReminder }>
-                            { this.storeContact(item.frequency) }
-                          </Text>
                         </View>
                         <View style={ styles.gap } />
+                        { this.showStreak(item.streak, item.date) }
+                        <View style={ styles.gap } />
                         <View style={ styles.nextReminderContainer }>
+                          <Text style={ styles.nextReminder }>
+                            { item.date }
+                          </Text>
                           <Icon
                             name='date-range'
                             color='#1787fb'
                             iconStyle={ styles.icon }
-                            size={ 20 }
+                            size={ 30 }
                           />
-                          <Text style={ styles.nextReminder }>
-                            { item.date }
-                          </Text>
                         </View>
-                        <View style={ styles.gap } />
-                        { this.showStreak(item.streak, item.date) }
                       </View>
                     </View>
                   </TouchableHighlight>
@@ -445,7 +469,8 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 20,
+    textAlign: 'center',
+    fontSize: 25,
     flex: 3,
   },
   doneButtonStyleTitle: {
@@ -459,7 +484,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     borderRadius: 25,
     backgroundColor: '#2abf40',
-    marginTop: 10,
+    marginTop: 15,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -474,13 +499,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   frequencyContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignSelf: 'stretch',
     flex: 4,
-    borderColor: '#e8e9ea',
-    borderWidth: 1,
-    borderRadius: 2.5,
-    backgroundColor: '#f8f9fa',
+    // borderColor: '#e8e9ea',
+    // borderWidth: 1,
+    // borderRadius: 2.5,
+    // backgroundColor: '#f8f9fa',
     alignItems: 'center',
     paddingTop: 2,
     paddingBottom: 2,
@@ -493,13 +518,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextReminderContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     flex: 4,
     alignSelf: 'stretch',
-    borderColor: '#e8e9ea',
-    borderWidth: 1,
-    borderRadius: 2.5,
-    backgroundColor: '#f8f9fa',
+    // borderColor: '#e8e9ea',
+    // borderWidth: 1,
+    // borderRadius: 2.5,
+    // backgroundColor: '#f8f9fa',
     alignItems: 'center',
     paddingTop: 2,
     paddingBottom: 2,
@@ -508,63 +533,64 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   nextReminder: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 15,
-    color: '#5d5d5d',
+    fontFamily: 'Roboto-Light',
+    fontSize: 18,
+    // color: '#5d5d5d',
   },
   icon: {
-    marginRight: 2,
+    margin: 2,
   },
   streakNumberContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 45,
-    width: 45,
+    height: 60,
+    width: 60,
   },
   streakIconContainerBlue: {
     flexDirection: 'row',
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    backgroundColor: '#1787fb',
+    // height: 80,
+    // width: 80,
+    // borderRadius: 40,
+    // backgroundColor: '#1787fb',
     alignItems: 'center',
-    padding: 4,
+    // padding: 4,
     justifyContent: 'center',
   },
   streakIconContainerYellow: {
     flexDirection: 'row',
-    height: 30,
-    width: 30,
-    borderRadius: 15,
+    // height: 40,
+    // width: 40,
+    // borderRadius: 20,
     backgroundColor: '#e78e54',
     alignItems: 'center',
-    padding: 4,
+    // padding: 4,
     justifyContent: 'center',
   },
   streakIconContainerRed: {
     flexDirection: 'row',
-    height: 30,
-    width: 30,
-    borderRadius: 15,
+    // height: 40,
+    // width: 40,
+    // borderRadius: 20,
     backgroundColor: '#c20828',
     alignItems: 'center',
-    padding: 4,
+    // padding: 4,
     justifyContent: 'center',
   },
   emptyStreakIconContainer: {
     flexDirection: 'row',
-    height: 30,
-    width: 30,
-    borderRadius: 15,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
     backgroundColor: 'transparent',
     alignItems: 'center',
     padding: 4,
     justifyContent: 'center',
   },
   streakNumber: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 12,
-    color: '#ffffff',
+    fontFamily: 'Roboto-Light',
+    fontSize: 15,
+    position: 'absolute',
+    paddingTop: 15,
   },
 });
