@@ -45,6 +45,7 @@ import {
   logoutCurrentUser
 } from '../services/facebookAPI';
 import { NavigationActions } from 'react-navigation';
+import { MaterialIcons } from '@expo/vector-icons';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -145,23 +146,25 @@ class Dashboard extends React.Component {
             />
           </View>
           <View style={ styles.center}>
-            <Icon
+            <MaterialIcons
               name='menu'
               color='#c0c0c0'
+              size={ 30 }
               onPress={ () => this.setState({ showSettingsModal: true }) }
               >
-            </Icon>
+            </MaterialIcons>
             <Button
               title='Create Reminder'
               buttonStyle={ styles.createButton }
               titleStyle={ styles.createButtonText }
               onPress={ () => this.setState({ showCreateModal: true, }) }>
             </Button>
-            <Icon
+            <MaterialIcons
               name='menu'
               color='transparent'
+              size={ 30 }
               >
-            </Icon>
+            </MaterialIcons>
           </View>
           <SyncContacts
             showSyncContactModal={ this.state.showSyncContactModal }
