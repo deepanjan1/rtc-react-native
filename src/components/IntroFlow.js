@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     fontSize: 30,
     textAlign: 'center',
-    color: '#1787fb',
+    color: '#4468b0',
   },
   containerTwo: {
     height: '100%',
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   containerFour: {
     height: '100%',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e8e9ea',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,

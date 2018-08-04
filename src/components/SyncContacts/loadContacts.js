@@ -14,14 +14,7 @@ export const loadContacts = async (uid, stateContacts) => {
   if (status !== 'granted') {
     console.log('permission not granted');
   } else {
-    let contacts = await Contacts.getContactsAsync({
-      fields: [
-        Contacts.PHONE_NUMBERS,
-        Contacts.EMAILS,
-      ],
-      pageSize: 4000,
-      pageOffset: 0,
-    });
+    let contacts = await Contacts.getContactsAsync();
     response = contacts.data;
     if (stateContacts.length > 0) {
       updateContacts(uid, response);
