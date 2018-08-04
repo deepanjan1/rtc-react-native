@@ -126,11 +126,6 @@ class Dashboard extends React.Component {
     } = this.props;
     return (
       <View style={ styles.container }>
-          <View style={ styles.subHeading }>
-            <Text style={ styles.subHeadingText }>
-              Below are your existing reminders.
-            </Text>
-          </View>
           <View
             style={ styles.horizontalRule }
           />

@@ -14,7 +14,8 @@ import Swipeout from 'react-native-swipeout';
 import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
+import { RNSlidingButton, SlideDirection } from 'rn-sliding-button';
 import _ from 'underscore';
 
 export default class ReminderList extends React.Component {
@@ -158,54 +159,36 @@ export default class ReminderList extends React.Component {
               resizeMethod='contain'
               source={require('../assets/images/medal.png')}
             />
-            {/* <SimpleLineIcons
-              name='badge'
-              color='#e78e54'
-              size={60}/> */}
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
           </View>
-          {/* <View style={ styles.streakIconContainerBlue }>
-            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          </View> */}
         </View>
       );
     } else if (streakNumber > 0 && dayDifference >= 5 && dayDifference <= 6) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <SimpleLineIcons
-            name='badge'
-            color='blue'
-            size={60}/>
+          <Image
+            style={{ width: 40, height: 55, }}
+            resizeMethod='contain'
+            source={require('../assets/images/medal.png')}
+          />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          {/* <View style={ styles.streakIconContainerYellow }>
-            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          </View> */}
         </View>
       );
     } else if (streakNumber > 0 && dayDifference > 6) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <SimpleLineIcons
-            name='badge'
-            color='blue'
-            size={60} />
-            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          {/* <View style={ styles.streakIconContainerRed }>
-            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
-          </View>`` */}
+          <Image
+            style={{ width: 40, height: 55, }}
+            resizeMethod='contain'
+            source={require('../assets/images/medal.png')}
+          />
+          <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
         </View>
       );
     } else {
       return (
         <View style={ styles.streakNumberContainer }>
-          <View style={ styles.emptyStreakIconContainer }>
-            <Icon
-              name='phone'
-              color='transparent'
-              iconStyle={ styles.icon }
-              size={ 20 }
-            />
-          </View>
+          <View style={ styles.emptyStreakIconContainer } />
         </View>
       );
     }
@@ -267,9 +250,59 @@ export default class ReminderList extends React.Component {
                   />
                 </View>
               </View>
-              <Button
+              {/* <View style={ { alignItems: 'center', justifyContent: 'center' } }>
+                <RNSlidingButton
+                  style={ styles.completedButton }
+                  height={ 45 }
+                  onSlidingSuccess={() => {
+                    item.streak += 1;
+                    item.date = this.calcNextReminder(item.date, item.frequency);
+                    console.log('new date: ' + item.date);
+                    updateReminder(this.props.user, item);
+                  } }
+
+                  successfulSlidePercent={ 75 }
+                  slideDirection={SlideDirection.RIGHT}>
+                  <View
+                    style={ {
+                      justifyContent: 'center',
+                      alignItems: 'flex-start',
+                      marginLeft: 1,
+                    } }
+                    >
+                    <FontAwesome
+                      name='check-circle'
+                      color='#1787fb'
+                      size={ 45 }
+                    />
+                  </View>
+                </RNSlidingButton>
+                <View  style={ { position: 'absolute' } }>
+                  <Text style={ styles.doneButtonStyleTitle }>
+                    Slide Right To Mark As Contacted
+                  </Text>
+                </View>
+              </View> */}
+              <View style={ { marginTop: 30, alignItems: 'center' } }>
+                <Text style={ styles.doneButtonStyleTitle }>
+                  Mark As Contacted
+                </Text>
+                <FontAwesome
+                  name='check-circle'
+                  color='#2abf40'
+                  size={ 60 }
+                  onPress={ () => {
+                    item.streak += 1;
+                    item.date = this.calcNextReminder(item.date, item.frequency);
+                    console.log('new date: ' + item.date);
+                    updateReminder(this.props.user, item);
+                  } }
+
+                />
+              </View>
+              {/* <Button
                 title='Contacted'
-                buttonStyle={ styles.completedButtonContainer }
+                buttonStyle={ styles.completedButton }
                 titleStyle={ styles.doneButtonStyleTitle }
                 onPress={ () => {
                   item.streak += 1;
@@ -278,7 +311,7 @@ export default class ReminderList extends React.Component {
                   updateReminder(this.props.user, item);
                 } }
 
-              />
+              /> */}
             </View>
           </TouchableHighlight>
       </Swipeable>;
@@ -475,16 +508,18 @@ const styles = StyleSheet.create({
   },
   doneButtonStyleTitle: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 15,
-    color: '#ffffff',
+    fontSize: 16,
+    color: '#5d5d5d',
+    textAlign: 'center',
   },
-  completedButtonContainer: {
+  completedButton: {
     fontFamily: 'Roboto-Regular',
     flexDirection: 'row',
     alignSelf: 'stretch',
     borderRadius: 25,
-    backgroundColor: '#2abf40',
-    marginTop: 15,
+    borderColor: '#1787fb',
+    borderWidth: 1,
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -579,7 +614,7 @@ const styles = StyleSheet.create({
   },
   emptyStreakIconContainer: {
     flexDirection: 'row',
-    height: 40,
+    height: 55,
     width: 40,
     borderRadius: 20,
     backgroundColor: 'transparent',

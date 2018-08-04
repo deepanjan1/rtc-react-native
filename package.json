@@ -51,6 +51,7 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "rn-sliding-button": "^1.1.5",
     "underscore": "^1.9.1",
     "update": "^0.7.4"
   }
