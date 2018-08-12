@@ -41,17 +41,25 @@ export default class CreateFormRevised extends React.Component {
     }
   };
 
-  // iterating through emails to help differentiate duplicate contacts
-  showEmails = (item) => {
+  // iterating through phone numbers to help differentiate duplicate contacts
+  showPhone = (item) => {
     if (item.name) {
       try {
         return (
           <View style={styles.contactSearch}>
-              { item.emails.map((data) => (
+              {/* { item.emails.map((data) => (
                     <Text
                       key={ data.key + data.email }
                       style={ styles.email }>
-                      { data.email }
+                      { (data.label) ? data.label + ': ' + data.email : 'email: ' + data.email }
+                    </Text>
+                ))
+              } */}
+              { item.phoneNumbers.map((data) => (
+                    <Text
+                      key={ data.key + data.number }
+                      style={ styles.email }>
+                      { (data.label) ? data.label + ': ' + data.number : 'phone: ' + data.number }
                     </Text>
                 ))
               }
@@ -90,7 +98,7 @@ export default class CreateFormRevised extends React.Component {
                   underlayColor='transparent'>
                   <View style={ styles.entryContainer }>
                       <Text key={item.key} style={styles.name}>{item.name}</Text>
-                      { this.showEmails(item) }
+                      { this.showPhone(item) }
                   </View>
                 </TouchableHighlight>
               );
@@ -101,7 +109,7 @@ export default class CreateFormRevised extends React.Component {
                   underlayColor='transparent'>
                   <View style={ styles.entryContainer }>
                       <Text key={item.key} style={styles.name}>{item.company}</Text>
-                      {this.showEmails(item)}
+                      {this.showPhone(item)}
                   </View>
                 </TouchableHighlight>
               );

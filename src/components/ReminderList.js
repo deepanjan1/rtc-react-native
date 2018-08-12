@@ -7,6 +7,7 @@ import {
   SectionList,
   TouchableHighlight,
   Image,
+  Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { removeReminder, updateReminder } from '../services/api';
@@ -14,9 +15,10 @@ import Swipeout from 'react-native-swipeout';
 import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
-import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome, Entypo } from '@expo/vector-icons';
 import { RNSlidingButton, SlideDirection } from 'rn-sliding-button';
 import _ from 'underscore';
+import { exactMatchContact } from './SyncContacts/loadContacts';
 
 export default class ReminderList extends React.Component {
 
@@ -283,22 +285,62 @@ export default class ReminderList extends React.Component {
                   </Text>
                 </View>
               </View> */}
-              <View style={ { marginTop: 30, alignItems: 'center' } }>
-                <Text style={ styles.doneButtonStyleTitle }>
-                  Mark As Contacted
-                </Text>
-                <FontAwesome
-                  name='check-circle'
-                  color='#2abf40'
-                  size={ 60 }
-                  onPress={ () => {
-                    item.streak += 1;
-                    item.date = this.calcNextReminder(item.date, item.frequency);
-                    console.log('new date: ' + item.date);
-                    updateReminder(this.props.user, item);
-                  } }
+              <View style={ styles.reminderActions }>
+                  <View style={ {
+                    backgroundColor: '#1787fb',
+                    borderRadius: 20,
+                    width: 40,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 30,
+                  } }>
+                  <Entypo
+                    name='message'
+                    color='#ffffff'
+                    size={ 30 }
+                    onPress={ () => {
+                      Linking.openURL('sms:');
+                    } }
 
-                />
+                  />
+                  </View>
+                  <View style={ { alignItems: 'center' } }>
+                    {/* <Text style={ styles.doneButtonStyleTitle }>
+                      Mark As Contacted
+                    </Text> */}
+                    <FontAwesome
+                      name='check-circle'
+                      color='#2abf40'
+                      size={ 60 }
+                      onPress={ () => {
+                        item.streak += 1;
+                        item.date = this.calcNextReminder(item.date, item.frequency);
+                        console.log('new date: ' + item.date);
+                        updateReminder(this.props.user, item);
+                      } }
+
+                    />
+                  </View>
+                  <View style={ {
+                    backgroundColor: '#1787fb',
+                    borderRadius: 20,
+                    width: 40,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginRight: 30,
+                  } }>
+                    <FontAwesome
+                      name='phone'
+                      color='#ffffff'
+                      size={ 30 }
+                      onPress={ () => {
+                        exactMatchContact(this.props.user, item.name);
+                      } }
+
+                    />
+                  </View>
               </View>
               {/* <Button
                 title='Contacted'
@@ -533,14 +575,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  reminderActions: {
+    marginTop: 30,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   frequencyContainer: {
-    // flexDirection: 'row',
     alignSelf: 'stretch',
     flex: 4,
-    // borderColor: '#e8e9ea',
-    // borderWidth: 1,
-    // borderRadius: 2.5,
-    // backgroundColor: '#f8f9fa',
     alignItems: 'center',
     paddingTop: 2,
     paddingBottom: 2,
@@ -553,13 +597,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextReminderContainer: {
-    // flexDirection: 'row',
     flex: 4,
     alignSelf: 'stretch',
-    // borderColor: '#e8e9ea',
-    // borderWidth: 1,
-    // borderRadius: 2.5,
-    // backgroundColor: '#f8f9fa',
     alignItems: 'center',
     paddingTop: 2,
     paddingBottom: 2,
@@ -570,7 +609,6 @@ const styles = StyleSheet.create({
   nextReminder: {
     fontFamily: 'Roboto-Light',
     fontSize: 18,
-    // color: '#5d5d5d',
   },
   icon: {
     margin: 2,
@@ -584,32 +622,19 @@ const styles = StyleSheet.create({
   },
   streakIconContainerBlue: {
     flexDirection: 'row',
-    // height: 80,
-    // width: 80,
-    // borderRadius: 40,
-    // backgroundColor: '#1787fb',
     alignItems: 'center',
-    // padding: 4,
     justifyContent: 'center',
   },
   streakIconContainerYellow: {
     flexDirection: 'row',
-    // height: 40,
-    // width: 40,
-    // borderRadius: 20,
     backgroundColor: '#e78e54',
     alignItems: 'center',
-    // padding: 4,
     justifyContent: 'center',
   },
   streakIconContainerRed: {
     flexDirection: 'row',
-    // height: 40,
-    // width: 40,
-    // borderRadius: 20,
     backgroundColor: '#c20828',
     alignItems: 'center',
-    // padding: 4,
     justifyContent: 'center',
   },
   emptyStreakIconContainer: {
