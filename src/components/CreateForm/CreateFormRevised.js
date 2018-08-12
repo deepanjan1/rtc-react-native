@@ -204,6 +204,7 @@ export default class CreateFormRevised extends React.Component {
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
                   frequency: this.state.selectedFrequency,
+                  phoneNumber: this.state.person.phoneNumbers,
                   streak: 0,
                 });
 
