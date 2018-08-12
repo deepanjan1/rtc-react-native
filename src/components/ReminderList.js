@@ -286,7 +286,7 @@ export default class ReminderList extends React.Component {
                 </View>
               </View> */}
               <View style={ styles.reminderActions }>
-                  <View style={ {
+                  {/* <View style={ {
                     backgroundColor: '#1787fb',
                     borderRadius: 20,
                     width: 40,
@@ -304,11 +304,11 @@ export default class ReminderList extends React.Component {
                     } }
 
                   />
-                  </View>
+                  </View> */}
                   <View style={ { alignItems: 'center' } }>
-                    {/* <Text style={ styles.doneButtonStyleTitle }>
+                    <Text style={ styles.doneButtonStyleTitle }>
                       Mark As Contacted
-                    </Text> */}
+                    </Text>
                     <FontAwesome
                       name='check-circle'
                       color='#2abf40'
@@ -322,7 +322,7 @@ export default class ReminderList extends React.Component {
 
                     />
                   </View>
-                  <View style={ {
+                  {/* <View style={ {
                     backgroundColor: '#1787fb',
                     borderRadius: 20,
                     width: 40,
@@ -336,11 +336,11 @@ export default class ReminderList extends React.Component {
                       color='#ffffff'
                       size={ 30 }
                       onPress={ () => {
-                        exactMatchContact(this.props.user, item.name);
+                        exactMatchContact(item.personID);
                       } }
 
                     />
-                  </View>
+                  </View> */}
               </View>
               {/* <Button
                 title='Contacted'
@@ -577,10 +577,10 @@ const styles = StyleSheet.create({
   },
   reminderActions: {
     marginTop: 30,
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   frequencyContainer: {
     alignSelf: 'stretch',

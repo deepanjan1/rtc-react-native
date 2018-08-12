@@ -24,18 +24,18 @@ export const loadContacts = async (uid, stateContacts) => {
   };
 };
 
-export const exactMatchContact = async (uid, contactName) => {
+export const exactMatchContact = async (contactID) => {
   const status = await getPermission();
   if (status !== 'granted') {
     console.log('permission not granted');
     return null;
   } else {
-    let contact = await Contacts.getContactsAsync({ name: contactName });
+    console.log('pre-pull: ' + contactID);
+    const contact = await Contacts.getContactByIdAsync(contactID);
     if (contact) {
       console.log(contact);
     } else {
-      console.log(contactName);
-      return null;
+      console.log(contactID);
     }
   };
 };
