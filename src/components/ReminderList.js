@@ -8,14 +8,14 @@ import {
   TouchableHighlight,
   Image,
   Linking,
+  Modal,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { removeReminder, updateReminder } from '../services/api';
-import Swipeout from 'react-native-swipeout';
 import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
-import { SimpleLineIcons, FontAwesome, Entypo } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { RNSlidingButton, SlideDirection } from 'rn-sliding-button';
 import _ from 'underscore';
 import { exactMatchContact } from './SyncContacts/loadContacts';
@@ -35,8 +35,8 @@ export default class ReminderList extends React.Component {
     this.swipeableButtons = [
       <TouchableHighlight
         onPress={() => {
-          removeReminder(this.props.user, this.state.activeKey); // remove from database
           this.swipeable.recenter();
+          removeReminder(this.props.user, this.state.activeKey); // remove from database
         }}
 
         underlayColor='white'
@@ -53,9 +53,10 @@ export default class ReminderList extends React.Component {
               padding: 10,
               borderRadius: 23,
             }}>
-            <Icon
+            <MaterialIcons
               name='delete'
               color='white'
+              size={ 30 }
             />
           </View>
         </View>
@@ -67,6 +68,14 @@ export default class ReminderList extends React.Component {
     activeKey: '',
     index: null,
     isSwiping: false,
+  };
+
+  handleScroll = () => {
+    const { currentlyOpenSwipeable } = this.state;
+
+    if (currentlyOpenSwipeable) {
+      currentlyOpenSwipeable.recenter();
+    }
   };
 
   sortRemindersByDate = (reminders) => {
@@ -252,39 +261,6 @@ export default class ReminderList extends React.Component {
                   />
                 </View>
               </View>
-              {/* <View style={ { alignItems: 'center', justifyContent: 'center' } }>
-                <RNSlidingButton
-                  style={ styles.completedButton }
-                  height={ 45 }
-                  onSlidingSuccess={() => {
-                    item.streak += 1;
-                    item.date = this.calcNextReminder(item.date, item.frequency);
-                    console.log('new date: ' + item.date);
-                    updateReminder(this.props.user, item);
-                  } }
-
-                  successfulSlidePercent={ 75 }
-                  slideDirection={SlideDirection.RIGHT}>
-                  <View
-                    style={ {
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      marginLeft: 1,
-                    } }
-                    >
-                    <FontAwesome
-                      name='check-circle'
-                      color='#1787fb'
-                      size={ 45 }
-                    />
-                  </View>
-                </RNSlidingButton>
-                <View  style={ { position: 'absolute' } }>
-                  <Text style={ styles.doneButtonStyleTitle }>
-                    Slide Right To Mark As Contacted
-                  </Text>
-                </View>
-              </View> */}
               <View style={ styles.reminderActions }>
                   {/* <View style={ {
                     backgroundColor: '#1787fb',
@@ -342,18 +318,6 @@ export default class ReminderList extends React.Component {
                     />
                   </View> */}
               </View>
-              {/* <Button
-                title='Contacted'
-                buttonStyle={ styles.completedButton }
-                titleStyle={ styles.doneButtonStyleTitle }
-                onPress={ () => {
-                  item.streak += 1;
-                  item.date = this.calcNextReminder(item.date, item.frequency);
-                  console.log('new date: ' + item.date);
-                  updateReminder(this.props.user, item);
-                } }
-
-              /> */}
             </View>
           </TouchableHighlight>
       </Swipeable>;
@@ -395,7 +359,7 @@ export default class ReminderList extends React.Component {
   render() {
     this.upcomingReminders = this.sortRemindersByDate(this.props.reminders)['true'];
     this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
-    if (this.props.reminders !== 0) {
+    if (this.props.reminders.length !== 0) {
       return (
           <SectionList
             sections={ this.sectionHeaders(this.upcomingReminders, this.pastReminders) }

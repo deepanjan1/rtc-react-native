@@ -8,7 +8,7 @@
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
     "ios": {
-      "bundleIdentifier": "DeepCreations, LLC",
+      "bundleIdentifier": "DeepCreations",
       "infoPlist": {
           "NSContactsUsageDescription": "We sync your contacts so you can create reminders.  We never reach out to your contacts!"
         },

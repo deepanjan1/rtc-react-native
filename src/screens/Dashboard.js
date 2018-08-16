@@ -136,30 +136,32 @@ class Dashboard extends React.Component {
               showEditModal = { () => this.setState({ showEditModal: true }) }
               user = { user.uid }
             />
+          </View>
+          <View style={ { marginTop: 30, } }>
             <View
               style={ styles.horizontalRule }
             />
-          </View>
-          <View style={ styles.center}>
-            <MaterialIcons
-              name='menu'
-              color='#c0c0c0'
-              size={ 30 }
-              onPress={ () => this.setState({ showSettingsModal: true }) }
-              >
-            </MaterialIcons>
-            <Button
-              title='Create Reminder'
-              buttonStyle={ styles.createButton }
-              titleStyle={ styles.createButtonText }
-              onPress={ () => this.setState({ showCreateModal: true, }) }>
-            </Button>
-            <MaterialIcons
-              name='menu'
-              color='transparent'
-              size={ 30 }
-              >
-            </MaterialIcons>
+            <View style={ styles.center}>
+              <MaterialIcons
+                name='menu'
+                color='#c0c0c0'
+                size={ 30 }
+                onPress={ () => this.setState({ showSettingsModal: true }) }
+                >
+              </MaterialIcons>
+              <Button
+                title='Create Reminder'
+                buttonStyle={ styles.createButton }
+                titleStyle={ styles.createButtonText }
+                onPress={ () => this.setState({ showCreateModal: true, }) }>
+              </Button>
+              <MaterialIcons
+                name='menu'
+                color='transparent'
+                size={ 30 }
+                >
+              </MaterialIcons>
+            </View>
           </View>
           <SyncContacts
             showSyncContactModal={ this.state.showSyncContactModal }
@@ -183,17 +185,6 @@ class Dashboard extends React.Component {
             user = { user.uid }
             notificationToken={ notificationToken }
           />
-          {/* <CreateForm
-            showCreateForm={ this.state.showCreateModal }
-            closeCreateForm={ () => this.setState({ showCreateModal: false, }) }
-            addReminder={
-              (uid, reminder, notificationToken) =>
-              createReminder(uid, reminder, notificationToken)
-            }
-            contacts={ contacts }
-            user = { user.uid }
-            notificationToken={ notificationToken }
-          /> */}
           <EditForm
             showEditForm={ this.state.showEditModal }
             closeEditForm={ () => this.setState({ showEditModal: false, }) }
