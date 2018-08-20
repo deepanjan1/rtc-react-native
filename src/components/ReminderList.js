@@ -98,15 +98,34 @@ export default class ReminderList extends React.Component {
     return groupedReminder;
   };
 
+  // storeContact = nextDate => {
+  //   switch (nextDate) {
+  //     case 0:
+  //       return ('Bi-Weekly');
+  //     case 1:
+  //       return ('Quarterly');
+  //     case 2:
+  //       return ('Bi-Annually');
+  //     case 3:
+  //       return ('Annually');
+  //     default:
+  //       return ('Error');
+  //   }
+  // };
+
   storeContact = nextDate => {
     switch (nextDate) {
-      case 0:
+      case 'Every Two Weeks':
         return ('Bi-Weekly');
-      case 1:
+      case 'Every Month':
+        return ('Monthly');
+      case 'Quarterly':
         return ('Quarterly');
-      case 2:
-        return ('Bi-Annually');
-      case 3:
+      case 'Every Two Months':
+        return ('Bi-Monthly');
+      case 'Twice a Year':
+        return ('Semi-Annual');
+      case 'Once a Year':
         return ('Annually');
       default:
         return ('Error');
@@ -115,13 +134,17 @@ export default class ReminderList extends React.Component {
 
   convertFreqtoMill = (frequency) => {
     switch (frequency) {
-      case 0:
+      case 'Every Two Weeks':
         return (1209600000);
-      case 1:
+      case 'Every Month':
+        return (2592000000);
+      case 'Every Two Months':
+        return (5184000000);
+      case 'Quarterly':
         return (7776000000);
-      case 2:
+      case 'Twice a Year':
         return (15552000000);
-      case 3:
+      case 'Once a Year':
         return (31104000000);
     }
   };

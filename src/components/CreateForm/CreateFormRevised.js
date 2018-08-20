@@ -29,7 +29,8 @@ export default class CreateFormRevised extends React.Component {
     nameSelected: false,
     datePickerModal: false,
     date: Moment().startOf('day'),  // to firebase
-    selectedFrequency: 0, // to firebase
+    frequency: 'Every Two Weeks',
+    frequencyModal: false,
   };
 
   // loading contacts
@@ -47,14 +48,6 @@ export default class CreateFormRevised extends React.Component {
       try {
         return (
           <View style={styles.contactSearch}>
-              {/* { item.emails.map((data) => (
-                    <Text
-                      key={ data.key + data.email }
-                      style={ styles.email }>
-                      { (data.label) ? data.label + ': ' + data.email : 'email: ' + data.email }
-                    </Text>
-                ))
-              } */}
               { item.phoneNumbers.map((data) => (
                     <Text
                       key={ data.key + data.number }
@@ -144,9 +137,20 @@ export default class CreateFormRevised extends React.Component {
     };
   };
 
-  updateFrequency = (selectedFrequency) => {
-    this.setState({ selectedFrequency });
-  };
+  frequencyButton = (frequencySelection) => (
+    <TouchableHighlight
+      onPress={() => {
+        this.setState({
+          frequency: frequencySelection,
+          frequencyModal: false,
+        });
+      }}
+
+      underlayColor='transparent'>
+
+      <Text style={ styles.frequency }>{ frequencySelection }</Text>
+    </TouchableHighlight>
+  );
 
   restOfForm = () => {
     const frequency = ['Bi-Weekly', 'Quarterly', 'Bi-Annually', 'Annually'];
@@ -172,24 +176,32 @@ export default class CreateFormRevised extends React.Component {
             </TouchableHighlight>
           </View>
           <View style={ { marginTop: 20 } }>
-            <Text style={styles.name}>How often to you want to be reminded to call?</Text>
+            <Text style={styles.name}>How often do you want to reach out?</Text>
             <View style={ styles.inputField }>
               <Icon
                 name='cached'
                 size={25}
                 color='#1787fb'
               />
-              <View style={{ width: '100%' }}>
-                <ButtonGroup
-                  onPress={this.updateFrequency}
-                  selectedIndex={this.state.selectedFrequency}
-                  buttons={frequency}
-                  buttonStyle={ styles.frequencyButton }
-                  textStyle={ styles.frequencyButtonText }
-                  containerStyle={{ width: '80%' }}
-                  selectedButtonStyle={ styles.selectedFrequencyButton }
-                  selectedTextStyle={ styles.selectedFrequencyButtonText }
-                />
+              <View style={{ width: '100%', }}>
+                <TouchableHighlight
+                  style={{
+                    paddingLeft: 10,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: '#e8e9ea',
+                    width: '80%',
+                  }}
+                  onPress= {
+                    () => this.setState({
+                      frequencyModal: true,
+                    })
+                  }
+                  >
+                  <Text style={ styles.name }>{this.state.frequency}</Text>
+                </TouchableHighlight>
               </View>
             </View>
           </View>
@@ -203,7 +215,7 @@ export default class CreateFormRevised extends React.Component {
                   name: this.state.person.name,
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
-                  frequency: this.state.selectedFrequency,
+                  frequency: this.state.frequency,
                   phoneNumber: this.state.person.phoneNumbers,
                   streak: 0,
                 });
@@ -213,9 +225,9 @@ export default class CreateFormRevised extends React.Component {
                   person: {},
                   personID: '',
                   date: Moment().startOf('day'),
-                  selectedFrequency: 0,
                   search: '',
                   results: [],
+                  frequency: 'Every Two Weeks',
                 });
 
                 this.props.closeCreateForm();
@@ -244,7 +256,7 @@ export default class CreateFormRevised extends React.Component {
             nameSelected: false,
             datePickerModal: false,
             date: Moment().startOf('day'),  // to firebase
-            selectedFrequency: 0, // to firebase
+            // selectedFrequency: 0, // to firebase
           });
         } }
 
@@ -313,6 +325,22 @@ export default class CreateFormRevised extends React.Component {
                   dayText = { styles.dayText }
                 />
             </Modal>
+            <Modal
+              isVisible={ this.state.frequencyModal }
+              onBackdropPress={() => this.setState({ frequencyModal: false })}
+              animationIn='fadeIn'
+              animationInTiming={200}
+              animationOut='fadeOut'
+              animationOutTiming={200}>
+              <View style={ styles.frequencyModal }>
+                { this.frequencyButton('Every Two Weeks') }
+                { this.frequencyButton('Every Month') }
+                { this.frequencyButton('Every Two Months') }
+                { this.frequencyButton('Quarterly') }
+                { this.frequencyButton('Twice a Year') }
+                { this.frequencyButton('Once a Year') }
+              </View>
+            </Modal>
         </View>
       </Modal>
     );
@@ -363,7 +391,6 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: 'Roboto-Regular',
     fontSize: 18,
-    marginBottom: 5,
   },
   inputField: {
     flexDirection: 'row',
@@ -371,7 +398,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   frequency: {
-    padding: 15,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 18,
+    color: '#1787fb',
+    marginTop: 10,
+    marginBottom: 10,
   },
   calendar: {
     width: '100%',
@@ -437,5 +468,12 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontFamily: 'Roboto-Regular',
     fontSize: 15,
+  },
+  frequencyModal: {
+    backgroundColor: 'white',
+    padding: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 10,
   },
 });

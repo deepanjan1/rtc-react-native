@@ -137,10 +137,10 @@ class Dashboard extends React.Component {
               user = { user.uid }
             />
           </View>
-          <View style={ { marginTop: 30, } }>
-            <View
-              style={ styles.horizontalRule }
-            />
+          <View
+            style={ styles.horizontalRule }
+          />
+          <View style={ { marginTop: 10, } }>
             <View style={ styles.center}>
               <MaterialIcons
                 name='menu'

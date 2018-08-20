@@ -27,7 +27,8 @@ export default class EditForm extends React.Component {
     name: '',
     personID: '',
     date: '',
-    selectedFrequency: 0,
+    frequency: 'Every Two Weeks',
+    frequencyModal: false,
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -43,12 +44,22 @@ export default class EditForm extends React.Component {
     }
   };
 
-  updateFrequency = (selectedFrequency) => {
-    this.setState({ selectedFrequency });
-  };
+  frequencyButton = (frequencySelection) => (
+    <TouchableHighlight
+      onPress={() => {
+        this.setState({
+          frequency: frequencySelection,
+          frequencyModal: false,
+        });
+      }}
+
+      underlayColor='transparent'>
+
+      <Text style={ styles.frequency }>{ frequencySelection }</Text>
+    </TouchableHighlight>
+  );
 
   render() {
-    const frequency = ['Bi-Weekly', 'Quarterly', 'Bi-Annually', 'Annually'];
     return (
       <Modal
         isVisible={ this.props.showEditForm }
@@ -99,16 +110,24 @@ export default class EditForm extends React.Component {
                 color='#1787fb'
               />
               <View style={{ width: '100%' }}>
-                <ButtonGroup
-                  onPress={this.updateFrequency}
-                  selectedIndex={this.state.selectedFrequency}
-                  buttons={frequency}
-                  buttonStyle={ styles.frequencyButton }
-                  textStyle={ styles.frequencyButtonText }
-                  containerStyle={{ width: '80%' }}
-                  selectedButtonStyle={ styles.selectedFrequencyButton }
-                  selectedTextStyle={ styles.selectedFrequencyButtonText }
-                />
+                <TouchableHighlight
+                  style={{
+                    paddingLeft: 10,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: '#e8e9ea',
+                    width: '80%',
+                  }}
+                  onPress= {
+                    () => this.setState({
+                      frequencyModal: true,
+                    })
+                  }
+                  >
+                  <Text style={ styles.name }>{this.state.frequency}</Text>
+                </TouchableHighlight>
               </View>
             </View>
           </View>
@@ -122,9 +141,8 @@ export default class EditForm extends React.Component {
                   name: this.state.name,
                   date: this.state.date,
                   personID: this.state.personID,
-                  frequency: this.state.selectedFrequency,
+                  frequency: this.state.frequency,
                   key: this.props.editReminder.key,
-                  streak: this.props.editReminder.streak,
                 });
                 this.props.closeEditForm();
               } }
@@ -149,10 +167,23 @@ export default class EditForm extends React.Component {
                   style={ styles.calendar }
                   barView = { styles.barView }
                   barText = { styles.barText }
-                  dayHeaderText = { styles.dayHeaderText }
-                  dayRowView = { styles.dayRowView }
-                  dayText = { styles.dayText }
                 />
+            </Modal>
+            <Modal
+              isVisible={ this.state.frequencyModal }
+              onBackdropPress={() => this.setState({ frequencyModal: false })}
+              animationIn='fadeIn'
+              animationInTiming={200}
+              animationOut='fadeOut'
+              animationOutTiming={200}>
+              <View style={ styles.frequencyModal }>
+                { this.frequencyButton('Every Two Weeks') }
+                { this.frequencyButton('Every Month') }
+                { this.frequencyButton('Every Two Months') }
+                { this.frequencyButton('Quarterly') }
+                { this.frequencyButton('Twice a Year') }
+                { this.frequencyButton('Once a Year') }
+              </View>
             </Modal>
           </View>
         </View>
@@ -198,7 +229,6 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: 'Roboto-Regular',
     fontSize: 20,
-    marginBottom: 5,
   },
   inputField: {
     flexDirection: 'row',
@@ -206,6 +236,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   frequency: {
+    padding: 15,
+  },
+  datePicker: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
     padding: 15,
   },
   calendar: {
@@ -218,7 +253,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
-    alignSelf: 'center',
   },
   barView: {
     backgroundColor: '#1a9bfc',
@@ -226,21 +260,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
   barText: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 25,
     color: '#ffffff',
-  },
-  dayRowView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dayHeaderText: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 20,
-  },
-  dayText: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 16,
+    fontFamily: 'Roboto-Medium',
   },
   frequencyButton: {
     borderColor: '#1a9bfc',
@@ -272,5 +293,19 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontFamily: 'Roboto-Regular',
     fontSize: 15,
+  },
+  frequencyModal: {
+    backgroundColor: 'white',
+    padding: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 10,
+  },
+  frequency: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 18,
+    color: '#1787fb',
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
