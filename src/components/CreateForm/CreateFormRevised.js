@@ -159,21 +159,28 @@ export default class CreateFormRevised extends React.Component {
         <View>
           <View style={ { marginTop: 20 } }>
             <Text style={styles.name}>When do you want your first reminder?</Text>
-            <TouchableHighlight
-              onPress={ () => this.setState({ datePickerModal: true }) }
-              underlayColor='transparent'>
+
               <View style={ styles.inputField }>
                 <Icon
                   name='date-range'
                   size={25}
                   color='#1787fb'
                 />
-                <Input
-                  placeholder='Click on icon to pick date'
-                  value={ this.state.date.format('MM/DD/YYYY') }
-                />
+                <TouchableHighlight
+                  onPress={ () => this.setState({ datePickerModal: true }) }
+                  underlayColor='transparent'
+                  style={{
+                    paddingLeft: 10,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: '#e8e9ea',
+                    width: '80%',
+                  }}>
+                  <Text style={ styles.name }>{this.state.date.format('MM/DD/YYYY')}</Text>
+                </TouchableHighlight>
               </View>
-            </TouchableHighlight>
           </View>
           <View style={ { marginTop: 20 } }>
             <Text style={styles.name}>How often do you want to reach out?</Text>
@@ -357,11 +364,10 @@ CreateFormRevised.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 100,
     padding: 15,
     backgroundColor: '#ffffff',
     borderRadius: 10,
-    height: 600,
+    height: 300,
   },
   header: {
     fontSize: 15,

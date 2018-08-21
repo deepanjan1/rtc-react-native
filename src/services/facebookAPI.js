@@ -11,7 +11,6 @@ export const loginWithFacebook = async() => {
   const { type, token } = await Expo.Facebook
   .logInWithReadPermissionsAsync('140333090089093', {
       permissions: ['public_profile', 'email'],
-      behavior: 'native',
     });
   if (type === 'success') {
     // build credential and store within firebase

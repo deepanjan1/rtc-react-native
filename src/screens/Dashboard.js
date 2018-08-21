@@ -80,16 +80,16 @@ class Dashboard extends React.Component {
 
   componentDidMount = () => {
     this.unsubscribeCurrentUserListener = this.props.watchUserData();
-    if (this.props.contacts) {
-      this.setState({
-        showSyncContactModal: true,
-        contactsLoaded: true,
-      });
-    } else {
-      loadContacts(this.props.uid, this.props.contacts);
-      this.setState({ contactsLoaded: true, });
-      console.log('Contacts Loading in Background');
-    }
+    // if (this.props.contacts.length === 0) {
+    //   this.setState({
+    //     showSyncContactModal: true,
+    //     contactsLoaded: true,
+    //   });
+    // } else {
+    //   loadContacts(this.props.uid, this.props.contacts);
+    //   this.setState({ contactsLoaded: true, });
+    //   console.log('Contacts Loading in Background');
+    // }
   };
 
   componentDidUpdate = (prevProps) => {
@@ -99,6 +99,19 @@ class Dashboard extends React.Component {
         this.props.user.uid
       )) {
         this.setState({ showNotificationsModal: true });
+      }
+    }
+
+    if (prevProps.contacts !== this.props.contacts) {
+      if (this.props.contacts.length === 0) {
+        this.setState({
+          showSyncContactModal: true,
+          contactsLoaded: true,
+        });
+      } else {
+        loadContacts(this.props.uid, this.props.contacts);
+        this.setState({ contactsLoaded: true, });
+        console.log('Contacts Loading in Background');
       }
     }
   };

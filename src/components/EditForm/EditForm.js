@@ -86,23 +86,30 @@ export default class EditForm extends React.Component {
           </View>
           <View style={ { marginTop: 20 } }>
             <Text style={styles.name}>When do you want your first reminder?</Text>
-            <TouchableHighlight
-              onPress={ () => this.setState({ datePickerModal: true }) }
-              underlayColor='transparent'>
               <View style={ styles.inputField }>
                 <Icon
                   name='date-range'
                   size={25}
                   color='#1787fb'
                 />
-                <Input
-                  value={ this.state.date }
-                />
+                <TouchableHighlight
+                  onPress={ () => this.setState({ datePickerModal: true }) }
+                  underlayColor='transparent'
+                  style={{
+                    paddingLeft: 10,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: '#e8e9ea',
+                    width: '80%',
+                  }}>
+                  <Text style={ styles.name }>{this.state.date}</Text>
+                </TouchableHighlight>
               </View>
-            </TouchableHighlight>
           </View>
           <View style={ { marginTop: 20 } }>
-            <Text style={styles.name}>How often to you want to be reminded to call?</Text>
+            <Text style={styles.name}>How often to you want to reach out?</Text>
             <View style={ styles.inputField }>
               <Icon
                 name='cached'
@@ -202,11 +209,10 @@ EditForm.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 100,
     padding: 15,
     backgroundColor: '#ffffff',
     borderRadius: 10,
-    height: 600,
+    height: 300,
   },
   input: {
     fontSize: 20,
@@ -228,7 +234,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 20,
+    fontSize: 18,
   },
   inputField: {
     flexDirection: 'row',
