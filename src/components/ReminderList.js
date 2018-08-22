@@ -98,21 +98,6 @@ export default class ReminderList extends React.Component {
     return groupedReminder;
   };
 
-  // storeContact = nextDate => {
-  //   switch (nextDate) {
-  //     case 0:
-  //       return ('Bi-Weekly');
-  //     case 1:
-  //       return ('Quarterly');
-  //     case 2:
-  //       return ('Bi-Annually');
-  //     case 3:
-  //       return ('Annually');
-  //     default:
-  //       return ('Error');
-  //   }
-  // };
-
   storeContact = nextDate => {
     switch (nextDate) {
       case 'Every Two Weeks':
