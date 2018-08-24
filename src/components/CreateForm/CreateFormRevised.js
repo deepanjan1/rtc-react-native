@@ -236,7 +236,7 @@ export default class CreateFormRevised extends React.Component {
                   results: [],
                   frequency: 'Every Two Weeks',
                 });
-
+                this.props.actionFunction();
                 this.props.closeCreateForm();
               } }
 
@@ -360,6 +360,7 @@ CreateFormRevised.propTypes = {
   addReminder: PropTypes.func.isRequired,
   contacts: PropTypes.array.isRequired,
   user: PropTypes.string.isRequired,
+  actionFunction: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

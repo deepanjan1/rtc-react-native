@@ -79,6 +79,7 @@ export const deleteAllContacts = () => {
 // Permission Listener and modifier functions
 export const getPermissions = (uid, updaterFn) =>
   setListener('permissions/' + uid, updaterFn);
+
 export const shutOffGetPermissions = (uid) => setListenerOff('permissions/' + uid);
 
 // write new notification token

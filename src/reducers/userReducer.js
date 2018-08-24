@@ -34,6 +34,12 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         notificationToken: action.notificationToken,
+        notificationModal: action.notificationModal,
+      };
+    case actionTypes.NOTIFICATION_MODAL_ON:
+      return {
+        ...state,
+        notificationModal: action.notificationModal,
       };
     default:
       return state;

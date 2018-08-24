@@ -9,6 +9,7 @@ import {
 import { Icon, Button } from 'react-native-elements';
 import Header from '../components/Header';
 import NavButton from '../components/NavButton';
+import ConfirmationModal from '../components/ConfirmationModal';
 import ReminderList from '../components/ReminderList';
 import CreateFormRevised from '../components/CreateForm/CreateFormRevised';
 import EditForm from '../components/EditForm/EditForm';
@@ -60,47 +61,20 @@ class Dashboard extends React.Component {
     showNotificationsModal: false,
     error: {},
     contactsLoaded: false,
+    confirmationModal: false,
+    action: '',
   };
-
-  // showContactModal = async (uid, contacts) => {
-  //   if (uid && contacts && !this.state.contactsLoaded) {
-  //     const status = await getPermission();
-  //     if (status !== 'granted') {
-  //       this.setState({
-  //         showSyncContactModal: true,
-  //         contactsLoaded: true,
-  //       });
-  //     } else {
-  //       await loadContacts(uid, contacts);
-  //       this.setState({ contactsLoaded: true, });
-  //       console.log('Contacts Loading in Background');
-  //     }
-  //   }
-  // };
 
   componentDidMount = () => {
     this.unsubscribeCurrentUserListener = this.props.watchUserData();
-    // if (this.props.contacts.length === 0) {
-    //   this.setState({
-    //     showSyncContactModal: true,
-    //     contactsLoaded: true,
-    //   });
-    // } else {
-    //   loadContacts(this.props.uid, this.props.contacts);
-    //   this.setState({ contactsLoaded: true, });
-    //   console.log('Contacts Loading in Background');
-    // }
   };
 
   componentDidUpdate = (prevProps) => {
-    if (!prevProps.notificationToken && this.props.notificationToken) {
-      if (!getExistingPermission(
-        this.props.notificationToken,
-        this.props.user.uid
-      )) {
+    if (prevProps.notificationToken !== this.props.notificationToken) {
+      if (!this.props.notificationToken) {
         this.setState({ showNotificationsModal: true });
-      }
-    }
+      };
+    };
 
     if (prevProps.contacts !== this.props.contacts) {
       if (this.props.contacts.length === 0) {
@@ -148,6 +122,12 @@ class Dashboard extends React.Component {
               loadActiveReminder = { selectedReminder }
               showEditModal = { () => this.setState({ showEditModal: true }) }
               user = { user.uid }
+              actionFunction = { () => setTimeout(() => this.setState(
+                {
+                  action: 'deleted',
+                  confirmationModal: true,
+                }
+              ), 250) }
             />
           </View>
           <View
@@ -186,6 +166,7 @@ class Dashboard extends React.Component {
             showNotificationsModal={ this.state.showNotificationsModal }
             closeNotificationsModal={ () => this.setState({ showNotificationsModal: false, }) }
             loadNotificationToken = { loadNotificationToken }
+            uid =  { user.uid }
           />
           <CreateFormRevised
             showCreateForm={ this.state.showCreateModal }
@@ -197,6 +178,12 @@ class Dashboard extends React.Component {
             contacts={ contacts }
             user = { user.uid }
             notificationToken={ notificationToken }
+            actionFunction = { () => setTimeout(() => this.setState(
+              {
+                action: 'created',
+                confirmationModal: true,
+              }
+            ), 500) }
           />
           <EditForm
             showEditForm={ this.state.showEditModal }
@@ -204,6 +191,12 @@ class Dashboard extends React.Component {
             editReminder={ activeReminder }
             updateReminder={ (reminder, uid) => updateReminder(reminder, uid) }
             user = { user.uid }
+            actionFunction = { () => setTimeout(() => this.setState(
+              {
+                action: 'edited',
+                confirmationModal: true,
+              }
+            ), 500) }
           />
           <Settings
             showSettingsModal = { this.state.showSettingsModal }
@@ -214,6 +207,11 @@ class Dashboard extends React.Component {
                 this.setState({ showSettingsModal: false, });
               }
             }
+          />
+          <ConfirmationModal
+            confirmationModal={ this.state.confirmationModal }
+            action={ this.state.action }
+            closeConfirmationModal={ () => this.setState({ confirmationModal: false, }) }
           />
       </View>
     );
@@ -277,6 +275,7 @@ mapStateToProps = (state) => (
     contacts: state.contact.contacts,
     user: state.user.user,
     notificationToken: state.user.notificationToken,
+    showNotificationsModal: state.user.notificationModal,
     isLoggedIn: state.user.isLoggedIn,
   }
 );

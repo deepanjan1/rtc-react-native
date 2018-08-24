@@ -18,18 +18,19 @@ export const getExistingPermission = async (
     let token = await Notifications.getExpoPushTokenAsync();
     /* compare to the firebase token; if it's the same, do nothing,
     if it's different, replace */
+    console.log({ token });
     if (token === notificationToken) {
       console.log('existing token loaded');
       return true;
     } else {
       console.log('token is not loading, re-writing token to firebase');
       writeNotificationToken(uid, token);
-      return false;
+      return true;
     }
   }
 };
 
-export const getPermissionNotifications = async (loadNotificationToken) => {
+export const getPermissionNotifications = async (loadNotificationToken, uid) => {
   const { status: existingStatus } = await Permissions.askAsync(
     Permissions.NOTIFICATIONS
   );
@@ -51,7 +52,7 @@ export const getPermissionNotifications = async (loadNotificationToken) => {
   // grab Notification permission token
   let token = await Notifications.getExpoPushTokenAsync();
   console.log(token);
-  loadNotificationToken(token);
+  writeNotificationToken(uid, token);
 };
 
 //  Wire into Dashboard

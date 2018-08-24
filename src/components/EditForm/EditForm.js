@@ -38,7 +38,7 @@ export default class EditForm extends React.Component {
           name: nextProps.editReminder.name,
           personID: nextProps.editReminder.personID,  // to firebase
           date: nextProps.editReminder.date, // to firebase
-          selectedFrequency: nextProps.editReminder.frequency, // to firebase
+          frequency: nextProps.editReminder.frequency, // to firebase
         }
       );
     }
@@ -150,8 +150,11 @@ export default class EditForm extends React.Component {
                   personID: this.state.personID,
                   frequency: this.state.frequency,
                   key: this.props.editReminder.key,
+                  phoneNumber: this.props.editReminder.phoneNumber,
+                  streak: this.props.editReminder.streak,
                 });
                 this.props.closeEditForm();
+                this.props.actionFunction();
               } }
 
             />
@@ -205,6 +208,7 @@ EditForm.propTypes = {
   editReminder: PropTypes.object.isRequired,
   updateReminder: PropTypes.func.isRequired,
   user: PropTypes.string.isRequired,
+  actionFunction: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

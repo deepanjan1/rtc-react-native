@@ -9,7 +9,6 @@ export default class Notifications extends React.Component {
   render = () => (
     <Modal
       isVisible={ this.props.showNotificationsModal }
-      onBackdropPress={ this.props.closeNotificationsModal }
       animationIn='fadeIn'
       animationInTiming={200}
       animationOut='fadeOut'
@@ -18,7 +17,13 @@ export default class Notifications extends React.Component {
       <View style={ styles.container }>
         <View style={ styles.headerContainer }>
           <Text style={ styles.headerText }>
-            Lets make sure we can send you reminders!
+            Turn on Notifications!
+          </Text>
+        </View>
+        <View style={ styles.descriptionContainer }>
+          <Text style={ styles.descriptionText }>
+            We use notifications to send you reminders to reach out to
+            the people you want to stay in touch with.
           </Text>
         </View>
         <View style={ styles.buttonContainer }>
@@ -28,7 +33,7 @@ export default class Notifications extends React.Component {
             onPress= { async () =>
               {
                 await getPermissionNotifications(
-                  this.props.loadNotificationToken
+                  this.props.loadNotificationToken, this.props.uid
                 );
                 this.props.closeNotificationsModal();
               }
@@ -44,6 +49,7 @@ Notifications.propTypes = {
   showNotificationsModal: PropTypes.bool.isRequired,
   closeNotificationsModal: PropTypes.func.isRequired,
   loadNotificationToken: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -51,18 +57,31 @@ const styles = StyleSheet.create({
       height: '30%',
       borderRadius: 15,
       backgroundColor: 'white',
+      padding: 10,
     },
     headerContainer: {
       flex: 1,
+      margin: 10,
       alignItems: 'center',
-      justifyContent: 'center',
     },
     headerText: {
       fontSize: 20,
-      fontWeight: 'bold',
+      fontFamily: 'Roboto-Bold',
+      textAlign: 'center',
+    },
+    descriptionContainer: {
+      justifyContent: 'flex-start',
+      flex: 2,
+    },
+    descriptionText: {
+      fontSize: 15,
+      fontFamily: 'Roboto-Light',
+      justifyContent: 'center',
+      textAlign: 'center',
     },
     buttonContainer: {
       flex: 1,
+      margin: 10,
     },
     button: {
       borderRadius: 15,

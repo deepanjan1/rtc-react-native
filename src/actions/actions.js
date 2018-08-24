@@ -17,6 +17,7 @@ export const actionTypes = {
   LOGGED_OUT: 'LOGGED_OUT',
   REMOVE_USER: 'REMOVE_USER',
   LOAD_NOTIFICATION_TOKEN: 'LOAD_NOTIFICATION_TOKEN',
+  NOTIFICATION_MODAL_ON: 'NOTIFICATION_MODAL_ON',
 };
 
 // Reminder Stuff
@@ -105,6 +106,7 @@ export const watchUserDataForLoad = () => (
     currentUserListener((user) => {
       if (!_.isEmpty(user)) {
         dispatch(setLoggedInUser(true));
+        dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
       } else {
         dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
@@ -147,6 +149,14 @@ export const loadNotificationToken = (notificationToken) => (
   {
     type: 'LOAD_NOTIFICATION_TOKEN',
     notificationToken,
+    notificationModal: false,
+  }
+);
+
+export const notificationModal = () => (
+  {
+    type: 'NOTIFICATION_MODAL_ON',
+    notificationModal: true,
   }
 );
 

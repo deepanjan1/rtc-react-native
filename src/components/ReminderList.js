@@ -8,7 +8,6 @@ import {
   TouchableHighlight,
   Image,
   Linking,
-  Modal,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { removeReminder, updateReminder } from '../services/api';
@@ -37,6 +36,7 @@ export default class ReminderList extends React.Component {
         onPress={() => {
           this.swipeable.recenter();
           removeReminder(this.props.user, this.state.activeKey); // remove from database
+          this.props.actionFunction();
         }}
 
         underlayColor='white'
@@ -298,9 +298,11 @@ export default class ReminderList extends React.Component {
                       color='#2abf40'
                       size={ 60 }
                       onPress={ () => {
+                        console.log(item.streak);
                         item.streak += 1;
                         item.date = this.calcNextReminder(item.date, item.frequency);
                         console.log('new date: ' + item.date);
+                        console.log('streak: ' + item.streak);
                         updateReminder(this.props.user, item);
                       } }
 
@@ -347,16 +349,17 @@ export default class ReminderList extends React.Component {
       return (
         [
           {
-            title: 'Upcoming Reminders',
+            title: 'People You Need to Reach Out To',
             data: upcomingReminders,
+            renderItem: overrideRenderItem,
           },
         ]
       );
-    } else {
+    } else if (_.isEmpty(upcomingReminders)) {
       return (
         [
           {
-            title: 'Upcoming Reminders',
+            title: 'Upcoming Reach Outs',
             data: pastReminders,
           },
         ]
@@ -475,6 +478,7 @@ ReminderList.propTypes = {
   loadActiveReminder: PropTypes.func.isRequired,
   showEditModal: PropTypes.func.isRequired,
   user: PropTypes.string.isRequired,
+  actionFunction: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

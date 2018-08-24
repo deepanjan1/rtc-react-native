@@ -9,7 +9,6 @@ export default class SyncContacts extends React.Component {
   render = () => (
     <Modal
       isVisible={ this.props.showSyncContactModal }
-      // onBackdropPress={ this.props.closeSyncContactModal }
       animationIn='fadeIn'
       animationInTiming={200}
       animationOut='fadeOut'
@@ -18,6 +17,12 @@ export default class SyncContacts extends React.Component {
       <View style={ styles.container }>
         <View style={ styles.headerContainer }>
           <Text style={ styles.headerText }>To begin, sync your contacts!</Text>
+        </View>
+        <View style={ styles.descriptionContainer }>
+          <Text style={ styles.descriptionText }>
+            We use your contacts so you can easily create your reminders.
+            Don't worry, we never reach out to your contacts!
+          </Text>
         </View>
         <View style={ styles.buttonContainer }>
           <Button
@@ -52,15 +57,27 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
       flex: 1,
+      margin: 10,
       alignItems: 'center',
-      justifyContent: 'center',
     },
     headerText: {
       fontSize: 20,
-      fontWeight: 'bold',
+      fontFamily: 'Roboto-Bold',
+      textAlign: 'center',
+    },
+    descriptionContainer: {
+      justifyContent: 'flex-start',
+      flex: 2,
+    },
+    descriptionText: {
+      fontSize: 15,
+      fontFamily: 'Roboto-Light',
+      justifyContent: 'center',
+      textAlign: 'center',
     },
     buttonContainer: {
       flex: 1,
+      margin: 10,
     },
     button: {
       borderRadius: 15,
