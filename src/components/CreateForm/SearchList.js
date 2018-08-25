@@ -36,6 +36,7 @@ export default class SearchList extends React.Component {
                 />
               )
             }
+            keyExtractor={ (item, index) => item.id }
           />
         </View>
       );
