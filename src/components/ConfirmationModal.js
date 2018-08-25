@@ -1,10 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal } from 'react-native';
-// import Modal from 'react-native-modal';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default class ConfirmationModal extends React.Component {
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.confirmationModal != this.props.confirmationModal) {
+      setTimeout(this.props.closeConfirmationModal, 1000);
+    }
+  };
 
   displayIcon = (action) => {
     switch (this.props.action) {
@@ -56,15 +60,9 @@ export default class ConfirmationModal extends React.Component {
   };
 
   render = () => (
-          <Modal
-            visible={ this.props.confirmationModal }
-            transparent={ true }
-            animationType='fade'
-            onBackdropPress={ this.props.closeConfirmationModal }
-            onShow={ () => setTimeout(this.props.closeConfirmationModal, 1000) }
-            >
-            { this.displayIcon(this.props.action) }
-          </Modal>
+            <View style ={ { backgroundColor: 'white', } }>
+              { this.props.confirmationModal ? this.displayIcon(this.props.action) : null }
+            </View>
         );
 }
 
@@ -76,15 +74,20 @@ ConfirmationModal.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginTop: 40,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 10,
     marginLeft: 70,
     marginRight: 70,
     borderRadius: 15,
-    height: '5%',
+    height: 45,
     shadowColor: 'grey',
     shadowRadius: 5,
     shadowOpacity: 0.5,

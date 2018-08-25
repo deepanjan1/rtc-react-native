@@ -218,12 +218,15 @@ export default class CreateFormRevised extends React.Component {
               buttonStyle={ styles.saveButton }
               textStyle={ styles.saveButtonText }
               onPress={ () => {
+                let phoneNumbers;
+                this.state.person.phoneNumbers
+                ? phoneNumbers = this.state.person.phoneNumbers : phoneNumbers = 0;
                 this.addReminder(this.props.user, {
                   name: this.state.person.name,
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
                   frequency: this.state.frequency,
-                  phoneNumber: this.state.person.phoneNumbers,
+                  phoneNumber: phoneNumbers,
                   streak: 0,
                 });
 

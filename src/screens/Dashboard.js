@@ -113,6 +113,13 @@ class Dashboard extends React.Component {
     } = this.props;
     return (
       <View style={ styles.container }>
+          <View style={{ zIndex: 1, }}>
+            <ConfirmationModal
+              confirmationModal={ this.state.confirmationModal }
+              action={ this.state.action }
+              closeConfirmationModal={ () => this.setState({ confirmationModal: false, }) }
+            />
+          </View>
           <View
             style={ styles.horizontalRule }
           />
@@ -207,11 +214,6 @@ class Dashboard extends React.Component {
                 this.setState({ showSettingsModal: false, });
               }
             }
-          />
-          <ConfirmationModal
-            confirmationModal={ this.state.confirmationModal }
-            action={ this.state.action }
-            closeConfirmationModal={ () => this.setState({ confirmationModal: false, }) }
           />
       </View>
     );
