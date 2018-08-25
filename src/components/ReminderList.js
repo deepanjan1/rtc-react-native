@@ -437,7 +437,7 @@ export default class ReminderList extends React.Component {
             renderSectionHeader={({ section: { title } }) => (
               <Text style={ styles.sectionHeader }>{ title }</Text>
             )}
-            keyExtractor={(item, index) => (`reminders-${index}`)}
+            keyExtractor={(item) => (`reminders-${item.key}`)}
           />
           );
     } else {
