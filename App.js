@@ -17,6 +17,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import reduxThunk from 'redux-thunk';
 import AppWithInternalState from './src/navigators/AppWithInternalState';
 import { middleware } from './src/navigators/middleware';
+import { AppEventsLogger } from 'react-native-fbsdk';
 
 // const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk));
 const store = createStore(
