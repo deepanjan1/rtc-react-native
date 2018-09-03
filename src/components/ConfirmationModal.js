@@ -68,7 +68,7 @@ export default class ConfirmationModal extends React.Component {
 
 ConfirmationModal.propTypes = {
   action: PropTypes.string.isRequired,
-  confirmationModal: PropTypes.string.isRequired,
+  confirmationModal: PropTypes.bool.isRequired,
   closeConfirmationModal: PropTypes.func.isRequired,
 };
 

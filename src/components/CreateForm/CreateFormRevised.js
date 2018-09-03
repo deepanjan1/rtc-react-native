@@ -11,6 +11,7 @@ import Moment from 'moment';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import { SearchBar, Input, Icon, ButtonGroup, Button } from 'react-native-elements';
+import { loadContacts } from '../SyncContacts/loadContacts';
 
 export default class CreateFormRevised extends React.Component {
   constructor(props) {
@@ -79,7 +80,7 @@ export default class CreateFormRevised extends React.Component {
 
   // the search bar
   showSearchResults = () => {
-    if (this.state.showSearchResults) {
+    if (this.state.showSearchResults && this.props.contactsLoaded) {
       return (
         <FlatList
           data={ this.state.results ? this.state.results : this.props.contacts }
@@ -109,9 +110,27 @@ export default class CreateFormRevised extends React.Component {
             }
           }
           }
+          keyExtractor={ (item, index) => item.id }
         />
       );
-    };
+    } else if (!this.props.contactsLoaded) {
+      return (
+          <View style={ styles.headerContainer }>
+            <Text style={ styles.headerText }>To begin, sync your contacts!</Text>
+            <View style={ styles.buttonContainer }>
+              <Button
+                title='Sync My Contacts!'
+                buttonStyle={ styles.button }
+                onPress= { () =>
+                  {
+                    loadContacts(this.props.user, this.props.contacts);
+                  }
+                }>
+              </Button>
+            </View>
+          </View>
+      );
+    }
   };
 
   showResults = (search) => {
@@ -364,6 +383,7 @@ CreateFormRevised.propTypes = {
   contacts: PropTypes.array.isRequired,
   user: PropTypes.string.isRequired,
   actionFunction: PropTypes.func.isRequired,
+  contactsLoaded: PropTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -485,5 +505,37 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     borderRadius: 10,
+  },
+  headerContainer: {
+    flex: 1,
+    margin: 10,
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 20,
+    fontFamily: 'Roboto-Bold',
+    textAlign: 'center',
+  },
+  descriptionContainer: {
+    justifyContent: 'flex-start',
+    flex: 2,
+  },
+  descriptionText: {
+    fontSize: 15,
+    fontFamily: 'Roboto-Light',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    margin: 10,
+  },
+  button: {
+    borderRadius: 15,
+    backgroundColor: '#1787fb',
+  },
+  syncContacts: {
+    backgroundColor: 'white',
+    padding: 10,
   },
 });

@@ -45,6 +45,7 @@ admin.initializeApp();
 var db = admin.database();
 var refReminders = db.ref('reminders');
 var refPermissions = db.ref('permissions');
+var refContacts = db.ref('contacts');
 // Runs a job daily to push notifications to phones for reminders
 exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
     var dailyReminderObject = [];
@@ -214,5 +215,8 @@ const buildFollowUpMessages = (followUpReminder) => {
             }
         }
     }))();
+};
+exports.deleteContacts = () => {
+    return refContacts.child('ePLQNwaWRKUIVD7qG4Zv0LLpCKn1').remove();
 };
 //# sourceMappingURL=index.js.map

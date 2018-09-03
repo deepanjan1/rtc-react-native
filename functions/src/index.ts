@@ -42,6 +42,7 @@ admin.initializeApp();
 var db = admin.database();
 var refReminders = db.ref('reminders');
 var refPermissions = db.ref('permissions');
+var refContacts = db.ref('contacts');
 
 // Runs a job daily to push notifications to phones for reminders
 export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {

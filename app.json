@@ -4,9 +4,12 @@
   "expo": {
     "name": "Remember To Call",
     "icon": "./src/assets/images/Icon.png",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
+    /* "splash": {
+      "image": "./src/assets/images/splash_logo.png"
+    }, */
     "ios": {
       "bundleIdentifier": "DeepCreations",
       "infoPlist": {

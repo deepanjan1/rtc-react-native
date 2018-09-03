@@ -80,7 +80,7 @@ class Dashboard extends React.Component {
       if (this.props.contacts.length === 0) {
         this.setState({
           showSyncContactModal: true,
-          contactsLoaded: true,
+          contactsLoaded: false,
         });
       } else {
         loadContacts(this.props.uid, this.props.contacts);
@@ -191,6 +191,7 @@ class Dashboard extends React.Component {
                 confirmationModal: true,
               }
             ), 500) }
+            contactsLoaded = { this.state.contactsLoaded }
           />
           <EditForm
             showEditForm={ this.state.showEditModal }
