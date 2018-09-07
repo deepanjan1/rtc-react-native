@@ -50,9 +50,8 @@ var refContacts = db.ref('contacts');
 exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
     var dailyReminderObject = [];
     // pulling reminder data
-    console.log(today);
     refReminders.orderByChild('date').once('value', (snapshot) => __awaiter(this, void 0, void 0, function* () {
-        console.log(snapshot.val());
+        // console.log(snapshot.val());
         yield snapshot.forEach((data) => {
             // user level
             let uid = data.key;
@@ -75,6 +74,8 @@ exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
                 });
                 console.log({ dailyReminderObject });
                 buildMessages(dailyReminderObject);
+                // reseting array for another batch
+                dailyReminderObject = [];
             });
             return false;
         });
@@ -181,6 +182,8 @@ exports.followUpNotification = functions.pubsub.topic('daily-tick').onPublish((e
                 });
                 console.log({ followUpReminder });
                 buildFollowUpMessages(followUpReminder);
+                // reseting array for another batch
+                followUpReminder = [];
             });
             return false;
         });
@@ -215,8 +218,5 @@ const buildFollowUpMessages = (followUpReminder) => {
             }
         }
     }))();
-};
-exports.deleteContacts = () => {
-    return refContacts.child('ePLQNwaWRKUIVD7qG4Zv0LLpCKn1').remove();
 };
 //# sourceMappingURL=index.js.map

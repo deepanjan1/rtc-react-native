@@ -47,11 +47,9 @@ var refContacts = db.ref('contacts');
 // Runs a job daily to push notifications to phones for reminders
 export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
   var dailyReminderObject = [];
-
   // pulling reminder data
-  console.log(today);
   refReminders.orderByChild('date').once('value', async (snapshot) => {
-    console.log(snapshot.val());
+    // console.log(snapshot.val());
     await snapshot.forEach((data) => {
       // user level
       let uid = data.key;
@@ -76,6 +74,8 @@ export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) =
         });
         console.log({dailyReminderObject});
         buildMessages(dailyReminderObject);
+        // reseting array for another batch
+        dailyReminderObject = [];
       });
       return false;
     });
@@ -189,6 +189,8 @@ export const followUpNotification = functions.pubsub.topic('daily-tick').onPubli
         });
         console.log({followUpReminder});
         buildFollowUpMessages(followUpReminder);
+        // reseting array for another batch
+        followUpReminder = [];
       });
       return false;
     });
