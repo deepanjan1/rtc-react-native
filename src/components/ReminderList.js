@@ -247,7 +247,7 @@ export default class ReminderList extends React.Component {
                   <Text style={ styles.nextReminder }>
                     { this.storeContact(item.frequency) }
                   </Text>
-                  <Icon
+                  <MaterialIcons
                     name='cached'
                     color='#1787fb'
                     iconStyle={ styles.icon }
@@ -261,7 +261,7 @@ export default class ReminderList extends React.Component {
                   <Text style={ styles.nextReminder }>
                     { item.date }
                   </Text>
-                  <Icon
+                  <MaterialIcons
                     name='date-range'
                     color='#1787fb'
                     iconStyle={ styles.icon }
@@ -408,7 +408,7 @@ export default class ReminderList extends React.Component {
                           <Text style={ styles.nextReminder }>
                             { this.storeContact(item.frequency) }
                           </Text>
-                          <Icon
+                          <MaterialIcons
                             name='cached'
                             color='#1787fb'
                             iconStyle={ styles.icon }
@@ -422,7 +422,7 @@ export default class ReminderList extends React.Component {
                           <Text style={ styles.nextReminder }>
                             { item.date }
                           </Text>
-                          <Icon
+                          <MaterialIcons
                             name='date-range'
                             color='#1787fb'
                             iconStyle={ styles.icon }
@@ -457,7 +457,7 @@ export default class ReminderList extends React.Component {
             <Text style={ styles.directive }>
               To get started, click on the button below!
             </Text>
-            <Icon
+            <MaterialIcons
               name='keyboard-arrow-down'
               color='#e78e54'
               iconStyle={ {

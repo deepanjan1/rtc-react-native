@@ -6,9 +6,7 @@ import {
   TouchableHighlight,
   Modal
 } from 'react-native';
-import { Icon, Button } from 'react-native-elements';
-import Header from '../components/Header';
-import NavButton from '../components/NavButton';
+import { Button } from 'react-native-elements';
 import ConfirmationModal from '../components/ConfirmationModal';
 import ReminderList from '../components/ReminderList';
 import CreateFormRevised from '../components/CreateForm/CreateFormRevised';
@@ -147,8 +145,7 @@ class Dashboard extends React.Component {
                 color='#c0c0c0'
                 size={ 30 }
                 onPress={ () => this.setState({ showSettingsModal: true }) }
-                >
-              </MaterialIcons>
+              />
               <Button
                 title='Create Reminder'
                 buttonStyle={ styles.createButton }

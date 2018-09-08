@@ -88,8 +88,8 @@ export const watchUserData = () => (
     currentUserListener((user) => {
       if (!_.isEmpty(user)) {
         console.log('from action creator login: ' + user.displayName);
-        dispatch(setLoggedInUser(true));
         dispatch(loadUser(user));
+        dispatch(setLoggedInUser(true));
         dispatch(watchReminderData(user.uid));  //listener to pull reminder data
         dispatch(watchContactData(user.uid));  //listener to pull contact data
         dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
