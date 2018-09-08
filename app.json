@@ -7,9 +7,10 @@
     "version": "0.1.8",
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
-    /* "splash": {
-      "image": "./src/assets/images/splash_logo.png"
-    }, */
+    "splash": {
+      "image": "./src/assets/images/splash_logo.png",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       "bundleIdentifier": "DeepCreations",
       "infoPlist": {

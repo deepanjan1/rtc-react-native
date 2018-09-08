@@ -88,6 +88,7 @@ export const watchUserData = () => (
     currentUserListener((user) => {
       if (!_.isEmpty(user)) {
         console.log('from action creator login: ' + user.displayName);
+        dispatch(setLoggedInUser(true));
         dispatch(loadUser(user));
         dispatch(watchReminderData(user.uid));  //listener to pull reminder data
         dispatch(watchContactData(user.uid));  //listener to pull contact data
@@ -101,19 +102,19 @@ export const watchUserData = () => (
   }
 );
 
-export const watchUserDataForLoad = () => (
-  (dispatch) => {
-    currentUserListener((user) => {
-      if (!_.isEmpty(user)) {
-        dispatch(setLoggedInUser(true));
-        dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
-        dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
-      } else {
-        dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
-      }
-    });
-  }
-);
+// export const watchUserDataForLoad = () => (
+//   (dispatch) => {
+//     currentUserListener((user) => {
+//       if (!_.isEmpty(user)) {
+//         dispatch(setLoggedInUser(true));
+//         dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
+//         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
+//       } else {
+//         dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
+//       }
+//     });
+//   }
+// );
 
 export const watchUserDataForLogin = () => (
   (dispatch) => {
