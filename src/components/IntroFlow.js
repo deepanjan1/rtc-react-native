@@ -5,7 +5,9 @@ import {
   Text,
   View,
   TouchableHighlight,
-  Image
+  Image,
+  Dimensions,
+  Platform,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { StackNavigator } from 'react-navigation';
@@ -29,7 +31,11 @@ class IntroFlow extends React.Component {
 
   render() {
     return (
-      <Swiper loop={false} bounces={true} activeDot={ this.activeDot }>
+      <Swiper
+        loop={false}
+        bounces={true}
+        activeDot={ this.activeDot }
+        containerStyle={ styles.swiperStyle }>
         <View style={styles.containerOne}>
           <View style={ styles.captionContainerTop }>
             <Text style={ styles.caption }>
@@ -132,6 +138,9 @@ IntroFlow.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  swiperStyle: {
+    width: Platform.OS === 'ios' ? '100%' : Dimensions.get('window').width,
+  },
   containerOne: {
     height: '100%',
     backgroundColor: '#1a9bfc',

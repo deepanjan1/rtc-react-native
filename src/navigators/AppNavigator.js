@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Welcome from '../screens/Welcome';
 import Dashboard from '../screens/Dashboard';
@@ -15,6 +15,7 @@ export const AppNavigator = createStackNavigator(
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
+          elevation: 0,
         },
         headerTitleStyle: {
           fontSize: 30,
@@ -29,12 +30,12 @@ export const AppNavigator = createStackNavigator(
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
+          elevation: 0,
         },
         headerTitleStyle: {
           fontSize: 30,
           fontFamily: 'Roboto-Bold',
         },
-        headerLeft: null,
       }),
     },
     Splash: {
@@ -43,6 +44,7 @@ export const AppNavigator = createStackNavigator(
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
+          elevation: 0,
         },
         headerTitleStyle: {
           fontSize: 30,

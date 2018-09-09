@@ -251,6 +251,7 @@ const styles = StyleSheet.create({
       borderRadius: 25,
       backgroundColor: '#1787fb',
       width: '100%',
+      elevation: 0,
     },
   createButtonText: {
     fontFamily: 'Roboto-Regular',

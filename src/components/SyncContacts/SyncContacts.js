@@ -44,8 +44,8 @@ export default class SyncContacts extends React.Component {
 SyncContacts.propTypes = {
   showSyncContactModal: PropTypes.bool.isRequired,
   closeSyncContactModal: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired,
-  contacts: PropTypes.array.isRequired,
+  user: PropTypes.string,
+  contacts: PropTypes.array,
 };
 
 const styles = StyleSheet.create({

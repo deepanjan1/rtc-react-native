@@ -49,7 +49,7 @@ Notifications.propTypes = {
   showNotificationsModal: PropTypes.bool.isRequired,
   closeNotificationsModal: PropTypes.func.isRequired,
   loadNotificationToken: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
+  uid: PropTypes.string,
 };
 
 const styles = StyleSheet.create({

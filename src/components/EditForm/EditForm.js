@@ -9,13 +9,13 @@ import {
 import {
   Input,
   ButtonGroup,
-  Icon,
   Button,
 } from 'react-native-elements';
 import Calendar from 'react-native-calendar-datepicker';
 import Moment from 'moment';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default class EditForm extends React.Component {
   constructor(props) {
@@ -71,7 +71,7 @@ export default class EditForm extends React.Component {
         <View style={styles.container}>
           <Text style={styles.name}>Who do you want to remember to call?</Text>
           <View style={styles.inputField}>
-            <Icon
+            <MaterialIcons
               name='person'
               size={25}
               color='#1787fb'
@@ -87,7 +87,7 @@ export default class EditForm extends React.Component {
           <View style={ { marginTop: 20 } }>
             <Text style={styles.name}>When do you want your first reminder?</Text>
               <View style={ styles.inputField }>
-                <Icon
+                <MaterialIcons
                   name='date-range'
                   size={25}
                   color='#1787fb'
@@ -111,7 +111,7 @@ export default class EditForm extends React.Component {
           <View style={ { marginTop: 20 } }>
             <Text style={styles.name}>How often to you want to reach out?</Text>
             <View style={ styles.inputField }>
-              <Icon
+              <MaterialIcons
                 name='cached'
                 size={25}
                 color='#1787fb'
@@ -207,7 +207,7 @@ EditForm.propTypes = {
   closeEditForm: PropTypes.func.isRequired,
   editReminder: PropTypes.object.isRequired,
   updateReminder: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired,
+  user: PropTypes.string,
   actionFunction: PropTypes.func.isRequired,
 };
 
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#ffffff',
     borderRadius: 10,
-    height: 300,
+    height: 325,
   },
   input: {
     fontSize: 20,
@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
       borderRadius: 25,
       backgroundColor: '#1787fb',
       width: '100%',
+      elevation: 0,
     },
   saveButtonText: {
     fontFamily: 'Roboto-Regular',

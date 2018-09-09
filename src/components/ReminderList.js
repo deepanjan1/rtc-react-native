@@ -175,7 +175,7 @@ export default class ReminderList extends React.Component {
           <View style={ styles.streakIconContainerBlue }>
             <Image
               style={{ width: 40, height: 55, }}
-              resizeMethod='contain'
+              // resizeMethod='contain'
               source={require('../assets/images/medal.png')}
             />
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
@@ -187,7 +187,7 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <Image
             style={{ width: 40, height: 55, }}
-            resizeMethod='contain'
+            // resizeMethod='contain'
             source={require('../assets/images/medal.png')}
           />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
@@ -198,7 +198,7 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <Image
             style={{ width: 40, height: 55, }}
-            resizeMethod='contain'
+            // resizeMethod='contain'
             source={require('../assets/images/medal.png')}
           />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
@@ -451,7 +451,8 @@ export default class ReminderList extends React.Component {
           </View>
           <View style = { {
             flex: 1,
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginBottom: 10,
           } }>
             <Text style={ styles.directive }>
@@ -477,7 +478,7 @@ ReminderList.propTypes = {
   reminders: PropTypes.array.isRequired,
   loadActiveReminder: PropTypes.func.isRequired,
   showEditModal: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired,
+  user: PropTypes.string,
   actionFunction: PropTypes.func.isRequired,
 };
 
