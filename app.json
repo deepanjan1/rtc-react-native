@@ -4,7 +4,7 @@
   "expo": {
     "name": "Remember To Call",
     "icon": "./src/assets/images/Icon.png",
-    "version": "0.1.9",
+    "version": "0.2.0",
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
     "splash": {
@@ -22,10 +22,14 @@
     },
     "android": {
       "package": "com.remembertocall",
+      "versionCode": 2,
       "splash": {
         "image": "./src/assets/images/splash_logo.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "READ_CONTACTS",
+      ],
     },
     "description": "An app that helps you remember to reach out to your friends and family.  ",
     "githubUrl": "https://github.com/deepanjan1/rtc-react-native"

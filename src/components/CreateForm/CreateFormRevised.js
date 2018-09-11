@@ -304,12 +304,13 @@ export default class CreateFormRevised extends React.Component {
               />
               <Input
                 inputStyle = { styles.input }
-                clearButtonMode='always'
                 containerStyle = { styles.inputContainer }
                 onChangeText={(search) => {
                   if (search !== '') {
                     this.setState({ search: search, });
                     this.showResults(search);
+                  } else {
+                    this.setState({ search: search, });
                   };
                 }}
 

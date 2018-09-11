@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   logoutButton: {
       borderRadius: 25,
       backgroundColor: '#1787fb',
+      elevation: 0,
     },
   logoutButtonText: {
     fontFamily: 'Roboto-Regular',
