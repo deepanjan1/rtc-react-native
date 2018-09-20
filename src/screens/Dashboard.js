@@ -69,8 +69,10 @@ class Dashboard extends React.Component {
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.notificationToken !== this.props.notificationToken) {
-      if (!this.props.notificationToken) {
+      if (this.props.notificationToken == '') {
         this.setState({ showNotificationsModal: true });
+      } else {
+        getExistingPermission(this.props.notificationToken, this.props.uid);
       };
     };
 

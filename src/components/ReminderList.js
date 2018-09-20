@@ -14,8 +14,8 @@ import { removeReminder, updateReminder } from '../services/api';
 import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
+import { Permissions, SMS } from 'expo';
 import { SimpleLineIcons, FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
-import { RNSlidingButton, SlideDirection } from 'rn-sliding-button';
 import _ from 'underscore';
 import { exactMatchContact } from './SyncContacts/loadContacts';
 
@@ -76,6 +76,11 @@ export default class ReminderList extends React.Component {
     if (currentlyOpenSwipeable) {
       currentlyOpenSwipeable.recenter();
     }
+  };
+
+  message = (phoneNumber) => {
+    Linking.openURL('sms:' + phoneNumber +
+    '?body=Hi! Are you around to catch up this week?');
   };
 
   sortRemindersByDate = (reminders) => {
@@ -175,7 +180,6 @@ export default class ReminderList extends React.Component {
           <View style={ styles.streakIconContainerBlue }>
             <Image
               style={{ width: 40, height: 55, }}
-              // resizeMethod='contain'
               source={require('../assets/images/medal.png')}
             />
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
@@ -187,7 +191,6 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <Image
             style={{ width: 40, height: 55, }}
-            // resizeMethod='contain'
             source={require('../assets/images/medal.png')}
           />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
@@ -198,7 +201,6 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <Image
             style={{ width: 40, height: 55, }}
-            // resizeMethod='contain'
             source={require('../assets/images/medal.png')}
           />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
@@ -277,21 +279,18 @@ export default class ReminderList extends React.Component {
                     height: 40,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginLeft: 30,
+                    marginTop: 20,
                   } }>
                   <Entypo
                     name='message'
                     color='#ffffff'
                     size={ 30 }
-                    onPress={ () => {
-                      Linking.openURL('sms:');
-                    } }
-
+                    onPress={ () => this.message(item.phoneNumber) }
                   />
                   </View> */}
-                  <View style={ { alignItems: 'center' } }>
+                  <View style={ { alignItems: 'center', marginTop: 5, } }>
                     <Text style={ styles.doneButtonStyleTitle }>
-                      Mark As Contacted
+                      Contacted?
                     </Text>
                     <FontAwesome
                       name='check-circle'
@@ -309,13 +308,15 @@ export default class ReminderList extends React.Component {
                     />
                   </View>
                   {/* <View style={ {
-                    backgroundColor: '#1787fb',
+                    // backgroundColor: '#1787fb',
+                    backgroundColor: 'white',
                     borderRadius: 20,
                     width: 40,
                     height: 40,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginRight: 30,
+                    marginTop: 20,
+                    // marginRight: 30,
                   } }>
                     <FontAwesome
                       name='phone'
@@ -553,11 +554,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   reminderActions: {
-    marginTop: 30,
+    // marginTop: 30,
     // alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   frequencyContainer: {
     alignSelf: 'stretch',
