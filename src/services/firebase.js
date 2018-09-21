@@ -93,11 +93,9 @@ export const storeLoginWithGoogle = async(type, token) => {
 
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
-      console.log({errorCode});
-      console.log({errorMessage});
-      console.log({email});
     });
     console.log(userLoginStatus());
+
     // Sign in with credential from the Facebook user.
     // firebase.auth().signInWithCredential(credential.idToken).catch((error) => {
     //   console.log({error});

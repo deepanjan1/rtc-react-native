@@ -19,6 +19,7 @@ export const getExistingPermission = async (
     /* compare to the firebase token; if it's the same, do nothing,
     if it's different, replace */
     console.log({ token });
+    console.log({ notificationToken });
     if (token === notificationToken) {
       console.log('existing token loaded');
       return true;
@@ -51,7 +52,6 @@ export const getPermissionNotifications = async (loadNotificationToken, uid) => 
 
   // grab Notification permission token
   let token = await Notifications.getExpoPushTokenAsync();
-  console.log(token);
   writeNotificationToken(uid, token);
 };
 

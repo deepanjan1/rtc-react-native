@@ -71,12 +71,14 @@ export const syncContacts = (contacts) => (dispatch) => (
 // Permissions stuff
 watchPermissions = (uid) => (
   (dispatch) => {
-    getPermissions(uid + '/notificationToken', (snapshot) => {
+    let path = uid + '/notificationToken';
+    getPermissions(path, (snapshot) => {
       try {
         dispatch(loadNotificationToken(Object.values([snapshot.val()])[0]));
       }
       catch (error) {
-        dispatch(loadNotificationToken(''));
+        console.log({ error });
+        dispatch(notificationModal());
       }
     });
   }
@@ -101,20 +103,6 @@ export const watchUserData = () => (
     });
   }
 );
-
-// export const watchUserDataForLoad = () => (
-//   (dispatch) => {
-//     currentUserListener((user) => {
-//       if (!_.isEmpty(user)) {
-//         dispatch(setLoggedInUser(true));
-//         dispatch(watchPermissions(user.uid));  //listener to pull notificationToken
-//         dispatch(NavigationActions.navigate({ routeName: 'Dashboard' }));
-//       } else {
-//         dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
-//       }
-//     });
-//   }
-// );
 
 export const watchUserDataForLogin = () => (
   (dispatch) => {
@@ -150,14 +138,12 @@ export const loadNotificationToken = (notificationToken) => (
   {
     type: 'LOAD_NOTIFICATION_TOKEN',
     notificationToken,
-    notificationModal: false,
   }
 );
 
 export const notificationModal = () => (
   {
     type: 'NOTIFICATION_MODAL_ON',
-    notificationModal: true,
   }
 );
 

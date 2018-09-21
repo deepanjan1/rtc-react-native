@@ -22,7 +22,8 @@
     },
     "android": {
       "package": "com.remembertocall",
-      "versionCode": 4,
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 5,
       "splash": {
         "image": "./src/assets/images/splash_logo.png",
         "backgroundColor": "#ffffff"

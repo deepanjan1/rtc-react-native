@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "819008592100",
+    "firebase_url": "https://rtc-react-native.firebaseio.com",
+    "project_id": "rtc-react-native",
+    "storage_bucket": "rtc-react-native.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819008592100:android:32f9caffe4b9addf",
+        "android_client_info": {
+          "package_name": "com.remembertocall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819008592100-g9v4om270nd4fo54a53eqq5p6h44hnmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPFjA1qr5c_Y4qboOZUof0Mn_zJ316MS0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

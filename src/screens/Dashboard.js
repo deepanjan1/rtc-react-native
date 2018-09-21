@@ -68,7 +68,8 @@ class Dashboard extends React.Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.notificationToken !== this.props.notificationToken) {
+    if (prevProps.notificationToken !== this.props.notificationToken
+    && prevProps.uid !== this.props.uid) {
       if (this.props.notificationToken == '') {
         this.setState({ showNotificationsModal: true });
       } else {
@@ -278,7 +279,6 @@ mapStateToProps = (state) => (
     contacts: state.contact.contacts,
     user: state.user.user,
     notificationToken: state.user.notificationToken,
-    showNotificationsModal: state.user.notificationModal,
     isLoggedIn: state.user.isLoggedIn,
   }
 );

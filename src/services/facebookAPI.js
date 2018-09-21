@@ -24,8 +24,6 @@ export const loginWithGoogle = async() => {
       iosClientId: '819008592100-qpb34tmehb38o0cs85rvf662os2rhjf2.apps.googleusercontent.com',
       scopes: ['profile', 'email'],
     });
-    console.log({type});
-    console.log({accessToken});
     if (type === 'success') {
       // build credential and store within firebase
       await storeLoginWithGoogle(type, accessToken);

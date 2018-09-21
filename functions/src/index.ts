@@ -74,7 +74,7 @@ export const dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) =
         });
         // console.log({dailyReminderObject});
         buildMessages(dailyReminderObject);
-        // reseting array for another batch
+        // // reseting array for another batch
         dailyReminderObject = [];
       });
       return false;
@@ -103,7 +103,7 @@ const buildMessages = (dailyReminderObject) => {
   // time, which nicely spreads the load out over time:
     for (let chunk of chunks) {
       try {
-        console.log({chunk})
+        // console.log({chunk})
         let receipts = await expo.sendPushNotificationsAsync(chunk);
         console.log({receipts});
       } catch (error) {

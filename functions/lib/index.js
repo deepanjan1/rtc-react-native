@@ -74,7 +74,7 @@ exports.dailyJob = functions.pubsub.topic('daily-tick').onPublish((event) => {
                 });
                 // console.log({dailyReminderObject});
                 buildMessages(dailyReminderObject);
-                // reseting array for another batch
+                // // reseting array for another batch
                 dailyReminderObject = [];
             });
             return false;
