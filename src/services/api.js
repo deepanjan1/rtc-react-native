@@ -84,7 +84,7 @@ export const shutOffGetPermissions = (uid) => setListenerOff('permissions/' + ui
 
 // write new notification token
 export const writeNotificationToken = (uid, notificationToken) => {
-  console.log('from firebase write: ' + notificationToken);
+  console.log('from firebase write: ' + notificationToken + 'for ' + uid);
   const endpoint = 'permissions/' + uid + '/notificationToken/';
   writeData(endpoint, notificationToken);
 };

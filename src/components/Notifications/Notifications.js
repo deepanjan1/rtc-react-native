@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert, Linking } from 'react-native';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import { Icon, Button } from 'react-native-elements';
@@ -32,10 +32,20 @@ export default class Notifications extends React.Component {
             buttonStyle={ styles.button }
             onPress= { async () =>
               {
-                await getPermissionNotifications(
+                let status = await getPermissionNotifications(
                   this.props.loadNotificationToken, this.props.uid
                 );
-                this.props.closeNotificationsModal();
+                if (status) {
+                  this.props.closeNotificationsModal();
+                } else {
+                  Alert.alert(
+                    'Go To Settings',
+                    'You probably already declined notification permissions. Please go to your settings to enable notifications.',
+                    [
+                      { text: 'Go To Settings', onPress: () => Linking.openURL('app-settings:') },
+                    ]
+                  );
+                };
               }
             }>
           </Button>

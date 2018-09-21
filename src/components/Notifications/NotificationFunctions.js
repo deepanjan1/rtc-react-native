@@ -7,15 +7,20 @@ import { writeNotificationToken } from '../../services/api';
 export const getExistingPermission = async (
   notificationToken,
   uid,
+  modalFunc,
 ) => {
   const { status: existingStatus } = await Permissions.askAsync(
     Permissions.NOTIFICATIONS
   );
+  console.log({ existingStatus });
+  console.log({ uid });
   if (existingStatus !== 'granted') {
     console.log('status not granted');
+    modalFunc(true);
     return false;
   } else {
     let token = await Notifications.getExpoPushTokenAsync();
+    modalFunc(false);
     /* compare to the firebase token; if it's the same, do nothing,
     if it's different, replace */
     console.log({ token });
@@ -25,7 +30,7 @@ export const getExistingPermission = async (
       return true;
     } else {
       console.log('token is not loading, re-writing token to firebase');
-      writeNotificationToken(uid, token);
+      uid ? writeNotificationToken(uid, token) : console.log('userID is null');
       return true;
     }
   }
@@ -43,16 +48,18 @@ export const getPermissionNotifications = async (loadNotificationToken, uid) => 
     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     console.log('existing status not granted: ' + status);
     finalStatus = status;
+    return false;
   };
 
   if (finalStatus !== 'granted') {
     console.log('final status not granted: ' + finalStatus);
-    return; // will load modal
+    return false; // will load modal
   }
 
   // grab Notification permission token
   let token = await Notifications.getExpoPushTokenAsync();
-  writeNotificationToken(uid, token);
+  uid ? writeNotificationToken(uid, token) : console.log('userID is null');
+  return true;
 };
 
 //  Wire into Dashboard

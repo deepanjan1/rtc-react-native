@@ -3,7 +3,7 @@ import { actionTypes } from '../actions/actions';
 const initialState = {
   user: {},
   notificationToken: '',
-  contactToken: '',
+  notificationModal: false,
   isLoggedIn: false,
 };
 
@@ -38,6 +38,12 @@ export default function userReducer(state = initialState, action) {
     case actionTypes.NOTIFICATION_MODAL_ON:
       return {
         ...state,
+        notificationModal: action.notificationModal,
+      };
+    case actionTypes.CLOSE_NOTIFICATION_MODAL:
+      return {
+        ...state,
+        notificationModal: action.notificationModal,
       };
     default:
       return state;

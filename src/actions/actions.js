@@ -18,6 +18,7 @@ export const actionTypes = {
   REMOVE_USER: 'REMOVE_USER',
   LOAD_NOTIFICATION_TOKEN: 'LOAD_NOTIFICATION_TOKEN',
   NOTIFICATION_MODAL_ON: 'NOTIFICATION_MODAL_ON',
+  CLOSE_NOTIFICATION_MODAL: 'CLOSE_NOTIFICATION_MODAL',
 };
 
 // Reminder Stuff
@@ -74,11 +75,16 @@ watchPermissions = (uid) => (
     let path = uid + '/notificationToken';
     getPermissions(path, (snapshot) => {
       try {
-        dispatch(loadNotificationToken(Object.values([snapshot.val()])[0]));
+        let notificationToken = Object.values([snapshot.val()])[0];
+        getExistingPermission(
+          notificationToken,
+          uid,
+          (bool) => dispatch(notificationModal(bool))
+        );
+        dispatch(loadNotificationToken(notificationToken));
       }
       catch (error) {
         console.log({ error });
-        dispatch(notificationModal());
       }
     });
   }
@@ -141,9 +147,17 @@ export const loadNotificationToken = (notificationToken) => (
   }
 );
 
-export const notificationModal = () => (
+export const notificationModal = (notificationModal) => (
   {
     type: 'NOTIFICATION_MODAL_ON',
+    notificationModal,
+  }
+);
+
+export const closeNotificationModal = (bool) => (
+  {
+    type: 'CLOSE_NOTIFICATION_MODAL',
+    notificationModal: bool,
   }
 );
 

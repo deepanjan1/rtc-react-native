@@ -61,20 +61,34 @@ class Dashboard extends React.Component {
     contactsLoaded: false,
     confirmationModal: false,
     action: '',
+    notificationToken: '',
   };
 
   componentDidMount = () => {
     this.unsubscribeCurrentUserListener = this.props.watchUserData();
+    getExistingPermission(
+      this.props.notificationToken,
+      this.props.uid,
+      this.showNotificationsModal,
+    );
   };
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.notificationToken !== this.props.notificationToken
-    && prevProps.uid !== this.props.uid) {
-      if (this.props.notificationToken == '') {
-        this.setState({ showNotificationsModal: true });
-      } else {
-        getExistingPermission(this.props.notificationToken, this.props.uid);
-      };
+    // if (prevProps.notificationToken !== this.props.notificationToken
+    // && prevProps.uid !== this.props.uid) {
+    //   if (this.props.notificationToken == '') {
+    //     this.setState({ showNotificationsModal: true });
+    //   } else {
+    //     getExistingPermission(this.props.notificationToken, this.props.uid);
+    //   };
+    // };
+
+    if (prevProps.uid !== this.props.uid) {
+      getExistingPermission(
+        this.state.notificationToken,
+        this.props.uid,
+        this.showNotificationsModal,
+      );
     };
 
     if (prevProps.contacts !== this.props.contacts) {
@@ -96,6 +110,8 @@ class Dashboard extends React.Component {
       this.unsubscribeCurrentUserListener();
     }
   }
+
+  showNotificationsModal = () => this.setState({ showNotificationsModal: true });
 
   logOut = () => {
     logoutCurrentUser(); // remove from firebase
@@ -170,8 +186,8 @@ class Dashboard extends React.Component {
             contacts = { contacts }
           />
           <Notifications
-            showNotificationsModal={ this.state.showNotificationsModal }
-            closeNotificationsModal={ () => this.setState({ showNotificationsModal: false, }) }
+            showNotificationsModal={ this.props.notificationModal }
+            closeNotificationsModal={ this.props.closeNotificationModal }
             loadNotificationToken = { loadNotificationToken }
             uid =  { user.uid }
           />
@@ -279,6 +295,7 @@ mapStateToProps = (state) => (
     contacts: state.contact.contacts,
     user: state.user.user,
     notificationToken: state.user.notificationToken,
+    notificationModal: state.user.notificationModal,
     isLoggedIn: state.user.isLoggedIn,
   }
 );
@@ -295,6 +312,10 @@ mapDispatchToProps = (dispatch) => (
 
     loadNotificationToken: (notificationToken) => {
       dispatch(Action.loadNotificationToken(notificationToken));
+    },
+
+    closeNotificationModal: () => {
+      dispatch(Action.closeNotificationModal(false));
     },
 
     selectedReminder: (reminder) => {
