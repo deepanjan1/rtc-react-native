@@ -28,11 +28,13 @@ export const getExistingPermission = async (
     if (token === notificationToken) {
       console.log('existing token loaded');
       return true;
-    } else {
-      console.log('token is not loading, re-writing token to firebase');
-      uid ? writeNotificationToken(uid, token) : console.log('userID is null');
-      return true;
-    }
+    };
+
+    // else {
+    //   console.log('token is not loading, re-writing token to firebase');
+    //   uid ? writeNotificationToken(uid, token) : console.log('userID is null');
+    //   return true;
+    // }
   }
 };
 
@@ -60,6 +62,57 @@ export const getPermissionNotifications = async (loadNotificationToken, uid) => 
   let token = await Notifications.getExpoPushTokenAsync();
   uid ? writeNotificationToken(uid, token) : console.log('userID is null');
   return true;
+};
+
+export const createLocalNotification = (date, name) => {
+  const localNotification = {
+    title: 'Remember to call ' + name,
+    body: 'Reach out within a week to create or add to your streak!',
+    image: '../../assets/images/Icon.png',
+    android: {
+      sound: true,
+      icon: '../../assets/images/Icon.png',
+    },
+    ios: {
+      sound: true,
+      image: '../../assets/images/Icon.png',
+    },
+  };
+
+  // today = Date.now();
+  console.log({ date });
+  const schedulingOptions = { time: date };
+
+  // initial notification
+  Notifications.scheduleLocalNotificationAsync(
+    localNotification,
+    schedulingOptions
+  );
+
+  // follow up notification
+  const followUpLocalNotification = {
+    title: 'Don\'t forget to reach out to' + name,
+    body: 'You have 2 days left to keep your streak alive!',
+    image: '../../assets/images/Icon.png',
+    android: {
+      sound: true,
+      icon: '../../assets/images/Icon.png',
+    },
+    ios: {
+      sound: true,
+      image: '../../assets/images/Icon.png',
+    },
+  };
+
+  const followUpDate = date.setDate(date.getDate() + 5);
+
+  console.log({ followUpDate });
+  const followUpSchedulingOptions = { time: followUpDate };
+
+  Notifications.scheduleLocalNotificationAsync(
+    followUpLocalNotification,
+    followUpSchedulingOptions
+  );
 };
 
 //  Wire into Dashboard

@@ -18,6 +18,7 @@ import { Permissions, SMS } from 'expo';
 import { SimpleLineIcons, FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import _ from 'underscore';
 import { exactMatchContact } from './SyncContacts/loadContacts';
+import { createLocalNotification } from './Notifications/NotificationFunctions';
 
 export default class ReminderList extends React.Component {
 
@@ -303,6 +304,9 @@ export default class ReminderList extends React.Component {
                         console.log('new date: ' + item.date);
                         console.log('streak: ' + item.streak);
                         updateReminder(this.props.user, item);
+                        const dateObject = new Date(item.date);
+                        // save next notification here
+                        createLocalNotification(dateObject, item.name);
                       } }
 
                     />

@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import { Input, Button } from 'react-native-elements';
 import { loadContacts } from '../SyncContacts/loadContacts';
 import { MaterialIcons } from '@expo/vector-icons';
+import { createLocalNotification } from '../Notifications/NotificationFunctions';
 
 export default class CreateFormRevised extends React.Component {
   constructor(props) {
@@ -259,6 +260,7 @@ export default class CreateFormRevised extends React.Component {
                   results: [],
                   frequency: 'Every Two Weeks',
                 });
+                createLocalNotification(this.state.date.toDate(), this.state.person.name);
                 this.props.actionFunction();
                 this.props.closeCreateForm();
               } }

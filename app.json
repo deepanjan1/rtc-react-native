@@ -4,12 +4,16 @@
   "expo": {
     "name": "Remember To Call",
     "icon": "./src/assets/images/Icon.png",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
     "splash": {
       "image": "./src/assets/images/splash_logo.png",
       "backgroundColor": "#ffffff"
+    },
+    "notification": {
+      "icon": "./src/assets/images/Icon.png",
+      "color": "#000000",
     },
     "ios": {
       "bundleIdentifier": "DeepCreations",

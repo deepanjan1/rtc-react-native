@@ -66,11 +66,6 @@ class Dashboard extends React.Component {
 
   componentDidMount = () => {
     this.unsubscribeCurrentUserListener = this.props.watchUserData();
-    getExistingPermission(
-      this.props.notificationToken,
-      this.props.uid,
-      this.showNotificationsModal,
-    );
   };
 
   componentDidUpdate = (prevProps) => {
@@ -83,13 +78,13 @@ class Dashboard extends React.Component {
     //   };
     // };
 
-    if (prevProps.uid !== this.props.uid) {
-      getExistingPermission(
-        this.state.notificationToken,
-        this.props.uid,
-        this.showNotificationsModal,
-      );
-    };
+    // if (prevProps.uid !== this.props.uid) {
+    //   getExistingPermission(
+    //     this.state.notificationToken,
+    //     this.props.uid,
+    //     this.showNotificationsModal,
+    //   );
+    // };
 
     if (prevProps.contacts !== this.props.contacts) {
       if (this.props.contacts.length === 0) {
