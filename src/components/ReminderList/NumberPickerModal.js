@@ -56,7 +56,7 @@ export default class NumberPickerModal extends React.Component {
 
 NumberPickerModal.propTypes = {
   name: PropTypes.string.isRequired,
-  phoneNumber: PropTypes.array.isRequired,
+  phoneNumber: PropTypes.array,
   numberPickerModal: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 };

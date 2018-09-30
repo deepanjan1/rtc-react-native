@@ -147,6 +147,7 @@ class Dashboard extends React.Component {
                   confirmationModal: true,
                 }
               ), 250) }
+              updateReminder={ (reminder, uid) => updateReminder(reminder, uid) }
             />
           </View>
           <View

@@ -1,10 +1,12 @@
 import { Linking, Platform } from 'react-native';
 
-export const numberPicker = (phoneNumber, modalFunction) => {
+export const numberPicker = (phoneNumber, modalFunction, addNumberModal) => {
   if (phoneNumber.length > 1) {
     modalFunction();
+  } else if (phoneNumber.length == 1) {
+    message(phoneNumber[0].number);
   } else {
-    this.message(phoneNumber);
+    addNumberModal();
   }
 };
 

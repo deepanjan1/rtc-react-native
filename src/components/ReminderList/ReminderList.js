@@ -24,6 +24,7 @@ import {
 } from '../Notifications/NotificationFunctions';
 import { numberPicker, message } from './ReminderListFunctions';
 import NumberPickerModal from './NumberPickerModal';
+import AddNumberModal from './AddNumberModal';
 import Modal from 'react-native-modal';
 
 export default class ReminderList extends React.Component {
@@ -84,8 +85,10 @@ export default class ReminderList extends React.Component {
     isSwiping: false,
     notificationID: {},
     numberPickerModal: false,
+    addNumberModal: false,
     name: '',
     phoneNumber: [],
+    reminder: {},
   };
 
   handleScroll = () => {
@@ -191,32 +194,47 @@ export default class ReminderList extends React.Component {
       return (
         <View style={ styles.streakNumberContainer }>
           <View style={ styles.streakIconContainerBlue }>
-            <Image
+            <MaterialIcons
+              name='stars'
+              size={60}
+              color='#e78e54'
+            />
+            {/* <Image
               style={{ width: 40, height: 55, }}
               source={require('../../assets/images/medal.png')}
-            />
-            <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+            /> */}
+            <Text style={ styles.streakNumber }>{ streakNumber }</Text>
           </View>
         </View>
       );
     } else if (streakNumber > 0 && dayDifference >= 5 && dayDifference <= 6) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <Image
+          <MaterialIcons
+            name='stars'
+            size={60}
+            color='#e78e54'
+          />
+          {/* <Image
             style={{ width: 40, height: 55, }}
             source={require('../../assets/images/medal.png')}
-          />
-          <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          /> */}
+          <Text style={ styles.streakNumber }>{ streakNumber }</Text>
         </View>
       );
     } else if (streakNumber > 0 && dayDifference > 6) {
       return (
         <View style={ styles.streakNumberContainer }>
-          <Image
+          <MaterialIcons
+            name='stars'
+            size={60}
+            color='#e78e54'
+          />
+          {/* <Image
             style={{ width: 40, height: 55, }}
             source={require('../../assets/images/medal.png')}
-          />
-          <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
+          /> */}
+          <Text style={ styles.streakNumber }>{ streakNumber }</Text>
         </View>
       );
     } else {
@@ -309,10 +327,12 @@ export default class ReminderList extends React.Component {
                   this.setState({
                     name: item.name,
                     phoneNumber: item.phoneNumber,
+                    reminder: item,
                   });
                   numberPicker(
                     item.phoneNumber,
                     () => this.setState({ numberPickerModal: true, }),
+                    () => this.setState({ addNumberModal: true, })
                   );
                 } }
               />
@@ -521,6 +541,14 @@ export default class ReminderList extends React.Component {
             numberPickerModal={ this.state.numberPickerModal }
             closeModal={ () => this.setState({ numberPickerModal: false, }) }
           />
+          <AddNumberModal
+            name={ this.state.name }
+            addNumberModal={ this.state.addNumberModal }
+            closeModal={ () => this.setState({ addNumberModal: false, }) }
+            user={ this.props.user }
+            updateReminder={ this.props.updateReminder }
+            reminder={ this.state.reminder }
+          />
         </View>
       </View>
       );
@@ -564,6 +592,7 @@ ReminderList.propTypes = {
   showEditModal: PropTypes.func.isRequired,
   user: PropTypes.string,
   actionFunction: PropTypes.func.isRequired,
+  updateReminder: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -609,21 +638,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     flex: 3,
   },
-  // numberPickerModal: {
-  //   width: '80%',
-  //   height: '30%',
-  //   borderRadius: 20,
-  //   backgroundColor: 'white',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   alignSelf: 'center',
-  // },
-  // modalTitle: {
-  //   fontFamily: 'Roboto-Regular',
-  //   textAlign: 'center',
-  //   fontSize: 25,
-  //   // flex: 3,
-  // },
   doneButtonStyleTitle: {
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
@@ -727,6 +741,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Light',
     fontSize: 15,
     position: 'absolute',
-    paddingTop: 15,
+    // paddingTop: 15,
   },
 });
