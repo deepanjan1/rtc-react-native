@@ -1,10 +1,8 @@
 {
-  "name": "rtc-react-native",
-  "displayName": "rtc-react-native",
   "expo": {
     "name": "Remember To Call",
     "icon": "./src/assets/images/Icon.png",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
     "splash": {
@@ -13,41 +11,35 @@
     },
     "notification": {
       "icon": "./src/assets/images/Icon.png",
-      "color": "#000000",
+      "color": "#000000"
     },
     "ios": {
       "bundleIdentifier": "DeepCreations",
       "infoPlist": {
-          "NSContactsUsageDescription": "We sync your contacts so you can create reminders.  We never reach out to your contacts!"
-        },
-      "config": {
-        "usesNonExemptEncryption": false,
+        "NSContactsUsageDescription": "We sync your contacts so you can create reminders.  We never reach out to your contacts!"
       },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "publishBundlePath": "ios/remember-to-call/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/remember-to-call/Supporting/shell-app-manifest.json"
     },
     "android": {
       "package": "com.remembertocall",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 5,
+      "versionCode": 6,
       "splash": {
         "image": "./src/assets/images/splash_logo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "READ_CONTACTS",
+        "READ_CONTACTS"
       ],
+      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
+      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
     },
     "description": "An app that helps you remember to reach out to your friends and family.  ",
-    "githubUrl": "https://github.com/deepanjan1/rtc-react-native"
-  },
-  "facebookScheme": {
-    "CFBundleURLTypes": [
-      {
-        "CFBundleURLSchemes": [
-          "fb140333090089093"
-        ]
-      }
-    ]
-  },
-  "FacebookAppID": "140333090089093",
-  "FacebookDisplayName": "Remember To Call"
+    "githubUrl": "https://github.com/deepanjan1/rtc-react-native",
+    "scheme": "exp357f50ba70624d45b8be9359f45b5ed3"
+  }
 }

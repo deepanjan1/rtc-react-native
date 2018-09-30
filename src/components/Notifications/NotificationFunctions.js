@@ -64,7 +64,13 @@ export const getPermissionNotifications = async (loadNotificationToken, uid) => 
   return true;
 };
 
-export const createLocalNotification = (date, name) => {
+export const createLocalNotification = async (date, name) => {
+  // empty array to be filled with notificationIDs
+  let notificationID = {
+    firstReminder: '',
+    followUpNotification: '',
+  };
+
   const localNotification = {
     title: 'Remember to call ' + name,
     body: 'Reach out within a week to create or add to your streak!',
@@ -84,14 +90,16 @@ export const createLocalNotification = (date, name) => {
   const schedulingOptions = { time: date };
 
   // initial notification
-  Notifications.scheduleLocalNotificationAsync(
+  const localNoticationID = await Notifications.scheduleLocalNotificationAsync(
     localNotification,
     schedulingOptions
   );
 
+  notificationID.firstReminder = localNoticationID;
+
   // follow up notification
   const followUpLocalNotification = {
-    title: 'Don\'t forget to reach out to' + name,
+    title: 'Don\'t forget to reach out to ' + name,
     body: 'You have 2 days left to keep your streak alive!',
     image: '../../assets/images/Icon.png',
     android: {
@@ -106,13 +114,19 @@ export const createLocalNotification = (date, name) => {
 
   const followUpDate = date.setDate(date.getDate() + 5);
 
-  console.log({ followUpDate });
+  // console.log({ followUpDate });
   const followUpSchedulingOptions = { time: followUpDate };
 
-  Notifications.scheduleLocalNotificationAsync(
+  const followUpNotificationID = await Notifications.scheduleLocalNotificationAsync(
     followUpLocalNotification,
     followUpSchedulingOptions
   );
+
+  notificationID.followUpNotification = followUpNotificationID;
+  console.log({ notificationID });
+  return notificationID;
 };
 
-//  Wire into Dashboard
+export const cancelNotification = (notificationID) => (
+  Notifications.cancelScheduledNotificationAsync(notificationID)
+);

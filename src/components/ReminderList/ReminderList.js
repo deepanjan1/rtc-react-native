@@ -10,15 +10,21 @@ import {
   Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { removeReminder, updateReminder } from '../services/api';
+import { removeReminder, updateReminder } from '../../services/api';
 import Swipeable from 'react-native-swipeable';
 import Moment from 'moment';
 import { Icon, Button } from 'react-native-elements';
 import { Permissions, SMS } from 'expo';
 import { SimpleLineIcons, FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import _ from 'underscore';
-import { exactMatchContact } from './SyncContacts/loadContacts';
-import { createLocalNotification } from './Notifications/NotificationFunctions';
+import { exactMatchContact } from '../SyncContacts/loadContacts';
+import {
+  createLocalNotification,
+  cancelNotification
+} from '../Notifications/NotificationFunctions';
+import { numberPicker, message } from './ReminderListFunctions';
+import NumberPickerModal from './NumberPickerModal';
+import Modal from 'react-native-modal';
 
 export default class ReminderList extends React.Component {
 
@@ -36,6 +42,13 @@ export default class ReminderList extends React.Component {
       <TouchableHighlight
         onPress={() => {
           this.swipeable.recenter();
+
+          // cancel first reminder
+          cancelNotification(this.state.notificationID.firstReminder);
+
+          // cancel follow up reminder
+          cancelNotification(this.state.notificationID.followUpNotification);
+
           removeReminder(this.props.user, this.state.activeKey); // remove from database
           this.props.actionFunction();
         }}
@@ -69,6 +82,10 @@ export default class ReminderList extends React.Component {
     activeKey: '',
     index: null,
     isSwiping: false,
+    notificationID: {},
+    numberPickerModal: false,
+    name: '',
+    phoneNumber: [],
   };
 
   handleScroll = () => {
@@ -77,11 +94,6 @@ export default class ReminderList extends React.Component {
     if (currentlyOpenSwipeable) {
       currentlyOpenSwipeable.recenter();
     }
-  };
-
-  message = (phoneNumber) => {
-    Linking.openURL('sms:' + phoneNumber +
-    '?body=Hi! Are you around to catch up this week?');
   };
 
   sortRemindersByDate = (reminders) => {
@@ -181,7 +193,7 @@ export default class ReminderList extends React.Component {
           <View style={ styles.streakIconContainerBlue }>
             <Image
               style={{ width: 40, height: 55, }}
-              source={require('../assets/images/medal.png')}
+              source={require('../../assets/images/medal.png')}
             />
             <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
           </View>
@@ -192,7 +204,7 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <Image
             style={{ width: 40, height: 55, }}
-            source={require('../assets/images/medal.png')}
+            source={require('../../assets/images/medal.png')}
           />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
         </View>
@@ -202,7 +214,7 @@ export default class ReminderList extends React.Component {
         <View style={ styles.streakNumberContainer }>
           <Image
             style={{ width: 40, height: 55, }}
-            source={require('../assets/images/medal.png')}
+            source={require('../../assets/images/medal.png')}
           />
           <Text style={ styles.streakNumber }>{ streakNumber + 'x'}</Text>
         </View>
@@ -228,113 +240,128 @@ export default class ReminderList extends React.Component {
           index: null,
           isSwiping: false,
         }) }
-        onSwipeComplete={ () => this.setState({ activeKey: item.key, index: index, }) }
+        onSwipeComplete={ () => this.setState(
+          {
+            activeKey: item.key,
+            index: index,
+            notificationID: item.notificationID,
+          }
+        ) }
         rightButtonWidth={ 100 }
         >
-        <TouchableHighlight
-            onPress={ () => {
-              this.props.loadActiveReminder(item);
-              this.props.showEditModal();
-            } }
-
-            underlayColor='transparent'
-            >
-            <View style={ styles.container }>
-              <View style={ styles.nameContainer }>
-                <Text style={ styles.name }>
-                  { item.name }
-                </Text>
-              </View>
-              <View style={ styles.reminderDetails }>
-                <View style={ styles.frequencyContainer }>
-                  <Text style={ styles.nextReminder }>
-                    { this.storeContact(item.frequency) }
-                  </Text>
-                  <MaterialIcons
-                    name='cached'
-                    color='#1787fb'
-                    iconStyle={ styles.icon }
-                    size={ 30 }
-                  />
-                </View>
-                <View style={ styles.gap } />
-                { this.showStreak(item.streak, item.date) }
-                <View style={ styles.gap } />
-                <View style={ styles.nextReminderContainer }>
-                  <Text style={ styles.nextReminder }>
-                    { item.date }
-                  </Text>
-                  <MaterialIcons
-                    name='date-range'
-                    color='#1787fb'
-                    iconStyle={ styles.icon }
-                    size={ 30 }
-                  />
-                </View>
-              </View>
-              <View style={ styles.reminderActions }>
-                  {/* <View style={ {
-                    backgroundColor: '#1787fb',
-                    borderRadius: 20,
-                    width: 40,
-                    height: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 20,
-                  } }>
-                  <Entypo
-                    name='message'
-                    color='#ffffff'
-                    size={ 30 }
-                    onPress={ () => this.message(item.phoneNumber) }
-                  />
-                  </View> */}
-                  <View style={ { alignItems: 'center', marginTop: 5, } }>
-                    <Text style={ styles.doneButtonStyleTitle }>
-                      Contacted?
-                    </Text>
-                    <FontAwesome
-                      name='check-circle'
-                      color='#2abf40'
-                      size={ 60 }
-                      onPress={ () => {
-                        console.log(item.streak);
-                        item.streak += 1;
-                        item.date = this.calcNextReminder(item.date, item.frequency);
-                        console.log('new date: ' + item.date);
-                        console.log('streak: ' + item.streak);
-                        updateReminder(this.props.user, item);
-                        const dateObject = new Date(item.date);
-                        // save next notification here
-                        createLocalNotification(dateObject, item.name);
-                      } }
-
-                    />
-                  </View>
-                  {/* <View style={ {
-                    // backgroundColor: '#1787fb',
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    width: 40,
-                    height: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 20,
-                    // marginRight: 30,
-                  } }>
-                    <FontAwesome
-                      name='phone'
-                      color='#ffffff'
-                      size={ 30 }
-                      onPress={ () => {
-                        exactMatchContact(item.personID);
-                      } }
-
-                    />
-                  </View> */}
-              </View>
+        <View style={ styles.container }>
+          <View style={ styles.nameContainer }>
+            <Text style={ styles.name }>
+              { item.name }
+            </Text>
+          </View>
+          <View style={ styles.reminderDetails }>
+            <View style={ styles.frequencyContainer }>
+              <Text style={ styles.nextReminder }>
+                { this.storeContact(item.frequency) }
+              </Text>
+              <MaterialIcons
+                name='cached'
+                color='#1787fb'
+                iconStyle={ styles.icon }
+                size={ 30 }
+              />
             </View>
-          </TouchableHighlight>
+            <View style={ styles.gap } />
+            { this.showStreak(item.streak, item.date) }
+            <View style={ styles.gap } />
+            <View style={ styles.nextReminderContainer }>
+              <Text style={ styles.nextReminder }>
+                { item.date }
+              </Text>
+              <MaterialIcons
+                name='date-range'
+                color='#1787fb'
+                iconStyle={ styles.icon }
+                size={ 30 }
+              />
+            </View>
+          </View>
+          <View
+            style={ {
+              borderBottomWidth: 0.5,
+              borderColor: '#c6cbcf',
+              marginTop: 10,
+              marginBottom: 10,
+            } }
+          />
+          <View style={ styles.reminderActions }>
+              <View style={ {
+                backgroundColor: '#1787fb',
+                borderRadius: 20,
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 20,
+              } }>
+              <Entypo
+                name='message'
+                color='#ffffff'
+                size={ 30 }
+                onPress={ () => {
+                  console.log(item.phoneNumber);
+                  this.setState({
+                    name: item.name,
+                    phoneNumber: item.phoneNumber,
+                  });
+                  numberPicker(
+                    item.phoneNumber,
+                    () => this.setState({ numberPickerModal: true, }),
+                  );
+                } }
+              />
+              </View>
+              <View style={ { alignItems: 'center', marginTop: 5, } }>
+                <Text style={ styles.doneButtonStyleTitle }>
+                  Contacted?
+                </Text>
+                <FontAwesome
+                  name='check-circle'
+                  color='#2abf40'
+                  size={ 60 }
+                  onPress={ () => {
+                    console.log(item.streak);
+                    item.streak += 1;
+                    item.date = this.calcNextReminder(item.date, item.frequency);
+                    console.log('new date: ' + item.date);
+                    console.log('streak: ' + item.streak);
+                    updateReminder(this.props.user, item);
+                    const dateObject = new Date(item.date);
+                    // save next notification here
+                    createLocalNotification(dateObject, item.name);
+                  } }
+
+                />
+              </View>
+              <View style={ {
+                backgroundColor: '#1787fb',
+                borderRadius: 20,
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 20,
+              } }>
+                <MaterialIcons
+                  name='edit'
+                  color='#ffffff'
+                  size={ 30 }
+                  onPress={ () => {
+                      this.props.loadActiveReminder(item);
+                      this.props.showEditModal();
+                    } }
+
+                  underlayColor='transparent'
+                />
+              </View>
+          </View>
+        </View>
       </Swipeable>;
 
     if (!_.isEmpty(upcomingReminders) && !_.isEmpty(pastReminders)) {
@@ -377,6 +404,7 @@ export default class ReminderList extends React.Component {
     this.pastReminders = this.sortRemindersByDate(this.props.reminders)['false'];
     if (this.props.reminders.length !== 0) {
       return (
+        <View>
           <SectionList
             sections={ this.sectionHeaders(this.upcomingReminders, this.pastReminders) }
             scrollEnabled={!this.state.isSwiping}
@@ -394,49 +422,91 @@ export default class ReminderList extends React.Component {
                   onSwipeComplete={ () => this.setState({ activeKey: item.key, index: index, }) }
                   rightButtonWidth={ 100 }
                   >
-                  <TouchableHighlight
-                    onPress={ () => {
-                      this.props.loadActiveReminder(item);
-                      this.props.showEditModal();
-                    } }
-
-                    underlayColor='transparent'
-                    >
-                    <View style={ styles.container }>
-                      <View style={ styles.nameContainer }>
-                        <Text style={ styles.name }>
-                          { item.name }
+                  <View style={ styles.container }>
+                    <View style={ styles.nameContainer }>
+                      <Text style={ styles.name }>
+                        { item.name }
+                      </Text>
+                    </View>
+                    <View style={ styles.reminderDetails }>
+                      <View style={ styles.frequencyContainer }>
+                        <Text style={ styles.nextReminder }>
+                          { this.storeContact(item.frequency) }
                         </Text>
+                        <MaterialIcons
+                          name='cached'
+                          color='#1787fb'
+                          iconStyle={ styles.icon }
+                          size={ 30 }
+                        />
                       </View>
-                      <View style={ styles.reminderDetails }>
-                        <View style={ styles.frequencyContainer }>
-                          <Text style={ styles.nextReminder }>
-                            { this.storeContact(item.frequency) }
-                          </Text>
-                          <MaterialIcons
-                            name='cached'
-                            color='#1787fb'
-                            iconStyle={ styles.icon }
-                            size={ 30 }
-                          />
-                        </View>
-                        <View style={ styles.gap } />
-                        { this.showStreak(item.streak, item.date) }
-                        <View style={ styles.gap } />
-                        <View style={ styles.nextReminderContainer }>
-                          <Text style={ styles.nextReminder }>
-                            { item.date }
-                          </Text>
-                          <MaterialIcons
-                            name='date-range'
-                            color='#1787fb'
-                            iconStyle={ styles.icon }
-                            size={ 30 }
-                          />
-                        </View>
+                      <View style={ styles.gap } />
+                      { this.showStreak(item.streak, item.date) }
+                      <View style={ styles.gap } />
+                      <View style={ styles.nextReminderContainer }>
+                        <Text style={ styles.nextReminder }>
+                          { item.date }
+                        </Text>
+                        <MaterialIcons
+                          name='date-range'
+                          color='#1787fb'
+                          iconStyle={ styles.icon }
+                          size={ 30 }
+                        />
                       </View>
                     </View>
-                  </TouchableHighlight>
+                    <View
+                      style={ {
+                        borderBottomWidth: 0.5,
+                        borderColor: '#c6cbcf',
+                        marginTop: 10,
+                        marginBottom: 10,
+                      } }
+                    />
+                    <View style={ styles.reminderActions }>
+                      <View style={ {
+                        backgroundColor: '#908d84',
+                        borderRadius: 20,
+                        width: 40,
+                        height: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      } }>
+                      <Entypo
+                        name='message'
+                        color='#ffffff'
+                        size={ 30 }
+                      />
+                      </View>
+                      <View style={ { alignItems: 'center', } }>
+                        <FontAwesome
+                          name='check-circle'
+                          color='#908d84'
+                          size={ 50 }
+                        />
+                      </View>
+                      <View style={ {
+                        backgroundColor: '#1787fb',
+                        borderRadius: 20,
+                        width: 40,
+                        height: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      } }>
+                        <MaterialIcons
+                          name='edit'
+                          color='#ffffff'
+                          size={ 30 }
+                          onPress={ () => {
+                              this.props.loadActiveReminder(item);
+                              this.props.showEditModal();
+                            } }
+
+                          underlayColor='transparent'
+                        />
+                      </View>
+                    </View>
+                  </View>
                 </Swipeable>
             }
             renderSectionHeader={({ section: { title } }) => (
@@ -444,7 +514,16 @@ export default class ReminderList extends React.Component {
             )}
             keyExtractor={(item) => (`reminders-${item.key}`)}
           />
-          );
+        <View>
+          <NumberPickerModal
+            name={ this.state.name }
+            phoneNumber={ this.state.phoneNumber }
+            numberPickerModal={ this.state.numberPickerModal }
+            closeModal={ () => this.setState({ numberPickerModal: false, }) }
+          />
+        </View>
+      </View>
+      );
     } else {
       return (
         <View style={ styles.firstTimeContainer }>
@@ -530,6 +609,21 @@ const styles = StyleSheet.create({
     fontSize: 25,
     flex: 3,
   },
+  // numberPickerModal: {
+  //   width: '80%',
+  //   height: '30%',
+  //   borderRadius: 20,
+  //   backgroundColor: 'white',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   alignSelf: 'center',
+  // },
+  // modalTitle: {
+  //   fontFamily: 'Roboto-Regular',
+  //   textAlign: 'center',
+  //   fontSize: 25,
+  //   // flex: 3,
+  // },
   doneButtonStyleTitle: {
     fontFamily: 'Roboto-Regular',
     fontSize: 16,

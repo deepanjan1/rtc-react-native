@@ -16,6 +16,10 @@ import Moment from 'moment';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
+import {
+  createLocalNotification,
+  cancelNotification,
+} from '../Notifications/NotificationFunctions';
 
 export default class EditForm extends React.Component {
   constructor(props) {
@@ -143,7 +147,19 @@ export default class EditForm extends React.Component {
               title='Save Reminder'
               buttonStyle={ styles.saveButton }
               textStyle={ styles.saveButtonText }
-              onPress={ () => {
+              onPress={ async () => {
+                // cancel first Notification
+                cancelNotification(this.props.editReminder.notificationID.firstReminder);
+
+                // cancel follow up Notification
+                cancelNotification(this.props.editReminder.notificationID.followUpNotification);
+                formattedDate = new Date(this.state.date);
+                console.log({ formattedDate });
+
+                const notificationID = await createLocalNotification(
+                  formattedDate,
+                  this.state.name);
+
                 this.props.updateReminder(this.props.user, {
                   name: this.state.name,
                   date: this.state.date,
@@ -152,6 +168,7 @@ export default class EditForm extends React.Component {
                   key: this.props.editReminder.key,
                   phoneNumber: this.props.editReminder.phoneNumber,
                   streak: this.props.editReminder.streak,
+                  notificationID: notificationID,
                 });
                 this.props.closeEditForm();
                 this.props.actionFunction();
@@ -172,7 +189,7 @@ export default class EditForm extends React.Component {
                     date: date.format('MM/DD/YYYY'),
                     datePickerModal: false, })}
                   selected={ this.state.date }
-                  minDate={Moment().startOf('day')}
+                  minDate={Moment().add(1, 'days').startOf('day')}
                   maxDate={Moment().add(10, 'years').startOf('day')}
                   style={ styles.calendar }
                   barView = { styles.barView }
@@ -255,6 +272,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     width: '100%',
+    height: '45%',
     backgroundColor: '#ffffff',
     flexDirection: 'column',
     borderRadius: 10,
@@ -263,6 +281,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    alignSelf: 'center',
   },
   barView: {
     backgroundColor: '#1a9bfc',
@@ -270,8 +289,21 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
   barText: {
-    color: '#ffffff',
     fontFamily: 'Roboto-Medium',
+    fontSize: 25,
+    color: '#ffffff',
+  },
+  dayRowView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dayHeaderText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 20,
+  },
+  dayText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
   },
   frequencyButton: {
     borderColor: '#1a9bfc',

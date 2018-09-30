@@ -102,7 +102,7 @@ const buildMessages = (dailyReminderObject) => {
         // time, which nicely spreads the load out over time:
         for (let chunk of chunks) {
             try {
-                console.log({ chunk });
+                // console.log({chunk})
                 let receipts = yield expo.sendPushNotificationsAsync(chunk);
                 console.log({ receipts });
             }

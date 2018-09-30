@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import ConfirmationModal from '../components/ConfirmationModal';
-import ReminderList from '../components/ReminderList';
 import CreateFormRevised from '../components/CreateForm/CreateFormRevised';
 import EditForm from '../components/EditForm/EditForm';
 import Settings from '../components/Settings/Settings';
 import Notifications from '../components/Notifications/Notifications';
+import ReminderList from '../components/ReminderList/ReminderList';
 import {
-  getExistingPermission
+  getExistingPermission,
 } from '../components/Notifications/NotificationFunctions';
 
 // Contact Stuff

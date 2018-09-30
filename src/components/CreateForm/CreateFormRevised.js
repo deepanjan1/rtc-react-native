@@ -31,7 +31,7 @@ export default class CreateFormRevised extends React.Component {
     showSearchResults: true,
     nameSelected: false,
     datePickerModal: false,
-    date: Moment().startOf('day'),  // to firebase
+    date: Moment().add(1, 'days').startOf('day'),  // to firebase
     frequency: 'Every Two Weeks',
     frequencyModal: false,
   };
@@ -85,6 +85,7 @@ export default class CreateFormRevised extends React.Component {
     if (this.state.showSearchResults && this.props.contactsLoaded) {
       return (
         <FlatList
+          keyboardShouldPersistTaps='always'
           data={ this.state.results ? this.state.results : this.props.contacts }
           renderItem={ ({ item }) => {
             if (item.firstName || item.lastName) {
@@ -238,16 +239,20 @@ export default class CreateFormRevised extends React.Component {
               title='Save Reminder'
               buttonStyle={ styles.saveButton }
               textStyle={ styles.saveButtonText }
-              onPress={ () => {
+              onPress={ async () => {
                 let phoneNumbers;
                 this.state.person.phoneNumbers
                 ? phoneNumbers = this.state.person.phoneNumbers : phoneNumbers = 0;
+                const notificationID = await createLocalNotification(
+                  this.state.date.toDate(),
+                  this.state.person.name);
                 this.addReminder(this.props.user, {
                   name: this.state.person.name,
                   date: this.state.date.format('MM/DD/YYYY'),
                   personID: this.state.personID,
                   frequency: this.state.frequency,
                   phoneNumber: phoneNumbers,
+                  notificationID: notificationID,
                   streak: 0,
                 });
 
@@ -260,7 +265,6 @@ export default class CreateFormRevised extends React.Component {
                   results: [],
                   frequency: 'Every Two Weeks',
                 });
-                createLocalNotification(this.state.date.toDate(), this.state.person.name);
                 this.props.actionFunction();
                 this.props.closeCreateForm();
               } }
@@ -348,7 +352,7 @@ export default class CreateFormRevised extends React.Component {
                     date: date,
                     datePickerModal: false, })}
                   selected={ this.state.date }
-                  minDate={Moment().startOf('day')}
+                  minDate={Moment().add(1, 'days').startOf('day')}
                   maxDate={Moment().add(10, 'years').startOf('day')}
                   style={ styles.calendar }
                   barView = { styles.barView }
@@ -440,6 +444,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     width: '100%',
+    height: '45%',
     backgroundColor: '#ffffff',
     flexDirection: 'column',
     borderRadius: 10,
