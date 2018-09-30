@@ -199,10 +199,6 @@ export default class ReminderList extends React.Component {
               size={60}
               color='#e78e54'
             />
-            {/* <Image
-              style={{ width: 40, height: 55, }}
-              source={require('../../assets/images/medal.png')}
-            /> */}
             <Text style={ styles.streakNumber }>{ streakNumber }</Text>
           </View>
         </View>
@@ -215,10 +211,6 @@ export default class ReminderList extends React.Component {
             size={60}
             color='#e78e54'
           />
-          {/* <Image
-            style={{ width: 40, height: 55, }}
-            source={require('../../assets/images/medal.png')}
-          /> */}
           <Text style={ styles.streakNumber }>{ streakNumber }</Text>
         </View>
       );
@@ -230,10 +222,6 @@ export default class ReminderList extends React.Component {
             size={60}
             color='#e78e54'
           />
-          {/* <Image
-            style={{ width: 40, height: 55, }}
-            source={require('../../assets/images/medal.png')}
-          /> */}
           <Text style={ styles.streakNumber }>{ streakNumber }</Text>
         </View>
       );
@@ -301,12 +289,7 @@ export default class ReminderList extends React.Component {
             </View>
           </View>
           <View
-            style={ {
-              borderBottomWidth: 0.5,
-              borderColor: '#c6cbcf',
-              marginTop: 10,
-              marginBottom: 10,
-            } }
+            style={ styles.border }
           />
           <View style={ styles.reminderActions }>
               <View style={ {
@@ -316,7 +299,7 @@ export default class ReminderList extends React.Component {
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: 20,
+                // marginTop: 20,
               } }>
               <Entypo
                 name='message'
@@ -337,14 +320,12 @@ export default class ReminderList extends React.Component {
                 } }
               />
               </View>
-              <View style={ { alignItems: 'center', marginTop: 5, } }>
-                <Text style={ styles.doneButtonStyleTitle }>
-                  Contacted?
-                </Text>
-                <FontAwesome
-                  name='check-circle'
-                  color='#2abf40'
-                  size={ 60 }
+              <View style={ { alignItems: 'center', } }>
+                <Button
+                  title='Mark as Contacted'
+                  buttonStyle={ styles.createButton }
+                  titleStyle={ styles.createButtonText }
+                  underlayColor= '#2abf40'
                   onPress={ () => {
                     console.log(item.streak);
                     item.streak += 1;
@@ -353,11 +334,12 @@ export default class ReminderList extends React.Component {
                     console.log('streak: ' + item.streak);
                     updateReminder(this.props.user, item);
                     const dateObject = new Date(item.date);
+
                     // save next notification here
                     createLocalNotification(dateObject, item.name);
                   } }
-
-                />
+                  >
+                </Button>
               </View>
               <View style={ {
                 backgroundColor: '#1787fb',
@@ -366,7 +348,7 @@ export default class ReminderList extends React.Component {
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: 20,
+                // marginTop: 20,
               } }>
                 <MaterialIcons
                   name='edit'
@@ -476,16 +458,11 @@ export default class ReminderList extends React.Component {
                       </View>
                     </View>
                     <View
-                      style={ {
-                        borderBottomWidth: 0.5,
-                        borderColor: '#c6cbcf',
-                        marginTop: 10,
-                        marginBottom: 10,
-                      } }
+                      style={ styles.border }
                     />
                     <View style={ styles.reminderActions }>
-                      <View style={ {
-                        backgroundColor: '#908d84',
+                      {/* <View style={ {
+                        backgroundColor: '#c6cbcf',
                         borderRadius: 20,
                         width: 40,
                         height: 40,
@@ -494,17 +471,18 @@ export default class ReminderList extends React.Component {
                       } }>
                       <Entypo
                         name='message'
-                        color='#ffffff'
+                        color='#ecebec'
                         size={ 30 }
                       />
-                      </View>
-                      <View style={ { alignItems: 'center', } }>
-                        <FontAwesome
-                          name='check-circle'
-                          color='#908d84'
-                          size={ 50 }
-                        />
-                      </View>
+                      </View> */}
+                      {/* <View style={ { alignItems: 'center', } }>
+                        <Button
+                          title='No Need to Reach Out'
+                          buttonStyle={ styles.createButtonInv }
+                          titleStyle={ styles.createButtonTextInv }
+                          >
+                        </Button>
+                      </View> */}
                       <View style={ {
                         backgroundColor: '#1787fb',
                         borderRadius: 20,
@@ -666,8 +644,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   reminderActions: {
-    // marginTop: 30,
-    // alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -741,6 +717,38 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Light',
     fontSize: 15,
     position: 'absolute',
-    // paddingTop: 15,
+  },
+  createButton: {
+      borderRadius: 25,
+      backgroundColor: '#ffffff',
+      borderColor: '#2abf40',
+      borderWidth: 1,
+      width: '100%',
+      elevation: 0,
+    },
+
+  createButtonInv: {
+      borderRadius: 25,
+      backgroundColor: '#c6cbcf',
+      borderColor: '#c6cbcf',
+      borderWidth: 1,
+      width: '100%',
+      elevation: 0,
+    },
+  createButtonTextInv: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    color: '#ecebec',
+  },
+  createButtonText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    color: '#2abf40',
+  },
+  border: {
+    borderBottomWidth: 0.5,
+    borderColor: '#c6cbcf',
+    marginTop: 25,
+    marginBottom: 25,
   },
 });

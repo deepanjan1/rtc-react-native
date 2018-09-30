@@ -149,10 +149,13 @@ export default class EditForm extends React.Component {
               textStyle={ styles.saveButtonText }
               onPress={ async () => {
                 // cancel first Notification
-                cancelNotification(this.props.editReminder.notificationID.firstReminder);
+                if (this.props.editReminder.notificationID) {
+                  cancelNotification(this.props.editReminder.notificationID.firstReminder);
 
-                // cancel follow up Notification
-                cancelNotification(this.props.editReminder.notificationID.followUpNotification);
+                  // cancel follow up Notification
+                  cancelNotification(this.props.editReminder.notificationID.followUpNotification);
+                }
+
                 formattedDate = new Date(this.state.date);
                 console.log({ formattedDate });
 

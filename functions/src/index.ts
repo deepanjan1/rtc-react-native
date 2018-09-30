@@ -227,3 +227,24 @@ const buildFollowUpMessages = (followUpReminder) => {
     }
   })();
 }
+
+export const updateAllReminders = functions.pubsub.topic('daily-tick').onPublish((event) => {
+  // pulling reminder data
+  refReminders.orderByChild('date').once('value', async (snapshot) => {
+    // console.log(snapshot.val());
+    await snapshot.forEach((data) => {
+      // user level
+      let uid = data.key;
+      data.forEach((reminder) => {
+        // reminder level
+        reminder.val().notificationID ?
+        console.log('no update') :
+        refReminders.child(uid).child(reminder.val().key).update({
+          'notificationID': 'not created',
+        });
+      });
+    });
+  });
+  // insert function for sending batch notifications
+  return ('function works');
+});
