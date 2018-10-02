@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   TouchableHighlight,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Calendar from 'react-native-calendar-datepicker';
 import Moment from 'moment';
@@ -300,6 +301,10 @@ export default class CreateFormRevised extends React.Component {
         animationInTiming={200}
         animationOut='slideOutDown'
         animationOutTiming={200}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          keyboardVerticalOffset= { 100 }
+          enabled>
         <View style={styles.container}>
             <Text style={styles.name}>Who do you want to remember to call?</Text>
             <View style={styles.inputField}>
@@ -379,6 +384,7 @@ export default class CreateFormRevised extends React.Component {
               </View>
             </Modal>
         </View>
+      </KeyboardAvoidingView>
       </Modal>
     );
   }

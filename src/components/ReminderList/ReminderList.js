@@ -22,7 +22,7 @@ import {
   createLocalNotification,
   cancelNotification
 } from '../Notifications/NotificationFunctions';
-import { numberPicker, message } from './ReminderListFunctions';
+import { numberPicker } from './ReminderListFunctions';
 import NumberPickerModal from './NumberPickerModal';
 import AddNumberModal from './AddNumberModal';
 import Modal from 'react-native-modal';
