@@ -303,7 +303,7 @@ export default class CreateFormRevised extends React.Component {
         animationOutTiming={200}>
         <KeyboardAvoidingView
           behavior="padding"
-          keyboardVerticalOffset= { 100 }
+          keyboardVerticalOffset= { 150 }
           enabled>
         <View style={styles.container}>
             <Text style={styles.name}>Who do you want to remember to call?</Text>
