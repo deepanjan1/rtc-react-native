@@ -21,15 +21,15 @@ export const getExistingPermission = async (
   } else {
     let token = await Notifications.getExpoPushTokenAsync();
     modalFunc(false);
+    writeNotificationToken(uid, token);
     /* compare to the firebase token; if it's the same, do nothing,
     if it's different, replace */
-    console.log({ token });
-    console.log({ notificationToken });
-    if (token === notificationToken) {
-      console.log('existing token loaded');
-      return true;
-    };
-
+    // console.log({ token });
+    // console.log({ notificationToken });
+    // if (token === notificationToken) {
+    //   console.log('existing token loaded');
+    //   return true;
+    // };
     // else {
     //   console.log('token is not loading, re-writing token to firebase');
     //   uid ? writeNotificationToken(uid, token) : console.log('userID is null');

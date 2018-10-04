@@ -582,6 +582,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e8e9ea',
     borderRadius: 20,
+    backgroundColor: '#ffffff',
   },
   firstTimeContainer: {
     justifyContent: 'center',
