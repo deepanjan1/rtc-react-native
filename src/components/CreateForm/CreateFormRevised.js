@@ -15,6 +15,9 @@ import { Input, Button } from 'react-native-elements';
 import { loadContacts } from '../SyncContacts/loadContacts';
 import { MaterialIcons } from '@expo/vector-icons';
 import { createLocalNotification } from '../Notifications/NotificationFunctions';
+import { showResults } from './CreateFormFunctions';
+
+// import { ShowPhone } from './ShowPhone';
 
 export default class CreateFormRevised extends React.Component {
   constructor(props) {
@@ -35,15 +38,6 @@ export default class CreateFormRevised extends React.Component {
     date: Moment().add(1, 'days').startOf('day'),  // to firebase
     frequency: 'Every Two Weeks',
     frequencyModal: false,
-  };
-
-  // loading contacts
-  loadContacts = () => {
-    if (this.props.contacts) {
-      return this.props.contacts;
-    } else {
-      return ['Either loading, or YOU HAVE NO FRIENDS!'];
-    }
   };
 
   // iterating through phone numbers to help differentiate duplicate contacts
@@ -96,6 +90,7 @@ export default class CreateFormRevised extends React.Component {
                   underlayColor='transparent'>
                   <View style={ styles.entryContainer }>
                       <Text key={item.key} style={styles.name}>{item.name}</Text>
+                      {/* <ShowPhone item={ item }/> */}
                       { this.showPhone(item) }
                   </View>
                 </TouchableHighlight>
@@ -107,6 +102,7 @@ export default class CreateFormRevised extends React.Component {
                   underlayColor='transparent'>
                   <View style={ styles.entryContainer }>
                       <Text key={item.key} style={styles.name}>{item.company}</Text>
+                      <ShowPhone item={ item }/>
                       {this.showPhone(item)}
                   </View>
                 </TouchableHighlight>
@@ -135,29 +131,6 @@ export default class CreateFormRevised extends React.Component {
           </View>
       );
     }
-  };
-
-  showResults = (search) => {
-    if (this.props.contacts) {
-      const filter = [];
-      this.props.contacts
-      .filter(a => (a.firstName + ' ' + a.lastName)
-      .toLowerCase().indexOf(search.toLowerCase()) !== -1)
-      .map(a => {
-        if (a.firstName || a.lastName) {
-          filter.push(a);
-          return (
-            this.setState({ results: filter })
-          );
-        } else if (a.company) {
-          filter.push(a);
-          return (
-            this.setState({ results: filter })
-          );
-        }
-      }
-    );
-    };
   };
 
   frequencyButton = (frequencySelection) => (
@@ -303,7 +276,7 @@ export default class CreateFormRevised extends React.Component {
         animationOutTiming={200}>
         <KeyboardAvoidingView
           behavior="padding"
-          keyboardVerticalOffset= { 150 }
+          keyboardVerticalOffset= { 10 }
           enabled>
         <View style={styles.container}>
             <Text style={styles.name}>Who do you want to remember to call?</Text>
@@ -319,7 +292,10 @@ export default class CreateFormRevised extends React.Component {
                 onChangeText={(search) => {
                   if (search !== '') {
                     this.setState({ search: search, });
-                    this.showResults(search);
+                    showResults(
+                      search,
+                      this.props.contacts,
+                      (filter) => this.setState({ results: filter }));
                   } else {
                     this.setState({ search: search, });
                   };

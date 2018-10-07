@@ -13,6 +13,7 @@ export default class Notifications extends React.Component {
       animationInTiming={200}
       animationOut='fadeOut'
       animationOutTiming={200}
+      onBackdropPress={ () => this.props.closeNotificationsModal() }
       >
       <View style={ styles.container }>
         <View style={ styles.headerContainer }>

@@ -320,7 +320,7 @@ export default class ReminderList extends React.Component {
                 } }
               />
               </View>
-              <View style={ { alignItems: 'center', } }>
+              <View>
                 <Button
                   title='Mark as Contacted'
                   buttonStyle={ styles.createButton }
