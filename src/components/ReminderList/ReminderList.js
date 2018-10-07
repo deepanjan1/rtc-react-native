@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Image,
   Linking,
+  Platform
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { removeReminder, updateReminder } from '../../services/api';
@@ -320,7 +321,9 @@ export default class ReminderList extends React.Component {
                 } }
               />
               </View>
-              <View>
+              <View style={ {
+                alignItems: Platform.OS === 'ios' ? 'center' : null,
+              } }>
                 <Button
                   title='Mark as Contacted'
                   buttonStyle={ styles.createButton }
@@ -348,7 +351,6 @@ export default class ReminderList extends React.Component {
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
-                // marginTop: 20,
               } }>
                 <MaterialIcons
                   name='edit'
@@ -461,28 +463,6 @@ export default class ReminderList extends React.Component {
                       style={ styles.border }
                     />
                     <View style={ styles.reminderActions }>
-                      {/* <View style={ {
-                        backgroundColor: '#c6cbcf',
-                        borderRadius: 20,
-                        width: 40,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      } }>
-                      <Entypo
-                        name='message'
-                        color='#ecebec'
-                        size={ 30 }
-                      />
-                      </View> */}
-                      {/* <View style={ { alignItems: 'center', } }>
-                        <Button
-                          title='No Need to Reach Out'
-                          buttonStyle={ styles.createButtonInv }
-                          titleStyle={ styles.createButtonTextInv }
-                          >
-                        </Button>
-                      </View> */}
                       <View style={ {
                         backgroundColor: '#1787fb',
                         borderRadius: 20,
@@ -582,7 +562,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e8e9ea',
     borderRadius: 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#ffffff'
   },
   firstTimeContainer: {
     justifyContent: 'center',
@@ -745,6 +725,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 15,
     color: '#2abf40',
+    textAlign: 'center',
   },
   border: {
     borderBottomWidth: 0.5,
