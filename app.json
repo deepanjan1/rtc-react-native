@@ -2,13 +2,16 @@
   "expo": {
     "name": "Remember To Call",
     "icon": "./src/assets/images/Icon.png",
-    "version": "0.2.5",
+    "version": "0.2.7",
     "slug": "remember-to-call",
     "sdkVersion": "29.0.0",
     "splash": {
       "image": "./src/assets/images/splash_logo.png",
       "backgroundColor": "#ffffff"
     },
+    "facebookScheme": "fb140333090089093",
+    "facebookAppId": "140333090089093",
+    "facebookDisplayName": "Remember To Call",
     "notification": {
       "icon": "./src/assets/images/Icon.png",
       "color": "#000000"
@@ -19,14 +22,14 @@
         "NSContactsUsageDescription": "We sync your contacts so you can create reminders.  We never reach out to your contacts!"
       },
       "config": {
-        "usesNonExemptEncryption": false
+        "usesNonExemptEncryption": false,
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.819008592100-6o8g7tf2cbepm29i3nnv98f65p71kr65",
+        }
       },
-      "publishBundlePath": "ios/remember-to-call/Supporting/shell-app.bundle",
-      "publishManifestPath": "ios/remember-to-call/Supporting/shell-app-manifest.json"
     },
     "android": {
       "package": "com.remembertocall",
-      /* "googleServicesFile": "./google-services.json", */
       "versionCode": 6,
       "splash": {
         "image": "./src/assets/images/splash_logo.png",
@@ -35,8 +38,6 @@
       "permissions": [
         "READ_CONTACTS"
       ],
-      /* "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
-      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json" */
     },
     "description": "An app that helps you remember to reach out to your friends and family.  ",
     "githubUrl": "https://github.com/deepanjan1/rtc-react-native",

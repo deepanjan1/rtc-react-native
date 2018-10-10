@@ -20,13 +20,18 @@ export const loginWithFacebook = async() => {
 
 export const loginWithGoogle = async() => {
   try {
-    const { type, accessToken } = await Expo.Google.logInAsync({
-      iosClientId: '819008592100-qpb34tmehb38o0cs85rvf662os2rhjf2.apps.googleusercontent.com',
+    const { type, idToken } = await Expo.Google.logInAsync({
+      iosClientId: '819008592100-f5jlfhd9mgdr6266vcqhqdeofbmk5hd2.apps.googleusercontent.com',
+      androidClientId: '819008592100-9ahcr3iu0gg3k020j7lcd2n8umag9ccu.apps.googleusercontent.com',
+      iosStandaloneAppClientId:
+      '819008592100-6o8g7tf2cbepm29i3nnv98f65p71kr65.apps.googleusercontent.com',
       scopes: ['profile', 'email'],
     });
     if (type === 'success') {
       // build credential and store within firebase
-      await storeLoginWithGoogle(type, accessToken);
+      // console.log({type});
+      // console.log({accessToken});
+      await storeLoginWithGoogle(type, idToken);
     } else {
       return { cancelled: true };
     }

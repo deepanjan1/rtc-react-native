@@ -108,6 +108,14 @@ class IntroFlow extends React.Component {
               Keep in touch and always remember to call!
             </Text>
           </View>
+          <View>
+            <Text style={
+              {
+                fontFamily: 'Roboto-Medium',
+                fontSize: 20,
+                color: '#4468b0',
+              } }>Sign Up</Text>
+          </View>
           <View style={ styles.captionContainerAlignTop }>
             <TouchableHighlight
               onPress={ () => this.props.logUserIn('facebook') }
@@ -122,6 +130,23 @@ class IntroFlow extends React.Component {
                 <View style={ styles.textView }>
                   <Text style={ styles.loginButtonText }>
                     Continue with Facebook
+                  </Text>
+                </View>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={ () => this.props.logUserIn('google') }
+              underlayColor='transparent'>
+              <View style={ styles.googleLoginButtonViewContainer }>
+                <View style={ styles.iconView }>
+                  <Ionicons
+                    name='logo-google'
+                    color='#ffffff'
+                    size={40} />
+                </View>
+                <View style={ styles.textView }>
+                  <Text style={ styles.loginButtonText }>
+                    Continue with Google
                   </Text>
                 </View>
               </View>
@@ -207,6 +232,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     backgroundColor: '#4468b0',
+    margin: 10,
+    borderRadius: 5,
+    padding: 5,
+  },
+  googleLoginButtonViewContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    backgroundColor: '#c20828',
     margin: 10,
     borderRadius: 5,
     padding: 5,

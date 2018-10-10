@@ -66,11 +66,12 @@ export const readData = (endpoint) => (
 export const storeLoginWithFacebook = async(type, token) => {
   if (type === 'success') {
     // Build Firebase credential with the Facebook access token.
-    const credential = firebase.auth.FacebookAuthProvider.credential(token);
-    console.log(credential);
+    const credential = await firebase.auth.FacebookAuthProvider.credential(token);
+    console.log({ credential });
 
     // Sign in with credential from the Facebook user.
     firebase.auth().signInWithCredential(credential).catch((error) => {
+      console.log({ error });
       console.log('storing in firebase did not work');
     });
   }
@@ -80,27 +81,27 @@ export const storeLoginWithGoogle = async(type, token) => {
   if (type === 'success') {
     // Build Firebase credential with the Facebook access token.
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
-    console.log(credential);
+    // console.log({ credential });
 
     // Sign in with credential from the Google user.
-    firebase.auth().signInAndRetrieveDataWithCredential(credential.idToken).catch((error) => {
+    firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-
+      // console.log({ errorMessage });
       // The email of the user's account used.
       var email = error.email;
 
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
     });
-    console.log(userLoginStatus());
+    userLoginStatus();
 
     // Sign in with credential from the Facebook user.
-    // firebase.auth().signInWithCredential(credential.idToken).catch((error) => {
-    //   console.log({error});
-    //   console.log('storing in firebase did not work');
-    // });
+      // firebase.auth().signInWithCredential(credential.idToken).catch((error) => {
+      //   console.log({ error });
+      //   console.log('storing in firebase did not work');
+      // });
   }
 };
 
