@@ -21,3 +21,24 @@ export const showResults = (search, contacts, setStateFunction) => {
   );
   };
 };
+
+// export const showPhone = (item) => {
+//   if (item.name) {
+//     try {
+//       return (
+//         <View>
+//             { item.phoneNumbers.map((data) => (
+//                   <Text
+//                     key={ data.key + data.number }
+//                     style={ { fontFamily: 'Roboto-Light', }}>
+//                     { (data.label) ? data.label + ': ' + data.number : 'phone: ' + data.number }
+//                   </Text>
+//               ))
+//             }
+//         </View>
+//       );
+//     } catch (err) {
+//       return (null);
+//     }
+//   }
+// };

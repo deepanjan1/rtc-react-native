@@ -25,6 +25,8 @@ export const loginWithGoogle = async() => {
       androidClientId: '819008592100-9ahcr3iu0gg3k020j7lcd2n8umag9ccu.apps.googleusercontent.com',
       iosStandaloneAppClientId:
       '819008592100-6o8g7tf2cbepm29i3nnv98f65p71kr65.apps.googleusercontent.com',
+      androidStandaloneAppClientId:
+      '819008592100-32u0321etq1up2tdqj3kvljvfbuq4s9h.apps.googleusercontent.com',
       scopes: ['profile', 'email'],
     });
     if (type === 'success') {

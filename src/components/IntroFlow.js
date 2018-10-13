@@ -39,7 +39,7 @@ class IntroFlow extends React.Component {
         <View style={styles.containerOne}>
           <View style={ styles.captionContainerTop }>
             <Text style={ styles.caption }>
-              We all have people we wish we talked to more often.
+              Be better at staying in touch.
             </Text>
           </View>
           <View style={ { flex: 1, justifyContent: 'center', } }>
@@ -65,7 +65,7 @@ class IntroFlow extends React.Component {
           </View>
           <View style={ styles.captionContainerBottom }>
             <Text style={ styles.caption }>
-              We're here to help.
+              We're can help.
             </Text>
           </View>
         </View>
@@ -86,7 +86,7 @@ class IntroFlow extends React.Component {
         <View style={styles.containerThree}>
           <View style={ styles.captionContainerAlignBottom }>
             <Text style={ styles.caption }>
-              Get notifications when it's time to reach out to your friend!
+              Get notifications when it's time to reach out!
             </Text>
           </View>
           <View style={ { flex: 1, justifyContent: 'center', } }>
@@ -98,7 +98,7 @@ class IntroFlow extends React.Component {
           </View>
           <View style={ styles.captionContainerAlignTop }>
             <Text style={ styles.caption }>
-              Reach out within a week and create streaks!
+              Reach out within a week to create streaks!
             </Text>
           </View>
         </View>
@@ -111,7 +111,7 @@ class IntroFlow extends React.Component {
           <View>
             <Text style={
               {
-                fontFamily: 'Roboto-Medium',
+                fontFamily: 'Roboto-Regular',
                 fontSize: 20,
                 color: '#4468b0',
               } }>Sign Up</Text>
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   containerFour: {
     height: '100%',
-    backgroundColor: '#e8e9ea',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,

@@ -17,8 +17,7 @@ import { loadContacts } from '../SyncContacts/loadContacts';
 import { MaterialIcons } from '@expo/vector-icons';
 import { createLocalNotification } from '../Notifications/NotificationFunctions';
 import { showResults } from './CreateFormFunctions';
-
-// import { ShowPhone } from './ShowPhone';
+import FrequencyButton from './FrequencyButton';
 
 export default class CreateFormRevised extends React.Component {
   constructor(props) {
@@ -91,7 +90,6 @@ export default class CreateFormRevised extends React.Component {
                   underlayColor='transparent'>
                   <View style={ styles.entryContainer }>
                       <Text key={item.key} style={styles.name}>{item.name}</Text>
-                      {/* <ShowPhone item={ item }/> */}
                       { this.showPhone(item) }
                   </View>
                 </TouchableHighlight>
@@ -103,8 +101,7 @@ export default class CreateFormRevised extends React.Component {
                   underlayColor='transparent'>
                   <View style={ styles.entryContainer }>
                       <Text key={item.key} style={styles.name}>{item.company}</Text>
-                      <ShowPhone item={ item }/>
-                      {this.showPhone(item)}
+                      { this.showPhone(item) }
                   </View>
                 </TouchableHighlight>
               );
@@ -133,21 +130,6 @@ export default class CreateFormRevised extends React.Component {
       );
     }
   };
-
-  frequencyButton = (frequencySelection) => (
-    <TouchableHighlight
-      onPress={() => {
-        this.setState({
-          frequency: frequencySelection,
-          frequencyModal: false,
-        });
-      }}
-
-      underlayColor='transparent'>
-
-      <Text style={ styles.frequency }>{ frequencySelection }</Text>
-    </TouchableHighlight>
-  );
 
   restOfForm = () => {
     const frequency = ['Bi-Weekly', 'Quarterly', 'Bi-Annually', 'Annually'];
@@ -352,12 +334,22 @@ export default class CreateFormRevised extends React.Component {
               animationOut='fadeOut'
               animationOutTiming={200}>
               <View style={ styles.frequencyModal }>
-                { this.frequencyButton('Every Two Weeks') }
-                { this.frequencyButton('Every Month') }
-                { this.frequencyButton('Every Two Months') }
-                { this.frequencyButton('Quarterly') }
-                { this.frequencyButton('Twice a Year') }
-                { this.frequencyButton('Once a Year') }
+                <FrequencyButton
+                  frequencySelection={[
+                    'Every Two Weeks',
+                    'Every Month',
+                    'Every Two Months',
+                    'Quarterly',
+                    'Twice a Year',
+                    'Once a Year',
+                  ]}
+                  onPressFunction={ (frequency) => (
+                      this.setState({
+                        frequency: frequency,
+                        frequencyModal: false,
+                      })
+                    )
+                  } />
               </View>
             </Modal>
         </View>
