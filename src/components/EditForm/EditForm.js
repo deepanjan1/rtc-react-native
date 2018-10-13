@@ -20,6 +20,7 @@ import {
   createLocalNotification,
   cancelNotification,
 } from '../Notifications/NotificationFunctions';
+import FrequencyButton from '../CreateForm/FrequencyButton';
 
 export default class EditForm extends React.Component {
   constructor(props) {
@@ -47,21 +48,6 @@ export default class EditForm extends React.Component {
       );
     }
   };
-
-  frequencyButton = (frequencySelection) => (
-    <TouchableHighlight
-      onPress={() => {
-        this.setState({
-          frequency: frequencySelection,
-          frequencyModal: false,
-        });
-      }}
-
-      underlayColor='transparent'>
-
-      <Text style={ styles.frequency }>{ frequencySelection }</Text>
-    </TouchableHighlight>
-  );
 
   render() {
     return (
@@ -207,12 +193,22 @@ export default class EditForm extends React.Component {
               animationOut='fadeOut'
               animationOutTiming={200}>
               <View style={ styles.frequencyModal }>
-                { this.frequencyButton('Every Two Weeks') }
-                { this.frequencyButton('Every Month') }
-                { this.frequencyButton('Every Two Months') }
-                { this.frequencyButton('Quarterly') }
-                { this.frequencyButton('Twice a Year') }
-                { this.frequencyButton('Once a Year') }
+                <FrequencyButton
+                  frequencySelection={[
+                    'Every Two Weeks',
+                    'Every Month',
+                    'Every Two Months',
+                    'Quarterly',
+                    'Twice a Year',
+                    'Once a Year',
+                  ]}
+                  onPressFunction={ (frequency) => (
+                      this.setState({
+                        frequency: frequency,
+                        frequencyModal: false,
+                      })
+                    )
+                  } />
               </View>
             </Modal>
           </View>
