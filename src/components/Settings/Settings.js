@@ -1,8 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, Image, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Image,
+  TouchableHighlight,
+  Linking,
+} from 'react-native';
 import { Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const window = Dimensions.get('window');
 const screenHeight = window.height;
@@ -41,6 +50,22 @@ export default class Settings extends React.Component {
               <Text style={ styles.emailText }>{ user.email }</Text>
             </View>
           </View>
+          <View
+            style={ styles.horizontalRule }
+          />
+          <TouchableHighlight
+            style={ styles.nameEmail }
+            onPress={ () => Linking.openURL('mailto:deep@deepcreations.net') }
+            underlayColor='transparent'>
+            <View style={ styles.contactUsContainer }>
+              <MaterialIcons
+                name='info-outline'
+                size={ 30 }
+                style={ styles.info }
+              />
+              <Text style={ styles.nameText }>Contact Us</Text>
+            </View>
+          </TouchableHighlight>
           <View style={ styles.logoutButtonContainer }>
             <Button
               title='Logout'
@@ -64,7 +89,7 @@ Settings.propTypes = {
 
 const styles = StyleSheet.create({
   settings: {
-    flex: 1,
+    flex: 2,
     backgroundColor: '#ffffff',
     padding: 10,
     borderRadius: 10,
@@ -104,5 +129,18 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
+  },
+  horizontalRule: {
+    borderBottomWidth: 0.5,
+    borderColor: 'grey',
+    marginBottom: 10,
+  },
+  contactUsContainer: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  info: {
+    marginRight: 10,
   },
 });
