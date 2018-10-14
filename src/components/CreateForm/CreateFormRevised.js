@@ -410,13 +410,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  frequency: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 18,
-    color: '#1787fb',
-    marginTop: 10,
-    marginBottom: 10,
-  },
   calendar: {
     width: '100%',
     height: '45%',
