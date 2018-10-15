@@ -191,6 +191,9 @@ export default class CreateFormRevised extends React.Component {
               </View>
             </View>
           </View>
+          {/* <View style={ { marginTop: 20 } }>
+            <Text style={styles.name}>Notes</Text>
+          </View> */}
           <View style={ { marginTop: 20 } }>
             <Button
               title='Save Reminder'
